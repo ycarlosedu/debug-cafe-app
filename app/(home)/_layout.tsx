@@ -8,15 +8,15 @@ export default function HomeLayout() {
     <Tabs
       screenOptions={{
         headerBackgroundContainerStyle: {
-          backgroundColor: colors.primary,
+          backgroundColor: colors.brown,
         },
-        headerTintColor: colors.secondary,
+        headerTintColor: colors.beige,
         headerBackground: () => null,
         headerTitleAlign: 'center',
         tabBarActiveTintColor: colors.white,
-        tabBarInactiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.brown,
         tabBarStyle: {
-          backgroundColor: colors.secondary,
+          backgroundColor: colors.beige,
           height: 80,
           alignItems: 'center',
         },

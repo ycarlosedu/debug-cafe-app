@@ -1,24 +1,58 @@
+import type { VariantProps } from '@gluestack-ui/nativewind-utils';
+import { tva } from '@gluestack-ui/nativewind-utils/tva';
 import { forwardRef } from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { Text, TouchableOpacity, TouchableOpacityProps, TextProps } from 'react-native';
 
-type ButtonProps = {
-  title: string;
-} & TouchableOpacityProps;
+const buttonStyle = tva({
+  base: 'items-center rounded-3xl px-5 py-3 shadow-md',
+  variants: {
+    appearance: {
+      primary: 'bg-beige',
+      secondary: 'border border-beige bg-brown',
+    },
+    size: {
+      full: 'w-full',
+      icon: 'h-14 w-14',
+    },
+  },
+});
+
+type ButtonProps = TouchableOpacityProps & VariantProps<typeof buttonStyle>;
 
 export const Button = forwardRef<TouchableOpacity, ButtonProps>(
-  ({ title, ...touchableProps }, ref) => {
+  ({ children, className, appearance = 'primary', size = 'full', ...props }, ref) => {
     return (
       <TouchableOpacity
         ref={ref}
-        {...touchableProps}
-        className={`${styles.button} ${touchableProps.className}`}>
-        <Text className={styles.buttonText}>{title}</Text>
+        {...props}
+        className={buttonStyle({ class: className, appearance, size })}>
+        {children}
       </TouchableOpacity>
     );
   }
 );
 
-const styles = {
-  button: 'items-center bg-indigo-500 rounded-[28px] shadow-md p-4',
-  buttonText: 'text-white text-lg font-semibold text-center',
+const textStyle = tva({
+  base: 'text-center text-xl font-medium tracking-wide',
+  variants: {
+    appearance: {
+      primary: 'text-brown',
+      secondary: 'text-beige',
+    },
+  },
+});
+
+type ButtonTextProps = TextProps & VariantProps<typeof textStyle>;
+
+export const ButtonText = ({
+  className,
+  children,
+  appearance = 'primary',
+  ...props
+}: ButtonTextProps) => {
+  return (
+    <Text className={textStyle({ class: className, appearance })} {...props}>
+      {children}
+    </Text>
+  );
 };

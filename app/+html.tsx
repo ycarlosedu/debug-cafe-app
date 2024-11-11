@@ -1,5 +1,6 @@
 import { ScrollViewStyleReset } from 'expo-router/html';
 
+import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider/index.web';
 import colors from '@/styles/colors';
 
 // This file is web-only and used to configure the root HTML for every
@@ -32,12 +33,14 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
         {/* Add any additional <head> elements that you want globally available on web... */}
       </head>
-      <body>{children}</body>
+      <body>
+        <GluestackUIProvider>{children}</GluestackUIProvider>
+      </body>
     </html>
   );
 }
 
 const responsiveBackground = `
 body {
-  background-color: ${colors.primary};
+  background-color: ${colors.brown};
 }`;
