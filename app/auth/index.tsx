@@ -15,7 +15,7 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { INVALID, REQUIRED } from '@/constants';
+import { ERROR, INVALID, REQUIRED } from '@/constants';
 import colors from '@/styles/colors';
 
 const loginSchema = z.object({
@@ -35,7 +35,7 @@ export default function Login() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -48,17 +48,17 @@ export default function Login() {
     try {
       const token = '123';
       router.replace('/');
-    } catch (error) {
-      Alert.alert('Erro', error.msg || 'Usuário ou senha inválidos');
+    } catch (error: any) {
+      Alert.alert('Erro', error.msg || ERROR.GENERIC);
     }
   };
 
   return (
     <>
       <Stack.Screen options={{ title: 'Entrar' }} />
-      <Container className="gap-12 px-12">
+      <Container className="gap-8 px-12">
         <Text className="text-2xl text-white">Entre com sua conta</Text>
-        <FormControl isInvalid={false}>
+        <FormControl isInvalid={!isValid}>
           <FormControlLabel>
             <FormControlLabelText>Email</FormControlLabelText>
           </FormControlLabel>
@@ -79,7 +79,7 @@ export default function Login() {
           </Input>
           <FormControlErrorText>{errors.email?.message}</FormControlErrorText>
         </FormControl>
-        <FormControl isInvalid={false}>
+        <FormControl isInvalid={!isValid}>
           <FormControlLabel>
             <FormControlLabelText>Senha</FormControlLabelText>
           </FormControlLabel>

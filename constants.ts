@@ -5,3 +5,7 @@ export const INVALID = {
 export const REQUIRED = {
   FIELD: 'Campo obrigatório',
 };
+
+export const ERROR = {
+  GENERIC: 'Erro inesperado, tente novamente mais tarde!',
+};
