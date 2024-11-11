@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text } from 'react-native';
+import { Alert, GestureResponderEvent, Text } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/Button';
@@ -28,7 +28,8 @@ type FormValues = z.infer<typeof loginSchema>;
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleShowPassword = () => {
+  const handleShowPassword = (e: GestureResponderEvent) => {
+    e?.stopPropagation();
     setShowPassword((prevState) => !prevState);
   };
 

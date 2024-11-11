@@ -1,5 +1,4 @@
 import { Tabs } from 'expo-router';
-import { View } from 'react-native';
 
 import { TabBarIcon } from '@/components/TabBarIcon';
 import colors from '@/styles/colors';
@@ -11,7 +10,7 @@ export default function AuthLayout() {
         headerBackgroundContainerStyle: {
           backgroundColor: colors.brown,
         },
-        headerTintColor: colors.brown,
+        headerTintColor: colors.transparent,
         headerBackground: () => null,
         headerTitleAlign: 'center',
         tabBarActiveTintColor: colors.white,

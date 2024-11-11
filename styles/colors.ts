@@ -9,6 +9,7 @@ const colors = {
   },
   green: '#8CC152',
   orange: '#FFA500',
+  transparent: 'transparent',
   primary: {
     0: 'rgb(var(--color-primary-0)/<alpha-value>)',
     50: 'rgb(var(--color-primary-50)/<alpha-value>)',

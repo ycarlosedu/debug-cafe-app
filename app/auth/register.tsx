@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text } from 'react-native';
+import { Alert, GestureResponderEvent, Text } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/Button';
@@ -17,6 +17,7 @@ import {
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ERROR, INVALID, REQUIRED } from '@/constants';
 import colors from '@/styles/colors';
+import { applyMask, REGEX } from '@/utils/regex';
 
 const registerSchema = z.object({
   fullName: z.string().min(3, REQUIRED.FIELD),
@@ -30,7 +31,8 @@ type FormValues = z.infer<typeof registerSchema>;
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleShowPassword = () => {
+  const handleShowPassword = (e: GestureResponderEvent) => {
+    e?.stopPropagation();
     setShowPassword((prevState) => !prevState);
   };
 
@@ -114,7 +116,12 @@ export default function Register() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <InputField
                   onBlur={onBlur}
-                  onChangeText={onChange}
+                  onChangeText={(e) => {
+                    const numbers = applyMask(e, REGEX.ONLY_NUMBERS);
+                    const phone = applyMask(numbers, REGEX.PHONE_NUMBER);
+                    onChange(phone);
+                  }}
+                  maxLength={15}
                   value={value}
                   type="text"
                   placeholder="(51) 98888-7777"
