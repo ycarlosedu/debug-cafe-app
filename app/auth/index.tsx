@@ -4,17 +4,17 @@ import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
 import { ScreenContent } from '@/components/ScreenContent';
 
-export default function Register() {
-  const handleRegister = () => {
+export default function Login() {
+  const handleLogin = () => {
     router.replace('/');
   };
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Cadastre-se' }} />
+      <Stack.Screen options={{ title: 'Entrar' }} />
       <Container>
-        <ScreenContent path="app/auth/register.tsx" title="Cadastre-se" />
-        <Button onPress={handleRegister} title="Continuar" />
+        <ScreenContent path="app/auth/index.tsx" title="Entrar" />
+        <Button onPress={handleLogin} title="Continuar" />
       </Container>
     </>
   );

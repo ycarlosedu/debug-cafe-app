@@ -3,7 +3,7 @@ import { Tabs } from 'expo-router';
 import { TabBarIcon } from '@/components/TabBarIcon';
 import colors from '@/styles/colors';
 
-export default function AuthLayout() {
+export default function HomeLayout() {
   return (
     <Tabs
       screenOptions={{
@@ -27,15 +27,29 @@ export default function AuthLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Entrar',
-          tabBarIcon: ({ color }) => <TabBarIcon name="arrow-right" color={color} />,
+          title: 'Início',
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="register"
+        name="search"
         options={{
-          title: 'Cadastre-se',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          title: 'Buscar',
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="orders"
+        options={{
+          title: 'Meus Pedidos',
+          tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Meu Perfil',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
         }}
       />
     </Tabs>
