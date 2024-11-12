@@ -33,6 +33,10 @@ export default function Login() {
     setShowPassword((prevState) => !prevState);
   };
 
+  const handleGuestLogin = () => {
+    router.replace('/');
+  };
+
   const {
     control,
     handleSubmit,
@@ -114,7 +118,7 @@ export default function Login() {
         <Button onPress={handleSubmit(onSubmit)}>
           <ButtonText>Continuar</ButtonText>
         </Button>
-        <Button appearance="secondary">
+        <Button appearance="secondary" onPress={handleGuestLogin}>
           <ButtonText appearance="secondary">Entrar como convidado</ButtonText>
         </Button>
       </Container>
