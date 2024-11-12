@@ -4,15 +4,15 @@ import { forwardRef } from 'react';
 import { Text, TouchableOpacity, TouchableOpacityProps, TextProps } from 'react-native';
 
 const buttonStyle = tva({
-  base: 'items-center rounded-3xl px-5 py-3 shadow-md',
+  base: 'items-center justify-center shadow-md',
   variants: {
     appearance: {
       primary: 'bg-beige',
       secondary: 'border border-beige bg-brown',
     },
     size: {
-      full: 'w-full',
-      icon: 'h-14 w-14',
+      full: 'w-full rounded-3xl px-5 py-3',
+      icon: 'rounded-full p-3',
     },
   },
 });

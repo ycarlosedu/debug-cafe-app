@@ -22,7 +22,8 @@ export default function Home() {
         </View>
 
         <ProductCategoriesList />
-        <ProductList />
+        <ProductList title="Café da manhã" />
+        <ProductList title="Almoço" />
       </Container>
     </>
   );
