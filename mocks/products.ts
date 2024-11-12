@@ -1,0 +1,58 @@
+export const products = [
+  {
+    id: 1,
+    name: 'Brownie',
+    image: require('@/assets/images/brownie.png'),
+    price: 5.0,
+    shortDescription: 'Uma deliciosa sobremesa.',
+  },
+  {
+    id: 2,
+    name: 'Café Expresso',
+    image: require('@/assets/images/brownie.png'),
+    price: 3.5,
+    shortDescription: 'Um café forte e saboroso.',
+  },
+  {
+    id: 3,
+    name: 'Café com Leite',
+    image: require('@/assets/images/brownie.png'),
+    price: 4.5,
+    shortDescription: 'Um café suave e cremoso.',
+  },
+  {
+    id: 4,
+    name: 'Cappuccino',
+    image: require('@/assets/images/brownie.png'),
+    price: 6.0,
+    shortDescription: 'Um café com leite e espuma de leite.',
+  },
+  {
+    id: 5,
+    name: 'Chocolate Quente',
+    image: require('@/assets/images/brownie.png'),
+    price: 7.0,
+    shortDescription: 'Um chocolate quente e cremoso.',
+  },
+  {
+    id: 6,
+    name: 'Pão de Queijo',
+    image: require('@/assets/images/brownie.png'),
+    price: 3.0,
+    shortDescription: 'Um pão de queijo quentinho.',
+  },
+  {
+    id: 7,
+    name: 'Salgado',
+    image: require('@/assets/images/brownie.png'),
+    price: 4.0,
+    shortDescription: 'Um salgado crocante e saboroso.',
+  },
+  {
+    id: 8,
+    name: 'Suco',
+    image: require('@/assets/images/brownie.png'),
+    price: 5.0,
+    shortDescription: 'Um suco natural e refrescante.',
+  },
+];

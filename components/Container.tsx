@@ -7,9 +7,7 @@ const containerStyle = tva({
   base: 'flex w-full flex-1 flex-col bg-brown pb-6',
 });
 
-type Props = SafeAreaViewProps & {
-  children: React.ReactNode;
-};
+type Props = SafeAreaViewProps;
 
 export const Container = ({ children, className, ...props }: Props) => {
   return (

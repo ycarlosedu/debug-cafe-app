@@ -1,14 +1,28 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
+import { Image, Text, View } from 'react-native';
 
+import UserImage from '@/assets/images/user.png';
 import { Container } from '@/components/Container';
-import { ScreenContent } from '@/components/ScreenContent';
+import ProductCategoriesList from '@/components/productCategoriesList';
+import ProductList from '@/components/productList';
 
 export default function Home() {
   return (
     <>
       <Stack.Screen options={{ title: 'Debug Café' }} />
-      <Container>
-        <ScreenContent path="app/home/index.tsx" title="Home" />
+      <Container className="items-center gap-8">
+        <View className="items-center gap-3">
+          <Image source={UserImage} className="rounded-full" style={{ width: 56, height: 56 }} />
+          <View className="flex-row items-center justify-center gap-2">
+            <FontAwesome size={16} name="map-marker" />
+            <Text className="text-sm text-white">Porto Alegre, RS</Text>
+          </View>
+          <Text className="text-lg font-medium text-beige">O que vamos comer hoje?</Text>
+        </View>
+
+        <ProductCategoriesList />
+        <ProductList />
       </Container>
     </>
   );
