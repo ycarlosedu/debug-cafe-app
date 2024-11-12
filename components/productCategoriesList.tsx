@@ -1,11 +1,15 @@
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View, ViewProps } from 'react-native';
 
 import { productCategories } from '@/mocks/productCategories';
 
-export default function ProductCategoriesList() {
+type Props = ViewProps & {
+  title: string;
+};
+
+export default function ProductCategoriesList({ title, ...props }: Props) {
   return (
-    <View className="gap-4">
-      <Text className="pl-4 text-lg font-medium text-beige">Categorias</Text>
+    <View className="gap-4" {...props}>
+      <Text className="pl-4 text-lg font-medium text-beige">{title}</Text>
       <ScrollView horizontal className="grow-0 pb-2">
         {productCategories.map((category) => (
           <View key={category.id} className="mx-4 items-center gap-4">

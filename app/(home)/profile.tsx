@@ -1,8 +1,8 @@
-import { router, Stack } from 'expo-router';
+import { FontAwesome } from '@expo/vector-icons';
+import { Link, router, Stack } from 'expo-router';
 
 import { Button, ButtonText } from '@/components/Button';
 import { Container } from '@/components/Container';
-import { ScreenContent } from '@/components/ScreenContent';
 
 export default function Profile() {
   const handleLogout = () => {
@@ -12,10 +12,16 @@ export default function Profile() {
   return (
     <>
       <Stack.Screen options={{ title: 'Meu Perfil' }} />
-      <Container>
-        <ScreenContent path="app/home/profile.tsx" title="Meu Perfil" />
-        <Button appearance="secondary" onPress={handleLogout}>
-          <ButtonText appearance="secondary">Sair</ButtonText>
+      <Container className="gap-6 px-4">
+        <Link href="/" asChild>
+          <Button>
+            <FontAwesome size={24} name="user" />
+            <ButtonText>Minhas informações</ButtonText>
+            <FontAwesome size={24} name="arrow-right" />
+          </Button>
+        </Link>
+        <Button onPress={handleLogout}>
+          <ButtonText>Sair</ButtonText>
         </Button>
       </Container>
     </>
