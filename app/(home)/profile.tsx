@@ -60,7 +60,7 @@ export default function Profile() {
 
         <Text className="text-center text-lg font-medium text-beige">Acessos internos</Text>
 
-        <Link href="/" asChild>
+        <Link href="/internal-access" asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">
               <FontAwesome size={24} name="users" color={colors.brown} />
@@ -70,7 +70,7 @@ export default function Profile() {
           </Button>
         </Link>
 
-        <Link href="/" asChild>
+        <Link href="/internal-access" asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">
               <FontAwesome size={24} name="edit" color={colors.brown} />
@@ -80,7 +80,7 @@ export default function Profile() {
           </Button>
         </Link>
 
-        <Link href="/" asChild>
+        <Link href="/internal-access" asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">
               <FontAwesome size={24} name="motorcycle" color={colors.brown} />
