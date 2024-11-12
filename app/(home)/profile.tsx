@@ -1,8 +1,9 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Link, router, Stack } from 'expo-router';
 import { preview } from 'radon-ide';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
+import UserImage from '@/assets/images/user.png';
 import { Button, ButtonText } from '@/components/Button';
 import { Container } from '@/components/Container';
 import colors from '@/styles/colors';
@@ -18,6 +19,15 @@ export default function Profile() {
     <>
       <Stack.Screen options={{ title: 'Meu Perfil (Cliente)' }} />
       <Container className="gap-6 px-4">
+        <View className="flex-row items-center gap-6">
+          <Image
+            source={UserImage}
+            className="rounded-full border-2 border-beige"
+            style={{ width: 56, height: 56 }}
+          />
+          <Text className="text-lg font-medium text-white">Carlos Eduardo</Text>
+        </View>
+
         <Link href="/" asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">

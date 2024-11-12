@@ -14,7 +14,11 @@ export default function Home() {
       <Stack.Screen options={{ title: 'Debug Café' }} />
       <Container className="items-center gap-8">
         <View className="items-center gap-3">
-          <Image source={UserImage} className="rounded-full" style={{ width: 56, height: 56 }} />
+          <Image
+            source={UserImage}
+            className="rounded-full border-2 border-beige"
+            style={{ width: 56, height: 56 }}
+          />
           <View className="flex-row items-center justify-center gap-2">
             <FontAwesome size={16} color={colors.white} name="map-marker" />
             <Text className="text-sm text-white">Porto Alegre, RS</Text>
