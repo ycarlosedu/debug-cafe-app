@@ -4,8 +4,12 @@
       "type": "radon-ide",
       "request": "launch",
       "name": "Radon IDE panel",
-      "ios": {},
-      "android": {},
+      "ios": {
+        "configuration": "Debug"
+      },
+      "android": {
+        "buildType": "debug"
+      },
       "isExpo": true
     }
   ]
