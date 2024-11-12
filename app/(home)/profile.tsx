@@ -6,6 +6,7 @@ import { Image, Text, View } from 'react-native';
 import UserImage from '@/assets/images/user.png';
 import { Button, ButtonText } from '@/components/Button';
 import { Container } from '@/components/Container';
+import { USER_TYPE } from '@/constants';
 import colors from '@/styles/colors';
 
 preview(<Profile />);
@@ -60,7 +61,14 @@ export default function Profile() {
 
         <Text className="text-center text-lg font-medium text-beige">Acessos internos</Text>
 
-        <Link href="/internal-access" asChild>
+        <Link
+          href={{
+            pathname: '/internal-access/[user]',
+            params: {
+              user: USER_TYPE.STAFF,
+            },
+          }}
+          asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">
               <FontAwesome size={24} name="users" color={colors.brown} />
@@ -70,7 +78,14 @@ export default function Profile() {
           </Button>
         </Link>
 
-        <Link href="/internal-access" asChild>
+        <Link
+          href={{
+            pathname: '/internal-access/[user]',
+            params: {
+              user: USER_TYPE.MANAGER,
+            },
+          }}
+          asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">
               <FontAwesome size={24} name="edit" color={colors.brown} />
@@ -80,7 +95,14 @@ export default function Profile() {
           </Button>
         </Link>
 
-        <Link href="/internal-access" asChild>
+        <Link
+          href={{
+            pathname: '/internal-access/[user]',
+            params: {
+              user: USER_TYPE.DELIVERY,
+            },
+          }}
+          asChild>
           <Button className="justify-between">
             <View className="flex-row items-center gap-2">
               <FontAwesome size={24} name="motorcycle" color={colors.brown} />

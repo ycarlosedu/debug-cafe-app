@@ -13,3 +13,9 @@ export const REQUIRED = {
 export const ERROR = {
   GENERIC: 'Erro inesperado, tente novamente mais tarde!',
 };
+
+export enum USER_TYPE {
+  STAFF = 'staff',
+  MANAGER = 'manager',
+  DELIVERY = 'delivery',
+}

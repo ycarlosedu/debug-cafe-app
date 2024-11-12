@@ -13,7 +13,7 @@ export default function InternalLayout() {
         headerBackground: () => null,
         headerTitleAlign: 'center',
       }}>
-      <Stack.Screen name="internal-access" options={{ title: 'Acesso Interno' }} />
+      <Stack.Screen name="internal-access/[user]" options={{ title: 'Acesso Interno' }} />
     </Stack>
   );
 }

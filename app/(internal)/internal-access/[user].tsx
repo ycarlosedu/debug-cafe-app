@@ -1,6 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router, Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, GestureResponderEvent, Text } from 'react-native';
@@ -15,7 +15,7 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { ERROR, REQUIRED } from '@/constants';
+import { ERROR, REQUIRED, USER_TYPE } from '@/constants';
 import colors from '@/styles/colors';
 
 const InternalAccessSchema = z.object({
@@ -24,7 +24,20 @@ const InternalAccessSchema = z.object({
 
 type FormValues = z.infer<typeof InternalAccessSchema>;
 
+type Params = {
+  user: USER_TYPE;
+};
+
+const USER_TYPE_LABEL = {
+  [USER_TYPE.STAFF]: 'Funcionário',
+  [USER_TYPE.MANAGER]: 'Supervisor',
+  [USER_TYPE.DELIVERY]: 'Motoboy',
+};
+
 export default function InternalAccess() {
+  const params = useLocalSearchParams<Params>();
+  const userLabel = USER_TYPE_LABEL[params.user];
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
@@ -56,10 +69,10 @@ export default function InternalAccess() {
     <>
       <Stack.Screen options={{ title: 'Acesso Interno' }} />
       <Container className="gap-12 px-12">
-        <Text className="text-2xl text-white">Acesse como XX (Motoboy/Funcionario/Supervisor)</Text>
+        <Text className="text-2xl text-white">Acesse como {userLabel}</Text>
         <FormControl isInvalid={!isValid}>
           <FormControlLabel>
-            <FormControlLabelText>Senha dos Motoboys</FormControlLabelText>
+            <FormControlLabelText>Senha de {userLabel}</FormControlLabelText>
           </FormControlLabel>
           <Input>
             <Controller
