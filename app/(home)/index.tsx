@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import { Image, Text, View } from 'react-native';
 
 import UserImage from '@/assets/images/user.png';
-import { Container } from '@/components/Container';
+import { Container } from '@/components/cContainer';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import ProductList from '@/components/productList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';

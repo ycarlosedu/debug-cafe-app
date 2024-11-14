@@ -2,7 +2,7 @@ import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Alert } from 'react-native';
 
-import { Container } from '@/components/Container';
+import { Container } from '@/components/cContainer';
 import RegisterAddressForm, {
   RegisterAddressFormValues,
 } from '@/components/auth/register-address-form';

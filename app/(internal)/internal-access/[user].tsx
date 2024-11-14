@@ -6,8 +6,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { Alert, GestureResponderEvent, Text } from 'react-native';
 import { z } from 'zod';
 
-import { Button, ButtonText } from '@/components/Button';
-import { Container } from '@/components/Container';
+import { Button, ButtonText } from '@/components/bButton';
+import { Container } from '@/components/cContainer';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import {
   FormControl,

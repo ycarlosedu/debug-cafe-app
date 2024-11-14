@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { ImageBackground, ScrollView, Text, View, ViewProps } from 'react-native';
 
-import { Button } from './Button';
+import { Button } from './bButton';
 
 import { products } from '@/mocks/products';
 import { format } from '@/utils/format';

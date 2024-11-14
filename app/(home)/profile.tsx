@@ -4,8 +4,8 @@ import { preview } from 'radon-ide';
 import { Image, Text, View } from 'react-native';
 
 import UserImage from '@/assets/images/user.png';
-import { Button, ButtonText } from '@/components/Button';
-import { Container } from '@/components/Container';
+import { Button, ButtonText } from '@/components/bButton';
+import { Container } from '@/components/cContainer';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { USER_TYPE } from '@/constants';
 import colors from '@/styles/colors';

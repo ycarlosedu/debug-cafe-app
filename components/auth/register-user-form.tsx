@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { GestureResponderEvent, Text } from 'react-native';
 import { z } from 'zod';
 
-import { Button, ButtonText } from '@/components/Button';
+import { Button, ButtonText } from '@/components/bButton';
 import {
   FormControl,
   FormControlErrorText,
