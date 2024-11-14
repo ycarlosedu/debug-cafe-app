@@ -51,7 +51,16 @@ export default function Product() {
 
             <Text className="text-base text-gray-light">{product.description}</Text>
 
-            <Button>
+            <View className="gap-1">
+              <Text className="text-lg text-beige">Categorias</Text>
+              <View className="flex-row gap-3">
+                {product.categories.map((category) => (
+                  <Text className="rounded-2xl bg-orange px-3 py-2 text-white">{category}</Text>
+                ))}
+              </View>
+            </View>
+
+            <Button className="mt-4">
               <FontAwesome name="cart-plus" size={16} color={colors.brown} />
               <ButtonText>Adicionar ao Carrinho</ButtonText>
             </Button>
