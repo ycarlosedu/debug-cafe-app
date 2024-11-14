@@ -2,7 +2,7 @@ import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import { Link, Stack } from 'expo-router';
 import { FlatList } from 'react-native';
 
-import { Container } from '@/components/cContainer';
+import { Container } from '@/components/container';
 import {
   Accordion,
   AccordionItem,

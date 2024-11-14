@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { ImageBackground, ScrollView, Text, View, ViewProps } from 'react-native';
 
-import { Button } from './bButton';
+import { Button } from './button';
 
 import { products } from '@/mocks/products';
 import { format } from '@/utils/format';
@@ -12,10 +12,8 @@ type Props = ViewProps & {
 
 export default function ProductList({ title, ...props }: Props) {
   return (
-    <View className="gap-4">
-      <Text className="pl-4 text-lg font-medium text-beige" {...props}>
-        {title}
-      </Text>
+    <View className="gap-4" {...props}>
+      <Text className="pl-4 text-lg font-medium text-beige">{title}</Text>
       <ScrollView horizontal className="grow-0 px-4 pb-2">
         {products.map((product) => (
           <View key={product.id} className="mr-4 gap-2 rounded-xl bg-beige p-3">

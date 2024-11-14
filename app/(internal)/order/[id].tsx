@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 
-import { Container } from '@/components/cContainer';
+import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
 

@@ -1,7 +1,7 @@
 import { Link, Stack } from 'expo-router';
 import { Text } from 'react-native';
 
-import { Container } from '@/components/cContainer';
+import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 
 export default function NotFoundScreen() {

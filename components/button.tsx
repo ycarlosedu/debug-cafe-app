@@ -19,10 +19,11 @@ const buttonStyle = tva({
 
 type ButtonProps = TouchableOpacityProps & VariantProps<typeof buttonStyle>;
 
-export const Button = forwardRef<TouchableOpacity, ButtonProps>(
+export const Button = forwardRef<typeof TouchableOpacity, ButtonProps>(
   ({ children, className, appearance = 'primary', size = 'full', ...props }, ref) => {
     return (
       <TouchableOpacity
+        // @ts-ignore
         ref={ref}
         {...props}
         className={buttonStyle({ class: className, appearance, size })}>

@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Text } from 'react-native';
 import { z } from 'zod';
 
-import { Button, ButtonText } from '@/components/bButton';
+import { Button, ButtonText } from '@/components/button';
 import {
   FormControl,
   FormControlErrorText,

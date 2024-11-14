@@ -4,8 +4,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { Alert, View } from 'react-native';
 import { z } from 'zod';
 
-import { Button, ButtonText } from '@/components/bButton';
-import { Container } from '@/components/cContainer';
+import { Button, ButtonText } from '@/components/button';
+import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { FormControl, FormControlErrorText } from '@/components/ui/form-control';
