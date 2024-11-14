@@ -19,8 +19,8 @@ import { ERROR, INVALID, REQUIRED } from '@/constants';
 import colors from '@/styles/colors';
 
 const loginSchema = z.object({
-  email: z.string().min(3, REQUIRED.FIELD).email(INVALID.EMAIL),
-  password: z.string().min(3, REQUIRED.FIELD),
+  email: z.string().min(1, REQUIRED.FIELD).email(INVALID.EMAIL),
+  password: z.string().min(1, REQUIRED.FIELD),
 });
 
 type FormValues = z.infer<typeof loginSchema>;

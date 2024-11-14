@@ -19,7 +19,7 @@ import { ERROR, REQUIRED, USER_TYPE } from '@/constants';
 import colors from '@/styles/colors';
 
 const InternalAccessSchema = z.object({
-  password: z.string().min(3, REQUIRED.FIELD),
+  password: z.string().min(1, REQUIRED.FIELD),
 });
 
 type FormValues = z.infer<typeof InternalAccessSchema>;
