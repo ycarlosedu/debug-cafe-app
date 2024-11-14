@@ -8,6 +8,7 @@ import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/Button';
 import { Container } from '@/components/Container';
+import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import {
   FormControl,
   FormControlErrorText,
@@ -68,40 +69,42 @@ export default function InternalAccess() {
   return (
     <>
       <Stack.Screen options={{ title: 'Acesso Interno' }} />
-      <Container className="gap-12 px-12">
-        <Text className="text-2xl text-white">Acesse como {userLabel}</Text>
-        <FormControl isInvalid={!isValid}>
-          <FormControlLabel>
-            <FormControlLabelText>Senha de {userLabel}</FormControlLabelText>
-          </FormControlLabel>
-          <Input>
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <InputField
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="********"
-                />
-              )}
-              name="password"
-            />
-            <InputSlot onPress={handleShowPassword}>
-              <FontAwesome
-                size={28}
-                color={colors.white}
-                name={showPassword ? 'eye' : 'eye-slash'}
+      <ScrollViewContainer>
+        <Container className="gap-12 px-12">
+          <Text className="text-2xl text-white">Acesse como {userLabel}</Text>
+          <FormControl isInvalid={!isValid}>
+            <FormControlLabel>
+              <FormControlLabelText>Senha de {userLabel}</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <InputField
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="********"
+                  />
+                )}
+                name="password"
               />
-            </InputSlot>
-          </Input>
-          <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
-        </FormControl>
-        <Button onPress={handleSubmit(onSubmit)}>
-          <ButtonText>Continuar</ButtonText>
-        </Button>
-      </Container>
+              <InputSlot onPress={handleShowPassword}>
+                <FontAwesome
+                  size={28}
+                  color={colors.white}
+                  name={showPassword ? 'eye' : 'eye-slash'}
+                />
+              </InputSlot>
+            </Input>
+            <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
+          </FormControl>
+          <Button onPress={handleSubmit(onSubmit)}>
+            <ButtonText>Continuar</ButtonText>
+          </Button>
+        </Container>
+      </ScrollViewContainer>
     </>
   );
 }

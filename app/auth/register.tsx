@@ -7,6 +7,7 @@ import RegisterAddressForm, {
   RegisterAddressFormValues,
 } from '@/components/auth/register-address-form';
 import RegisterUserForm, { RegisterUserFormValues } from '@/components/auth/register-user-form';
+import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { Progress, ProgressFilledTrack } from '@/components/ui/progress';
 import { ERROR } from '@/constants';
 
@@ -38,7 +39,7 @@ export default function Register() {
     console.log(data);
     try {
       const token = '123';
-      router.replace('/');
+      router.replace('/(home)');
     } catch (error: any) {
       Alert.alert('Erro', error.msg || ERROR.GENERIC);
     }
@@ -47,13 +48,15 @@ export default function Register() {
   return (
     <>
       <Stack.Screen options={{ title: 'Cadastre-se' }} />
-      <Container className="gap-8 px-12">
-        <Progress value={STEP_PROGRESS[step]} size="md" orientation="horizontal">
-          <ProgressFilledTrack />
-        </Progress>
-        {step === STEP.USER && <RegisterUserForm onSubmit={onSubmitUserForm} />}
-        {step === STEP.ADDRESS && <RegisterAddressForm onSubmit={onSubmitAddressForm} />}
-      </Container>
+      <ScrollViewContainer>
+        <Container className="gap-8 px-12">
+          <Progress value={STEP_PROGRESS[step]} size="md" orientation="horizontal">
+            <ProgressFilledTrack />
+          </Progress>
+          {step === STEP.USER && <RegisterUserForm onSubmit={onSubmitUserForm} />}
+          {step === STEP.ADDRESS && <RegisterAddressForm onSubmit={onSubmitAddressForm} />}
+        </Container>
+      </ScrollViewContainer>
     </>
   );
 }

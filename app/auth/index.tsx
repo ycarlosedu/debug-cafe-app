@@ -8,6 +8,7 @@ import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/Button';
 import { Container } from '@/components/Container';
+import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import {
   FormControl,
   FormControlErrorText,
@@ -34,7 +35,7 @@ export default function Login() {
   };
 
   const handleGuestLogin = () => {
-    router.replace('/');
+    router.replace('/(home)');
   };
 
   const {
@@ -53,7 +54,7 @@ export default function Login() {
     console.log(data);
     try {
       const token = '123';
-      router.replace('/');
+      router.replace('/(home)');
     } catch (error: any) {
       Alert.alert('Erro', error.msg || ERROR.GENERIC);
     }
@@ -62,67 +63,69 @@ export default function Login() {
   return (
     <>
       <Stack.Screen options={{ title: 'Entrar' }} />
-      <Container className="gap-8 px-12">
-        <Text className="text-2xl text-white">Entre com sua conta</Text>
-        <FormControl isInvalid={!isValid}>
-          <FormControlLabel>
-            <FormControlLabelText>Email</FormControlLabelText>
-          </FormControlLabel>
-          <Input>
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <InputField
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  type="text"
-                  placeholder="exemplo@cafeteria.com"
-                />
-              )}
-              name="email"
-            />
-          </Input>
-          <FormControlErrorText>{errors.email?.message}</FormControlErrorText>
-        </FormControl>
-        <FormControl isInvalid={!isValid}>
-          <FormControlLabel>
-            <FormControlLabelText>Senha</FormControlLabelText>
-          </FormControlLabel>
-          <Input>
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <InputField
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="********"
-                />
-              )}
-              name="password"
-            />
-            <InputSlot onPress={handleShowPassword}>
-              <FontAwesome
-                size={28}
-                color={colors.white}
-                name={showPassword ? 'eye' : 'eye-slash'}
+      <ScrollViewContainer>
+        <Container className="gap-8 px-12">
+          <Text className="text-2xl text-white">Entre com sua conta</Text>
+          <FormControl isInvalid={!isValid}>
+            <FormControlLabel>
+              <FormControlLabelText>Email</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <InputField
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    type="text"
+                    placeholder="exemplo@cafeteria.com"
+                  />
+                )}
+                name="email"
               />
-            </InputSlot>
-          </Input>
-          <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
-        </FormControl>
-        <Link href="/" className="self-end text-sm text-beige">
-          Esqueci minha senha
-        </Link>
-        <Button onPress={handleSubmit(onSubmit)}>
-          <ButtonText>Continuar</ButtonText>
-        </Button>
-        <Button appearance="secondary" onPress={handleGuestLogin}>
-          <ButtonText appearance="secondary">Entrar como convidado</ButtonText>
-        </Button>
-      </Container>
+            </Input>
+            <FormControlErrorText>{errors.email?.message}</FormControlErrorText>
+          </FormControl>
+          <FormControl isInvalid={!isValid}>
+            <FormControlLabel>
+              <FormControlLabelText>Senha</FormControlLabelText>
+            </FormControlLabel>
+            <Input>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <InputField
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="********"
+                  />
+                )}
+                name="password"
+              />
+              <InputSlot onPress={handleShowPassword}>
+                <FontAwesome
+                  size={28}
+                  color={colors.white}
+                  name={showPassword ? 'eye' : 'eye-slash'}
+                />
+              </InputSlot>
+            </Input>
+            <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
+          </FormControl>
+          <Link href="/(home)" className="self-end text-sm text-beige">
+            Esqueci minha senha
+          </Link>
+          <Button onPress={handleSubmit(onSubmit)}>
+            <ButtonText>Continuar</ButtonText>
+          </Button>
+          <Button appearance="secondary" onPress={handleGuestLogin}>
+            <ButtonText appearance="secondary">Entrar como convidado</ButtonText>
+          </Button>
+        </Container>
+      </ScrollViewContainer>
     </>
   );
 }
