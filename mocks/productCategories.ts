@@ -1,32 +1,34 @@
+import { PRODUCT_CATEGORY } from '@/constants';
+
 export const productCategories = [
   {
     id: 1,
-    name: 'Hot Cafés',
-    image: require('@/assets/images/brownie.png'),
+    name: PRODUCT_CATEGORY.HOT_COFFEES,
+    image: require('@/assets/images/categories/hot-coffees.png'),
   },
   {
     id: 2,
-    name: 'Ice Cafés',
-    image: require('@/assets/images/brownie.png'),
+    name: PRODUCT_CATEGORY.ICED_COFFEES,
+    image: require('@/assets/images/categories/iced-coffees.png'),
   },
   {
     id: 3,
-    name: 'Doces',
-    image: require('@/assets/images/brownie.png'),
+    name: PRODUCT_CATEGORY.SWEET_STUFF,
+    image: require('@/assets/images/categories/sweet-stuff.png'),
   },
   {
     id: 4,
-    name: 'Salgados',
-    image: require('@/assets/images/brownie.png'),
+    name: PRODUCT_CATEGORY.SALTY_SNACKS,
+    image: require('@/assets/images/categories/salty-snacks.png'),
   },
   {
     id: 5,
-    name: 'Bebidas',
-    image: require('@/assets/images/brownie.png'),
+    name: PRODUCT_CATEGORY.DRINKS,
+    image: require('@/assets/images/categories/drinks.png'),
   },
   {
     id: 6,
-    name: 'Combos',
-    image: require('@/assets/images/brownie.png'),
+    name: PRODUCT_CATEGORY.COMBOS,
+    image: require('@/assets/images/categories/combo.png'),
   },
 ];

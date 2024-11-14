@@ -14,6 +14,15 @@ export const ERROR = {
   GENERIC: 'Erro inesperado, tente novamente mais tarde!',
 };
 
+export enum PRODUCT_CATEGORY {
+  HOT_COFFEES = 'Cafés Quentes',
+  ICED_COFFEES = 'Cafés Gelados',
+  SWEET_STUFF = 'Doces',
+  SALTY_SNACKS = 'Salgados',
+  DRINKS = 'Bebidas',
+  COMBOS = 'Combos',
+}
+
 export enum USER_TYPE {
   STAFF = 'staff',
   MANAGER = 'manager',
