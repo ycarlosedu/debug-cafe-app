@@ -53,9 +53,11 @@ export default function Product() {
 
             <View className="gap-1">
               <Text className="text-lg text-beige">Categorias</Text>
-              <View className="flex-row gap-3">
+              <View className="flex-row flex-wrap gap-3">
                 {product.categories.map((category) => (
-                  <Text className="rounded-2xl bg-orange px-3 py-2 text-white">{category}</Text>
+                  <Text key={category} className="rounded-2xl bg-orange px-3 py-2 text-white">
+                    {category}
+                  </Text>
                 ))}
               </View>
             </View>

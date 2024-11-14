@@ -7,6 +7,7 @@ import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import ProductList from '@/components/productList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { Fab } from '@/components/ui/fab';
 import colors from '@/styles/colors';
 
 export default function Home() {
@@ -33,6 +34,9 @@ export default function Home() {
           <ProductList title="Almoço" />
         </Container>
       </ScrollViewContainer>
+      <Fab size="lg" placement="bottom right">
+        <FontAwesome name="cart-arrow-down" size={20} color={colors.beige} />
+      </Fab>
     </>
   );
 }

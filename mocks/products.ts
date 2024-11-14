@@ -16,7 +16,11 @@ export const products = [
     image: require('@/assets/images/products/espresso.png'),
     price: 3.5,
     description: 'Um café forte e saboroso para começar o dia.',
-    categories: [PRODUCT_CATEGORY.HOT_COFFEES],
+    categories: [
+      PRODUCT_CATEGORY.HOT_COFFEES,
+      PRODUCT_CATEGORY.ICED_COFFEES,
+      PRODUCT_CATEGORY.SWEET_STUFF,
+    ],
   },
   {
     id: 3,
