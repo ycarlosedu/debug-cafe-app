@@ -12,35 +12,9 @@ import {
   AccordionContent,
   AccordionContentText,
 } from '@/components/ui/accordion';
-import { ORDER_STATUS } from '@/constants';
+import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL } from '@/constants';
 import { orders } from '@/mocks/orders';
 import colors from '@/styles/colors';
-
-const ORDER_STATUS_LABEL = {
-  [ORDER_STATUS.PENDING]: 'Pendente',
-  [ORDER_STATUS.IN_PREPARATION]: 'Em preparação',
-  [ORDER_STATUS.ON_THE_WAY]: 'A caminho',
-  [ORDER_STATUS.DELIVERED]: 'Entregue',
-  [ORDER_STATUS.CANCELED]: 'Cancelado',
-};
-
-const ORDER_STATUS_ICON = {
-  [ORDER_STATUS.PENDING]: 'clock',
-  [ORDER_STATUS.IN_PREPARATION]: 'utensils',
-  [ORDER_STATUS.ON_THE_WAY]: 'truck',
-  [ORDER_STATUS.DELIVERED]: 'check',
-  [ORDER_STATUS.CANCELED]: 'xmark',
-};
-
-const ORDER_STATUS_COLOR = {
-  [ORDER_STATUS.PENDING]: 'orange',
-  [ORDER_STATUS.IN_PREPARATION]: 'yellow',
-  [ORDER_STATUS.ON_THE_WAY]: 'blue',
-  [ORDER_STATUS.DELIVERED]: 'green',
-  [ORDER_STATUS.CANCELED]: 'red',
-};
-
-// TODO: QUANTIDADE DE CADA ITEM NO PEDIDO
 
 export default function Orders() {
   return (

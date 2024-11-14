@@ -27,3 +27,27 @@ export enum ORDER_STATUS {
   DELIVERED = 'delivered',
   CANCELED = 'canceled',
 }
+
+export const ORDER_STATUS_LABEL = {
+  [ORDER_STATUS.PENDING]: 'Pendente',
+  [ORDER_STATUS.IN_PREPARATION]: 'Em Preparação',
+  [ORDER_STATUS.ON_THE_WAY]: 'Em Trânsito',
+  [ORDER_STATUS.DELIVERED]: 'Entregue',
+  [ORDER_STATUS.CANCELED]: 'Cancelado',
+};
+
+export const ORDER_STATUS_ICON = {
+  [ORDER_STATUS.PENDING]: 'clock',
+  [ORDER_STATUS.IN_PREPARATION]: 'utensils',
+  [ORDER_STATUS.ON_THE_WAY]: 'truck',
+  [ORDER_STATUS.DELIVERED]: 'check',
+  [ORDER_STATUS.CANCELED]: 'xmark',
+};
+
+export const ORDER_STATUS_COLOR = {
+  [ORDER_STATUS.PENDING]: 'orange',
+  [ORDER_STATUS.IN_PREPARATION]: 'yellow',
+  [ORDER_STATUS.ON_THE_WAY]: 'blue',
+  [ORDER_STATUS.DELIVERED]: 'green',
+  [ORDER_STATUS.CANCELED]: 'red',
+};
