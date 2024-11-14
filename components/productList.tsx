@@ -1,5 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { ImageBackground, ScrollView, Text, View, ViewProps } from 'react-native';
+import { Link, router } from 'expo-router';
+import { ImageBackground, Pressable, ScrollView, Text, View, ViewProps } from 'react-native';
 
 import { Button } from './button';
 
@@ -11,12 +12,19 @@ type Props = ViewProps & {
 };
 
 export default function ProductList({ title, ...props }: Props) {
+  const handleClickProduct = (id: string) => {
+    router.push(`/product/${id}`);
+  };
+
   return (
     <View className="gap-4" {...props}>
       <Text className="pl-4 text-lg font-medium text-beige">{title}</Text>
       <ScrollView horizontal className="grow-0 px-4 pb-2">
         {products.map((product) => (
-          <View key={product.id} className="mr-4 gap-2 rounded-xl bg-beige p-3">
+          <Pressable
+            key={product.id}
+            onPress={() => handleClickProduct(product.id.toString())}
+            className="mr-4 w-[265px] gap-2 rounded-xl bg-beige p-3">
             <View className="overflow-hidden rounded-lg border-2 border-brown">
               <ImageBackground
                 source={product.image}
@@ -31,8 +39,10 @@ export default function ProductList({ title, ...props }: Props) {
               </ImageBackground>
             </View>
             <Text className="text-xl text-brown">{product.name}</Text>
-            <Text className="text-sm text-white">{product.shortDescription}</Text>
-          </View>
+            <Text className="break-all text-sm text-white">
+              {format.truncate(product.description, 90)}
+            </Text>
+          </Pressable>
         ))}
       </ScrollView>
     </View>
