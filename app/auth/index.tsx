@@ -41,7 +41,7 @@ export default function Login() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -66,7 +66,7 @@ export default function Login() {
       <ScrollViewContainer>
         <Container className="gap-8 px-12">
           <Text className="text-2xl text-white">Entre com sua conta</Text>
-          <FormControl isInvalid={!isValid}>
+          <FormControl isInvalid={Boolean(errors.email?.message)}>
             <FormControlLabel>
               <FormControlLabelText>Email</FormControlLabelText>
             </FormControlLabel>
@@ -80,6 +80,7 @@ export default function Login() {
                     value={value}
                     type="text"
                     placeholder="exemplo@cafeteria.com"
+                    keyboardType="email-address"
                   />
                 )}
                 name="email"
@@ -87,7 +88,7 @@ export default function Login() {
             </Input>
             <FormControlErrorText>{errors.email?.message}</FormControlErrorText>
           </FormControl>
-          <FormControl isInvalid={!isValid}>
+          <FormControl isInvalid={Boolean(errors.password?.message)}>
             <FormControlLabel>
               <FormControlLabelText>Senha</FormControlLabelText>
             </FormControlLabel>

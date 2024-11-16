@@ -11,6 +11,7 @@ export const REQUIRED = {
   FIELD: 'Campo obrigatório',
   MIN: (min: number) => `Mínimo de ${min} caracteres`,
   MAX: (max: number) => `Máximo de ${max} caracteres`,
+  MAX_STARS: 'Máximo de 5 estrelas',
 };
 
 export const ERROR = {

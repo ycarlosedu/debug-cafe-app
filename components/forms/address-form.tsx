@@ -67,6 +67,7 @@ export default function RegisterAddressForm({
                   const cep = applyMask(numbers, REGEX.CEP);
                   onChange(cep);
                 }}
+                keyboardType="numeric"
                 value={value}
                 type="text"
                 placeholder="99999-999"
@@ -135,6 +136,7 @@ export default function RegisterAddressForm({
                 }}
                 value={value}
                 type="text"
+                keyboardType="numeric"
                 placeholder="999"
               />
             )}

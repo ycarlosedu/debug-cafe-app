@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
@@ -66,10 +66,40 @@ export default function Order() {
             <TextHighlight>{order.deliveryAddress}</TextHighlight>
           </View>
 
-          {order.status === ORDER_STATUS.DELIVERED && (
-            <Button>
-              <ButtonText>Avaliar Pedido</ButtonText>
-            </Button>
+          {order.status === ORDER_STATUS.DELIVERED && !order.feedback?.stars && (
+            <Link
+              href={{
+                pathname: '/order-feedback/[id]',
+                params: { id: order.id.toString() },
+              }}
+              asChild>
+              <Button>
+                <ButtonText>Avaliar Pedido</ButtonText>
+              </Button>
+            </Link>
+          )}
+
+          {order.status === ORDER_STATUS.DELIVERED && order.feedback?.stars && (
+            <>
+              <Text className="text-center text-2xl text-beige">Sua Avaliação</Text>
+              <View className="gap-2">
+                <Text className="text-lg text-beige">Produtos:</Text>
+                <TextHighlight>{order.feedback.comment}</TextHighlight>
+                <Text className="text-lg text-beige">
+                  Satisfação: {order.feedback.stars} estrela(s)
+                </Text>
+              </View>
+            </>
+          )}
+
+          {order.status === ORDER_STATUS.DELIVERED && order.deliveryFeedback?.stars && (
+            <View className="gap-2">
+              <Text className="text-lg text-beige">Entrega:</Text>
+              <TextHighlight>{order.deliveryFeedback.comment}</TextHighlight>
+              <Text className="text-lg text-beige">
+                Satisfação: {order.deliveryFeedback.stars} estrela(s)
+              </Text>
+            </View>
           )}
         </Container>
       </ScrollViewContainer>

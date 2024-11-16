@@ -66,9 +66,9 @@ export default function Orders() {
                       x{product.quantity} {product.name}
                     </AccordionContentText>
                   ))}
-                  {item.stars && (
+                  {item.feedback?.stars && (
                     <AccordionContentText className="text-brown">
-                      Avaliação - {item.stars} estrelas
+                      Avaliação - {item.feedback.stars} estrela(s)
                     </AccordionContentText>
                   )}
                   <Link

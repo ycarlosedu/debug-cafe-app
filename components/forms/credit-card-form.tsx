@@ -70,6 +70,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
                 }}
                 maxLength={19}
                 value={value}
+                keyboardType="numeric"
                 type="text"
                 placeholder="XXXX XXXX XXXX XXXX"
               />
@@ -96,6 +97,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
                 }}
                 maxLength={14}
                 value={value}
+                keyboardType="numeric"
                 type="text"
                 placeholder="000.111.222-33"
               />
@@ -121,6 +123,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
                 }}
                 maxLength={3}
                 value={value}
+                keyboardType="numeric"
                 type="text"
                 placeholder="999"
               />
@@ -147,6 +150,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
                 }}
                 value={value}
                 type="text"
+                keyboardType="numeric"
                 placeholder="12/2032"
                 maxLength={7}
               />

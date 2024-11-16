@@ -91,6 +91,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
                 onChangeText={onChange}
                 value={value}
                 type="text"
+                keyboardType="email-address"
                 placeholder="exemplo@cafeteria.com"
               />
             )}
@@ -118,6 +119,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
                 value={value}
                 type="text"
                 placeholder="(51) 98888-7777"
+                keyboardType="phone-pad"
               />
             )}
             name="phone"
