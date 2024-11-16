@@ -1,26 +1,26 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useState } from 'react';
 import { Text, View, ViewProps } from 'react-native';
 
 import { Button } from './button';
 
-import { Product } from '@/models/product';
+import { ProductInCart } from '@/models/product';
+import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 
 type Props = ViewProps & {
-  product: Product;
+  product: ProductInCart;
 };
 
 export default function CartProduct({ product, ...props }: Props) {
-  const [quantity, setQuantity] = useState(1);
+  const { decreaseProductQuantity, increaseProductQuantity, removeProduct } = useCartStore();
 
-  const handleIncrement = () => {
-    setQuantity((prevState) => prevState + 1);
-  };
+  const handleDecrement = (id: ProductInCart['id']) => {
+    if (product.quantity === 1) {
+      return removeProduct(id);
+    }
 
-  const handleDecrement = () => {
-    setQuantity((prevState) => prevState - 1);
+    decreaseProductQuantity(id);
   };
 
   return (
@@ -30,18 +30,17 @@ export default function CartProduct({ product, ...props }: Props) {
       <Text className="text-lg text-beige">{format.truncate(product.name, 20)}</Text>
       <View className="flex-row items-center gap-3">
         <Text className="text-lg text-beige">
-          {format.toBrazillianCurrency(product.price * quantity)}
+          {format.toBrazillianCurrency(product.price * product.quantity)}
         </Text>
         <View className="flex-row items-center justify-center overflow-hidden rounded-full bg-beige">
+          <Button size="icon" className="rounded-none" onPress={() => handleDecrement(product.id)}>
+            <FontAwesome name="minus" size={20} color={colors.brown} />
+          </Button>
+          <Text className="bg-beige text-2xl text-brown">{product.quantity}</Text>
           <Button
             size="icon"
             className="rounded-none"
-            onPress={handleDecrement}
-            disabled={quantity === 1}>
-            <FontAwesome name="minus" size={20} color={colors.brown} />
-          </Button>
-          <Text className="bg-beige text-2xl text-brown">{quantity}</Text>
-          <Button size="icon" className="rounded-none" onPress={handleIncrement}>
+            onPress={() => increaseProductQuantity(product.id)}>
             <FontAwesome name="plus" size={20} color={colors.brown} />
           </Button>
         </View>

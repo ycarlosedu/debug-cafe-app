@@ -9,6 +9,10 @@ export type Product = {
   categories: PRODUCT_CATEGORY[];
 };
 
+export type ProductInCart = Product & {
+  quantity: number;
+};
+
 export type ProductCategory = {
   id: number;
   name: PRODUCT_CATEGORY;
