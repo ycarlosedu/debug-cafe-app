@@ -39,7 +39,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<CreditCardFormValues>({
     resolver: zodResolver(cardSchema),
     defaultValues: {
@@ -53,7 +53,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
   return (
     <>
       <Text className="text-2xl text-white">{title}</Text>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.cardNumber?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Número do Cartão</FormControlLabelText>
         </FormControlLabel>
@@ -79,7 +79,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
         </Input>
         <FormControlErrorText>{errors.cardNumber?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.cpf?.message)}>
         <FormControlLabel>
           <FormControlLabelText>CPF do titular</FormControlLabelText>
         </FormControlLabel>
@@ -105,7 +105,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
         </Input>
         <FormControlErrorText>{errors.cpf?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.cvv?.message)}>
         <FormControlLabel>
           <FormControlLabelText>CVV</FormControlLabelText>
         </FormControlLabel>
@@ -130,7 +130,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
         </Input>
         <FormControlErrorText>{errors.cvv?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.expirationDate?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Data de validade</FormControlLabelText>
         </FormControlLabel>

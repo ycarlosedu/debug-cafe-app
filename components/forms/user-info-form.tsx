@@ -43,7 +43,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<RegisterUserFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -57,7 +57,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
   return (
     <>
       <Text className="text-2xl text-white">{title}</Text>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.fullName?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Nome Completo</FormControlLabelText>
         </FormControlLabel>
@@ -78,7 +78,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
         </Input>
         <FormControlErrorText>{errors.fullName?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.email?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Email</FormControlLabelText>
         </FormControlLabel>
@@ -99,7 +99,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
         </Input>
         <FormControlErrorText>{errors.email?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.phone?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Telefone</FormControlLabelText>
         </FormControlLabel>
@@ -125,7 +125,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
         </Input>
         <FormControlErrorText>{errors.phone?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.password?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Senha</FormControlLabelText>
         </FormControlLabel>

@@ -1,21 +1,21 @@
 import { Link, Stack } from 'expo-router';
 import { Text } from 'react-native';
 
+import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
-import { ScrollViewContainer } from '@/components/scrollViewContainer';
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
-      <ScrollViewContainer>
-        <Container>
-          <Text className="text-xl font-bold">This screen doesn't exist.</Text>
-          <Link href="/(home)" className="mt-4 pt-4">
-            <Text className="text-base text-[#2e78b7]">Go to home screen!</Text>
-          </Link>
-        </Container>
-      </ScrollViewContainer>
+      <Container className="h-screen items-center justify-center gap-4 px-4">
+        <Text className="text-3xl font-bold text-white">Essa página não existe.</Text>
+        <Link href="/(home)" className="mt-4 pt-4" asChild>
+          <Button>
+            <ButtonText>Ir para página Inicial</ButtonText>
+          </Button>
+        </Link>
+      </Container>
     </>
   );
 }

@@ -51,7 +51,7 @@ export default function Profile() {
             </Button>
           </Link>
 
-          <Link href="/(home)" asChild>
+          <Link href="/credit-cards" asChild>
             <Button className="justify-between">
               <View className="flex-row items-center gap-2">
                 <FontAwesome size={24} name="credit-card" color={colors.brown} />

@@ -37,7 +37,7 @@ export default function RegisterAddressForm({
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<RegisterAddressFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -51,7 +51,7 @@ export default function RegisterAddressForm({
   return (
     <>
       <Text className="text-2xl text-white">{title}</Text>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.cep?.message)}>
         <FormControlLabel>
           <FormControlLabelText>CEP</FormControlLabelText>
         </FormControlLabel>
@@ -77,7 +77,7 @@ export default function RegisterAddressForm({
         </Input>
         <FormControlErrorText>{errors.cep?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.city?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Cidade</FormControlLabelText>
         </FormControlLabel>
@@ -98,7 +98,7 @@ export default function RegisterAddressForm({
         </Input>
         <FormControlErrorText>{errors.city?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.street?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Logradouro</FormControlLabelText>
         </FormControlLabel>
@@ -119,7 +119,7 @@ export default function RegisterAddressForm({
         </Input>
         <FormControlErrorText>{errors.street?.message}</FormControlErrorText>
       </FormControl>
-      <FormControl isInvalid={!isValid}>
+      <FormControl isInvalid={Boolean(errors.number?.message)}>
         <FormControlLabel>
           <FormControlLabelText>Número</FormControlLabelText>
         </FormControlLabel>
