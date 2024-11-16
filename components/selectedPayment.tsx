@@ -11,10 +11,17 @@ import {
   AccordionTitleText,
   AccordionTrigger,
 } from './ui/accordion';
+import { Radio, RadioGroup, RadioIndicator, RadioLabel } from './ui/radio';
 
+import { creditCards } from '@/mocks/credit-cards';
 import colors from '@/styles/colors';
 
-export default function SelectedPayment() {
+type Props = {
+  selectedPayment: string;
+  onChangePayment: (payment: string) => void;
+};
+
+export default function SelectedPayment({ selectedPayment, onChangePayment }: Props) {
   return (
     <View className="gap-2">
       <Text className="text-base text-beige">Pagamento</Text>
@@ -31,7 +38,7 @@ export default function SelectedPayment() {
                 return (
                   <>
                     <AccordionTitleText className="flex flex-row items-center text-brown">
-                      Cartão Visa 6040
+                      {selectedPayment}
                     </AccordionTitleText>
                     {isExpanded ? (
                       <FontAwesome color={colors.brown} name="caret-up" size={24} />
@@ -47,9 +54,22 @@ export default function SelectedPayment() {
             <AccordionContentText className="text-brown">
               Selecione o meio desejado:
             </AccordionContentText>
-            <AccordionContentText className="text-white">Pix</AccordionContentText>
-            <AccordionContentText className="text-white">Cartão Visa 6040</AccordionContentText>
-            <AccordionContentText className="text-white">Cartão Master 8050</AccordionContentText>
+            <RadioGroup value={selectedPayment} onChange={(e) => onChangePayment(e)}>
+              <Radio value="Pix" size="lg">
+                <RadioIndicator>
+                  {selectedPayment === 'Pix' && <FontAwesome name="circle" size={16} />}
+                </RadioIndicator>
+                <RadioLabel>Pix</RadioLabel>
+              </Radio>
+              {creditCards.map((card) => (
+                <Radio key={card.id} value={card.name} size="lg">
+                  <RadioIndicator>
+                    {selectedPayment === card.name && <FontAwesome name="circle" size={16} />}
+                  </RadioIndicator>
+                  <RadioLabel>{card.name}</RadioLabel>
+                </Radio>
+              ))}
+            </RadioGroup>
             <Link
               href="/add-credit-card"
               className="flex flex-row items-center justify-center gap-1 rounded-lg bg-brown px-2 py-3">

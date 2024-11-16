@@ -10,7 +10,7 @@ import colors from '@/styles/colors';
 export default function CartButton() {
   const { products } = useCartStore();
 
-  const hasProductsInCart = products.length > 0;
+  const hasProductsInCart = Boolean(products.length);
 
   return (
     <Fab size="lg" onPress={() => router.push('/cart')}>

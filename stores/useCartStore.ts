@@ -13,6 +13,7 @@ type Store = InitialState & {
   removeProduct: (id: ProductInCart['id']) => void;
   increaseProductQuantity: (id: ProductInCart['id']) => void;
   decreaseProductQuantity: (id: ProductInCart['id']) => void;
+  isProductInCart: (id: ProductInCart['id']) => boolean;
   reset: () => void;
 };
 
@@ -57,6 +58,9 @@ const useCartStore = create<Store>()((set, get) => ({
     set({
       products: newProducts,
     });
+  },
+  isProductInCart: (id) => {
+    return get().products.some((product) => product.id === id);
   },
   reset: () => {
     set(initialState);

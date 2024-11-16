@@ -1,5 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
@@ -13,6 +14,8 @@ import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 
 export default function Cart() {
+  const [selectedPayment, setSelectedPayment] = useState('Pix');
+
   const { products, reset: resetCart } = useCartStore();
 
   const totalPrice = products.reduce(
@@ -46,7 +49,7 @@ export default function Cart() {
             Total: {format.toBrazillianCurrency(totalPrice)}
           </Text>
           <SelectedAddress />
-          <SelectedPayment />
+          <SelectedPayment selectedPayment={selectedPayment} onChangePayment={setSelectedPayment} />
           <Button disabled={!hasProductsInCart}>
             <FontAwesome name="cart-arrow-down" size={24} color={colors.brown} />
             <ButtonText>Finalizar Compra</ButtonText>

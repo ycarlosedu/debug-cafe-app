@@ -13,9 +13,9 @@ type Props = PressableProps & {
 };
 
 export default function ProductCard({ product }: Props) {
-  const { addProduct, removeProduct, products } = useCartStore();
+  const { addProduct, removeProduct, isProductInCart } = useCartStore();
 
-  const productIsInCart = Boolean(products.find((p) => p.id === product.id));
+  const isInCart = isProductInCart(product.id);
 
   const handleClickProduct = (id: string) => {
     router.push(`/product/${id}`);
@@ -35,9 +35,9 @@ export default function ProductCard({ product }: Props) {
           </Text>
           <Button
             size="icon"
-            onPress={() => (productIsInCart ? removeProduct(product.id) : addProduct(product))}
+            onPress={() => (isInCart ? removeProduct(product.id) : addProduct(product))}
             className="absolute bottom-3 right-3">
-            <FontAwesome size={24} name={productIsInCart ? 'trash' : 'cart-plus'} />
+            <FontAwesome size={24} name={isInCart ? 'trash' : 'cart-plus'} />
           </Button>
         </ImageBackground>
       </View>

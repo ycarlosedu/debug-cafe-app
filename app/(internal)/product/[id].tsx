@@ -3,9 +3,11 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { Image, Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
+import CartButton from '@/components/cartButton';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { products } from '@/mocks/products';
+import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 
@@ -17,6 +19,8 @@ export default function Product() {
   const { id } = useLocalSearchParams<Params>();
   const product = products.find((product) => product.id.toString() === id);
 
+  const { addProduct, removeProduct, isProductInCart } = useCartStore();
+
   if (!product) {
     return (
       <>
@@ -27,6 +31,8 @@ export default function Product() {
       </>
     );
   }
+
+  const isInCart = isProductInCart(product.id);
 
   return (
     <>
@@ -62,13 +68,16 @@ export default function Product() {
               </View>
             </View>
 
-            <Button className="mt-4">
-              <FontAwesome name="cart-plus" size={16} color={colors.brown} />
-              <ButtonText>Adicionar ao Carrinho</ButtonText>
+            <Button
+              className="mt-4"
+              onPress={() => (isInCart ? removeProduct(product.id) : addProduct(product))}>
+              <FontAwesome name={isInCart ? 'trash' : 'cart-plus'} size={16} color={colors.brown} />
+              <ButtonText>{isInCart ? 'Remover do Carrinho' : 'Adicionar ao Carrinho'}</ButtonText>
             </Button>
           </View>
         </Container>
       </ScrollViewContainer>
+      <CartButton />
     </>
   );
 }
