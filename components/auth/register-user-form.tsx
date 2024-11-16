@@ -28,9 +28,11 @@ export type RegisterUserFormValues = z.infer<typeof registerSchema>;
 
 type Props = {
   onSubmit: (data: RegisterUserFormValues) => void;
+  title?: string;
+  submitText?: string;
 };
 
-export default function RegisterUserForm({ onSubmit }: Props) {
+export default function RegisterUserForm({ onSubmit, title = '', submitText = 'Salvar' }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
@@ -54,7 +56,7 @@ export default function RegisterUserForm({ onSubmit }: Props) {
 
   return (
     <>
-      <Text className="text-2xl text-white">Cadastre-se conosco</Text>
+      <Text className="text-2xl text-white">{title}</Text>
       <FormControl isInvalid={!isValid}>
         <FormControlLabel>
           <FormControlLabelText>Nome Completo</FormControlLabelText>
@@ -148,7 +150,7 @@ export default function RegisterUserForm({ onSubmit }: Props) {
         <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
       </FormControl>
       <Button onPress={handleSubmit(onSubmit)}>
-        <ButtonText>Continuar</ButtonText>
+        <ButtonText>{submitText}</ButtonText>
       </Button>
     </>
   );

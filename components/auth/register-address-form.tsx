@@ -26,9 +26,14 @@ export type RegisterAddressFormValues = z.infer<typeof registerSchema>;
 type Props = {
   onSubmit: (data: RegisterAddressFormValues) => void;
   title?: string;
+  submitText?: string;
 };
 
-export default function RegisterAddressForm({ onSubmit, title = '' }: Props) {
+export default function RegisterAddressForm({
+  onSubmit,
+  title = '',
+  submitText = 'Salvar',
+}: Props) {
   const {
     control,
     handleSubmit,
@@ -139,7 +144,7 @@ export default function RegisterAddressForm({ onSubmit, title = '' }: Props) {
         <FormControlErrorText>{errors.number?.message}</FormControlErrorText>
       </FormControl>
       <Button onPress={handleSubmit(onSubmit)}>
-        <ButtonText>Salvar</ButtonText>
+        <ButtonText>{submitText}</ButtonText>
       </Button>
     </>
   );

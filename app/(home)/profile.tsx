@@ -31,7 +31,7 @@ export default function Profile() {
             <Text className="text-lg font-medium text-white">Carlos Eduardo</Text>
           </View>
 
-          <Link href="/(home)" asChild>
+          <Link href="/user-info" asChild>
             <Button className="justify-between">
               <View className="flex-row items-center gap-2">
                 <FontAwesome size={24} name="address-card" color={colors.brown} />
@@ -41,11 +41,11 @@ export default function Profile() {
             </Button>
           </Link>
 
-          <Link href="/(home)" asChild>
+          <Link href="/address" asChild>
             <Button className="justify-between">
               <View className="flex-row items-center gap-2">
                 <FontAwesome size={24} name="map-signs" color={colors.brown} />
-                <ButtonText>Meus endereços</ButtonText>
+                <ButtonText>Meu endereço</ButtonText>
               </View>
               <FontAwesome size={24} name="arrow-right" color={colors.brown} />
             </Button>
