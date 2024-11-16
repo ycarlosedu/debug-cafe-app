@@ -5,6 +5,7 @@ import { Alert, View } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
+import CartButton from '@/components/cartButton';
 import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
@@ -69,6 +70,7 @@ export default function Search() {
           <ProductCategoriesList title="Filtrar por Categorias" />
         </Container>
       </ScrollViewContainer>
+      <CartButton />
     </>
   );
 }
