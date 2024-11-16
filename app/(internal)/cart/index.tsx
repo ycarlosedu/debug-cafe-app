@@ -37,7 +37,7 @@ export default function Cart() {
             )}
           </View>
           {hasProductsInCart && (
-            <Button appearance="secondary">
+            <Button appearance="secondary" onPress={resetCart}>
               <FontAwesome name="trash" size={24} color={colors.beige} />
               <ButtonText appearance="secondary">Limpar Carrinho</ButtonText>
             </Button>
@@ -47,7 +47,7 @@ export default function Cart() {
           </Text>
           <SelectedAddress />
           <SelectedPayment />
-          <Button disabled={!hasProductsInCart} onPress={resetCart}>
+          <Button disabled={!hasProductsInCart}>
             <FontAwesome name="cart-arrow-down" size={24} color={colors.brown} />
             <ButtonText>Finalizar Compra</ButtonText>
           </Button>

@@ -25,9 +25,10 @@ export type RegisterAddressFormValues = z.infer<typeof registerSchema>;
 
 type Props = {
   onSubmit: (data: RegisterAddressFormValues) => void;
+  title?: string;
 };
 
-export default function RegisterAddressForm({ onSubmit }: Props) {
+export default function RegisterAddressForm({ onSubmit, title = '' }: Props) {
   const {
     control,
     handleSubmit,
@@ -44,7 +45,7 @@ export default function RegisterAddressForm({ onSubmit }: Props) {
 
   return (
     <>
-      <Text className="text-2xl text-white">Cadastre seu endereço</Text>
+      <Text className="text-2xl text-white">{title}</Text>
       <FormControl isInvalid={!isValid}>
         <FormControlLabel>
           <FormControlLabelText>CEP</FormControlLabelText>
@@ -138,7 +139,7 @@ export default function RegisterAddressForm({ onSubmit }: Props) {
         <FormControlErrorText>{errors.number?.message}</FormControlErrorText>
       </FormControl>
       <Button onPress={handleSubmit(onSubmit)}>
-        <ButtonText>Cadastrar</ButtonText>
+        <ButtonText>Salvar</ButtonText>
       </Button>
     </>
   );

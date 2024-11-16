@@ -54,7 +54,9 @@ export default function Register() {
             <ProgressFilledTrack />
           </Progress>
           {step === STEP.USER && <RegisterUserForm onSubmit={onSubmitUserForm} />}
-          {step === STEP.ADDRESS && <RegisterAddressForm onSubmit={onSubmitAddressForm} />}
+          {step === STEP.ADDRESS && (
+            <RegisterAddressForm onSubmit={onSubmitAddressForm} title="Cadastre seu endereço" />
+          )}
         </Container>
       </ScrollViewContainer>
     </>
