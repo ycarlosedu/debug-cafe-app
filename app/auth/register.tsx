@@ -2,10 +2,8 @@ import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Alert } from 'react-native';
 
-import RegisterAddressForm, {
-  RegisterAddressFormValues,
-} from '@/components/auth/register-address-form';
-import RegisterUserForm, { RegisterUserFormValues } from '@/components/auth/register-user-form';
+import RegisterAddressForm, { RegisterAddressFormValues } from '@/components/forms/address-form';
+import RegisterUserForm, { RegisterUserFormValues } from '@/components/forms/user-info-form';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { Progress, ProgressFilledTrack } from '@/components/ui/progress';

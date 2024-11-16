@@ -48,7 +48,7 @@ export default function SelectedAddress() {
             <AccordionContentText className="text-brown">Porto Alegre</AccordionContentText>
             <AccordionContentText className="text-brown">Número 999</AccordionContentText>
             <Link
-              href="/address"
+              href="/edit-address"
               className="flex flex-row items-center justify-center gap-1 rounded-lg bg-brown px-2 py-3">
               <AccordionContentText className="text-center text-beige">
                 Alterar Endereço

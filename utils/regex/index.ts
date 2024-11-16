@@ -5,6 +5,8 @@ export enum REGEX {
   CNPJ = '(^\\d{2}\\.\\d{3}\\.\\d{3}\\/\\d{4}-\\d{2}$)',
   CPF_CNPJ = '(^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$)|(^\\d{2}\\.\\d{3}\\.\\d{3}\\/\\d{4}-\\d{2}$)',
   CEP = '^\\d{5}-\\d{3}$',
+  CREDIT_CARD = '^\\d{4} \\d{4} \\d{4} \\d{4}$',
+  EXPIRATION_DATE = '^(0[1-9]|1[0-2])\\/?([0-9]{4}|[0-9]{2})$',
   ONLY_NUMBERS = '^[0-9]*$',
 }
 
@@ -29,6 +31,10 @@ export const applyMask = (value: string, regex: REGEX) => {
       }
     case REGEX.CEP:
       return value.replace(/^(\d{5})(\d{3})/, '$1-$2');
+    case REGEX.CREDIT_CARD:
+      return value.replace(/^(\d{4})(\d{4})(\d{4})(\d{4})/, '$1 $2 $3 $4');
+    case REGEX.EXPIRATION_DATE:
+      return value.replace(/^(\d{2})(\d{4})/, '$1/$2');
     case REGEX.ONLY_NUMBERS:
       return value.replace(/\D/g, '');
     default:

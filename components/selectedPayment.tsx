@@ -51,10 +51,7 @@ export default function SelectedPayment() {
             <AccordionContentText className="text-white">Cartão Visa 6040</AccordionContentText>
             <AccordionContentText className="text-white">Cartão Master 8050</AccordionContentText>
             <Link
-              href={{
-                pathname: '/order/[id]',
-                params: { id: 1 },
-              }}
+              href="/add-credit-card"
               className="flex flex-row items-center justify-center gap-1 rounded-lg bg-brown px-2 py-3">
               <AccordionContentText className="text-center text-beige">
                 Adicionar Cartão

@@ -2,6 +2,9 @@ export const INVALID = {
   EMAIL: 'Email inválido',
   PHONE: 'Telefone inválido',
   CEP: 'CEP inválido',
+  CPF: 'CPF inválido',
+  CREDIT_CARD: 'Cartão inválido',
+  EXPIRATION_DATE: 'A data deve ser no formato Mês/Ano',
 };
 
 export const REQUIRED = {

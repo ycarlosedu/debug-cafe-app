@@ -1,15 +1,13 @@
 import { router, Stack } from 'expo-router';
 import { Alert } from 'react-native';
 
-import RegisterAddressForm, {
-  RegisterAddressFormValues,
-} from '@/components/auth/register-address-form';
 import { Container } from '@/components/container';
+import CreditCardForm, { CreditCardFormValues } from '@/components/forms/credit-card-form';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { ERROR } from '@/constants';
 
-export default function Address() {
-  const onSubmitAddressForm = (data: RegisterAddressFormValues) => {
+export default function Payment() {
+  const onSubmitPaymentForm = (data: CreditCardFormValues) => {
     console.log(data);
     try {
       router.back();
@@ -20,10 +18,10 @@ export default function Address() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Alterar Endereço' }} />
+      <Stack.Screen options={{ title: 'Adicionar Cartão' }} />
       <ScrollViewContainer>
         <Container className="gap-8 px-12">
-          <RegisterAddressForm onSubmit={onSubmitAddressForm} />
+          <CreditCardForm onSubmit={onSubmitPaymentForm} />
         </Container>
       </ScrollViewContainer>
     </>

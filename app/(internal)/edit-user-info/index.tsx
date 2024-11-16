@@ -1,8 +1,8 @@
 import { router, Stack } from 'expo-router';
 import { Alert } from 'react-native';
 
-import RegisterUserForm, { RegisterUserFormValues } from '@/components/auth/register-user-form';
 import { Container } from '@/components/container';
+import RegisterUserForm, { RegisterUserFormValues } from '@/components/forms/user-info-form';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { ERROR } from '@/constants';
 
