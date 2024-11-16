@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 import { Text, TouchableOpacity, TouchableOpacityProps, TextProps } from 'react-native';
 
 const buttonStyle = tva({
-  base: 'flex-row items-center justify-center gap-4 shadow-md',
+  base: 'flex-row items-center justify-center gap-4 shadow-md disabled:opacity-50',
   variants: {
     appearance: {
       primary: 'bg-beige',

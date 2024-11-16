@@ -1,6 +1,7 @@
 import { PRODUCT_CATEGORY } from '@/constants';
+import { ProductCategory } from '@/models/product';
 
-export const productCategories = [
+export const productCategories: ProductCategory[] = [
   {
     id: 1,
     name: PRODUCT_CATEGORY.HOT_COFFEES,
