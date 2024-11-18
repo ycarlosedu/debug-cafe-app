@@ -13,7 +13,9 @@
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "web": "expo start --web",
-    "postinstall": "patch-package"
+    "preinstall": "rm -rf patches",
+    "eas-build-pre-install": "rm -rf patches",
+    "eas-build-post-install": "rm -rf patches"
   },
   "dependencies": {
     "@expo/html-elements": "^0.4.2",
