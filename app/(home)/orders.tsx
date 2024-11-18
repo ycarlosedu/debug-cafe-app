@@ -1,6 +1,7 @@
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import { Link, Stack } from 'expo-router';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 import { Container } from '@/components/container';
 import {
@@ -67,9 +68,16 @@ export default function Orders() {
                     </AccordionContentText>
                   ))}
                   {item.feedback?.stars && (
-                    <AccordionContentText className="text-brown">
-                      Avaliação - {item.feedback.stars} estrela(s)
-                    </AccordionContentText>
+                    <View className="flex-row items-center">
+                      <AccordionContentText className="text-brown">
+                        Avaliação -
+                      </AccordionContentText>
+                      <StarRatingDisplay
+                        rating={item.feedback.stars}
+                        starSize={24}
+                        color={colors.brown}
+                      />
+                    </View>
                   )}
                   <Link
                     href={{

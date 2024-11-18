@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
+import StarRating from 'react-native-star-rating-widget';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
@@ -22,15 +23,9 @@ import { orders } from '@/mocks/orders';
 const FEEDBACK_MAX_LENGTH = 255;
 
 const feedbackSchema = z.object({
-  feedbackComment: z
-    .string()
-    .min(1, REQUIRED.FIELD)
-    .max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
+  feedbackComment: z.string().max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
   feedbackStars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
-  deliveryFeedbackComment: z
-    .string()
-    .min(1, REQUIRED.FIELD)
-    .max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
+  deliveryFeedbackComment: z.string().max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
   deliveryFeedbackStars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
 });
 
@@ -52,9 +47,9 @@ export default function OrderFeedback() {
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       feedbackComment: '',
-      feedbackStars: 0,
+      feedbackStars: 1,
       deliveryFeedbackComment: '',
-      deliveryFeedbackStars: 0,
+      deliveryFeedbackStars: 1,
     },
   });
 
@@ -84,9 +79,22 @@ export default function OrderFeedback() {
       <ScrollViewContainer>
         <Container className="gap-6 px-12">
           <View className="gap-2">
+            <Text className="text-center text-2xl font-bold text-beige">Sobre os Produtos</Text>
+            <FormControl isInvalid={Boolean(errors.feedbackStars?.message)}>
+              <FormControlLabel>
+                <FormControlLabelText>Satisfação</FormControlLabelText>
+              </FormControlLabel>
+              <Controller
+                control={control}
+                name="feedbackStars"
+                render={({ field: { onChange, value } }) => (
+                  <StarRating enableHalfStar={false} rating={value} onChange={onChange} />
+                )}
+              />
+            </FormControl>
             <FormControl isInvalid={Boolean(errors.feedbackComment?.message)}>
               <FormControlLabel>
-                <FormControlLabelText className="text-2xl">Produtos</FormControlLabelText>
+                <FormControlLabelText>Algum comentário?</FormControlLabelText>
               </FormControlLabel>
               <Controller
                 control={control}
@@ -115,13 +123,25 @@ export default function OrderFeedback() {
               />
               <FormControlErrorText>{errors.feedbackComment?.message}</FormControlErrorText>
             </FormControl>
-            <Text className="text-lg text-beige">Satisfação:</Text>
           </View>
 
           <View className="gap-2">
+            <Text className="text-center text-2xl font-bold text-beige">Sobre a Entrega</Text>
+            <FormControl isInvalid={Boolean(errors.deliveryFeedbackStars?.message)}>
+              <FormControlLabel>
+                <FormControlLabelText>Satisfação</FormControlLabelText>
+              </FormControlLabel>
+              <Controller
+                control={control}
+                name="deliveryFeedbackStars"
+                render={({ field: { onChange, value } }) => (
+                  <StarRating enableHalfStar={false} rating={value} onChange={onChange} />
+                )}
+              />
+            </FormControl>
             <FormControl isInvalid={Boolean(errors.deliveryFeedbackComment?.message)}>
               <FormControlLabel>
-                <FormControlLabelText className="text-2xl">Entrega</FormControlLabelText>
+                <FormControlLabelText>Algum comentário?</FormControlLabelText>
               </FormControlLabel>
               <Controller
                 control={control}
@@ -150,7 +170,6 @@ export default function OrderFeedback() {
               />
               <FormControlErrorText>{errors.deliveryFeedbackComment?.message}</FormControlErrorText>
             </FormControl>
-            <Text className="text-lg text-beige">Satisfação:</Text>
           </View>
 
           <Button onPress={handleSubmit(onSubmit)}>

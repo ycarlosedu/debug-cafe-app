@@ -33,7 +33,7 @@ export const orders: Order[] = [
     deliveryAddress: 'Rua Santo Alfredo, nº 123',
     feedback: {
       comment: 'Muito bom, recomendo!',
-      stars: 5,
+      stars: 3,
     },
     deliveryFeedback: {
       comment: 'Entrega rápida, mas algumas coisas viraram!',
