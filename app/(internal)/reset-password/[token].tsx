@@ -16,28 +16,21 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { ERROR, REQUIRED, USER_TYPE } from '@/constants';
+import { ERROR, REQUIRED } from '@/constants';
 import colors from '@/styles/colors';
 
-const internalAccessSchema = z.object({
+const resetPasswordSchema = z.object({
   password: z.string().min(1, REQUIRED.FIELD),
 });
 
-type FormValues = z.infer<typeof internalAccessSchema>;
+type FormValues = z.infer<typeof resetPasswordSchema>;
 
 type Params = {
-  user: USER_TYPE;
+  user: string;
 };
 
-const USER_TYPE_LABEL = {
-  [USER_TYPE.STAFF]: 'Funcionário',
-  [USER_TYPE.MANAGER]: 'Supervisor',
-  [USER_TYPE.DELIVERY]: 'Motoboy',
-};
-
-export default function InternalAccess() {
+export default function ResetPassword() {
   const params = useLocalSearchParams<Params>();
-  const userLabel = USER_TYPE_LABEL[params.user];
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -51,16 +44,17 @@ export default function InternalAccess() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(internalAccessSchema),
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: '',
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    console.log('🚀 ~ onSubmit ~ data:', data);
+    console.log('🚀 ~ InternalAccess ~ params:', params);
     try {
-      router.replace('/profile');
+      router.replace('/(home)');
     } catch (error: any) {
       Alert.alert('Erro', error.msg || ERROR.GENERIC);
     }
@@ -68,13 +62,13 @@ export default function InternalAccess() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Acesso Interno' }} />
+      <Stack.Screen options={{ title: 'Redefinição de Senha' }} />
       <ScrollViewContainer>
         <Container className="gap-12 px-12">
-          <Text className="text-2xl text-white">Acesse como {userLabel}</Text>
+          <Text className="text-2xl text-white">Digite sua nova senha</Text>
           <FormControl isInvalid={Boolean(errors.password?.message)}>
             <FormControlLabel>
-              <FormControlLabelText>Senha de {userLabel}</FormControlLabelText>
+              <FormControlLabelText>Senha</FormControlLabelText>
             </FormControlLabel>
             <Input>
               <Controller
@@ -102,7 +96,7 @@ export default function InternalAccess() {
             <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
           </FormControl>
           <Button onPress={handleSubmit(onSubmit)}>
-            <ButtonText>Continuar</ButtonText>
+            <ButtonText>Salvar</ButtonText>
           </Button>
         </Container>
       </ScrollViewContainer>

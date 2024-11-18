@@ -6,6 +6,7 @@ import { Button } from './button';
 
 import { Product } from '@/models/product';
 import useCartStore from '@/stores/useCartStore';
+import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 
 type Props = PressableProps & {
@@ -37,7 +38,7 @@ export default function ProductCard({ product }: Props) {
             size="icon"
             onPress={() => (isInCart ? removeProduct(product.id) : addProduct(product))}
             className="absolute bottom-3 right-3">
-            <FontAwesome size={24} name={isInCart ? 'trash' : 'cart-plus'} />
+            <FontAwesome size={24} name={isInCart ? 'trash' : 'cart-plus'} color={colors.brown} />
           </Button>
         </ImageBackground>
       </View>
