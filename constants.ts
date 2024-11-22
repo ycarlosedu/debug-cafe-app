@@ -1,3 +1,7 @@
+export const IS_DEV_MODE = () => process.env.NODE_ENV === 'development';
+
+export const API_URL = IS_DEV_MODE() ? 'http://192.168.100.9:3000' : 'http://192.168.100.1:3000';
+
 export const INVALID = {
   EMAIL: 'Email inválido',
   PHONE: 'Telefone inválido',

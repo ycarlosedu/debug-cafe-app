@@ -1,10 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { Link, router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, GestureResponderEvent, Text } from 'react-native';
-import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
@@ -16,15 +16,11 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { ERROR, INVALID, REQUIRED } from '@/constants';
+import { ERROR } from '@/constants';
+import { signInSchema, SignInValues } from '@/schemas';
+import { auth } from '@/services/auth';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
-
-const loginSchema = z.object({
-  email: z.string().min(1, REQUIRED.FIELD).email(INVALID.EMAIL),
-  password: z.string().min(1, REQUIRED.FIELD),
-});
-
-type FormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,26 +34,31 @@ export default function Login() {
     router.replace('/(home)');
   };
 
+  const signInMutation = useMutation({
+    mutationFn: auth.signIn,
+    onSuccess: ({ token, user }) => {
+      useAuthStore.getState().handleLogin(token, user);
+      router.replace('/(home)');
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.msg || ERROR.GENERIC);
+    },
+  });
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    try {
-      const token = '123';
-      router.replace('/(home)');
-    } catch (error: any) {
-      Alert.alert('Erro', error.msg || ERROR.GENERIC);
-    }
+  const onSubmit = (data: SignInValues) => {
+    signInMutation.mutate(data);
   };
 
   return (
@@ -119,8 +120,8 @@ export default function Login() {
           <Link href="/(home)" className="self-end text-sm text-beige">
             Esqueci minha senha
           </Link>
-          <Button onPress={handleSubmit(onSubmit)}>
-            <ButtonText>Continuar</ButtonText>
+          <Button onPress={handleSubmit(onSubmit)} disabled={signInMutation.isPending}>
+            <ButtonText>{signInMutation.isPending ? 'Carregando...' : 'Continuar'}</ButtonText>
           </Button>
           <Button appearance="secondary" onPress={handleGuestLogin}>
             <ButtonText appearance="secondary">Entrar como convidado</ButtonText>
