@@ -1,4 +1,4 @@
-import { RegisterUserFormValues } from '@/components/forms/user-info-form';
+import { RegisterUserFormValues } from '@/components/forms/register-user-info-form';
 import { UserStored } from '@/models/user';
 import { SignInValues } from '@/schemas';
 import { applyMask, REGEX } from '@/utils/regex';

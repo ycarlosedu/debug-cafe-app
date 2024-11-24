@@ -10,7 +10,6 @@ import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { USER_TYPE } from '@/constants';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
-import { secureStore } from '@/utils/secureStore';
 
 preview(<Profile />);
 
@@ -22,8 +21,7 @@ const USER_TYPE_LABEL = {
 };
 
 export default function Profile() {
-  const { handleLogout, isGuest, isAuthenticated, userType } = useAuthStore();
-  const user = secureStore.getUser();
+  const { handleLogout, isGuest, isAuthenticated, userType, user } = useAuthStore();
 
   return (
     <>

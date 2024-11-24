@@ -8,12 +8,14 @@ type Store = {
   isAuthenticated: boolean;
   isGuest: boolean;
   userType: USER_TYPE;
+  user?: UserStored;
 };
 
 type Actions = {
   handleLogin: (token: string, user: UserStored) => void;
   handleGuestLogin: () => void;
   handleLogout: () => void;
+  handleChangeUserInfos: (user: UserStored) => void;
   reset: () => void;
 };
 
@@ -30,6 +32,7 @@ const initialState: Store = {
   isAuthenticated: handleAuth(),
   isGuest: false,
   userType: secureStore.getUserType() || USER_TYPE.CLIENT,
+  user: secureStore.getUser(),
 };
 
 const useAuthStore = create<Store & Actions>((set, get) => ({
@@ -39,6 +42,7 @@ const useAuthStore = create<Store & Actions>((set, get) => ({
     secureStore.setUser(user);
     set({
       isAuthenticated: handleAuth(),
+      user,
     });
   },
   handleGuestLogin: () => {
@@ -52,12 +56,19 @@ const useAuthStore = create<Store & Actions>((set, get) => ({
     set({
       isAuthenticated: false,
       isGuest: false,
+      user: undefined,
     });
   },
   handleChangeUserType: (userType: USER_TYPE) => {
     secureStore.setUserType(userType);
     set({
       userType,
+    });
+  },
+  handleChangeUserInfos: (user: UserStored) => {
+    secureStore.setUser(user);
+    set({
+      user,
     });
   },
   reset: () => {

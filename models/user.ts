@@ -1,5 +1,5 @@
 export type UserStored = {
-  id: string;
+  phone: string;
   email: string;
   fullName: string;
 };

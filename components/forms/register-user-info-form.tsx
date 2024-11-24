@@ -30,9 +30,15 @@ type Props = {
   onSubmit: (data: RegisterUserFormValues) => void;
   title?: string;
   submitText?: string;
+  defaultValues?: RegisterUserFormValues;
 };
 
-export default function RegisterUserForm({ onSubmit, title = '', submitText = 'Salvar' }: Props) {
+export default function RegisterUserForm({
+  onSubmit,
+  title = '',
+  submitText = 'Salvar',
+  defaultValues,
+}: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
@@ -46,12 +52,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
     formState: { errors },
   } = useForm<RegisterUserFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      fullName: '',
-      email: '',
-      phone: '',
-      password: '',
-    },
+    defaultValues,
   });
 
   return (

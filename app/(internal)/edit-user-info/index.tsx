@@ -1,19 +1,32 @@
+import { useMutation } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
 import { Alert } from 'react-native';
 
 import { Container } from '@/components/container';
-import RegisterUserForm, { RegisterUserFormValues } from '@/components/forms/user-info-form';
+import ChangeUserInfoForm, {
+  ChangeUserInfoFormValues,
+} from '@/components/forms/change-user-info-form';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { ERROR } from '@/constants';
+import { user } from '@/services/user';
+import useAuthStore from '@/stores/useAuthStore';
 
 export default function UserInfo() {
-  const onSubmitUserForm = (data: RegisterUserFormValues) => {
-    console.log(data);
-    try {
+  const { handleChangeUserInfos } = useAuthStore();
+
+  const updateUserMutation = useMutation({
+    mutationFn: user.updateInfo,
+    onSuccess: ({ user }) => {
+      handleChangeUserInfos(user);
       router.back();
-    } catch (error: any) {
+    },
+    onError: (error: any) => {
       Alert.alert('Erro', error.message || ERROR.GENERIC);
-    }
+    },
+  });
+
+  const onSubmitUserForm = (data: ChangeUserInfoFormValues) => {
+    updateUserMutation.mutate(data);
   };
 
   return (
@@ -21,7 +34,7 @@ export default function UserInfo() {
       <Stack.Screen options={{ title: 'Alterar Informações' }} />
       <ScrollViewContainer>
         <Container className="gap-8 px-12">
-          <RegisterUserForm onSubmit={onSubmitUserForm} />
+          <ChangeUserInfoForm onSubmit={onSubmitUserForm} />
         </Container>
       </ScrollViewContainer>
     </>
