@@ -33,9 +33,15 @@ type Props = {
   onSubmit: (data: CreditCardFormValues) => void;
   title?: string;
   submitText?: string;
+  isLoading?: boolean;
 };
 
-export default function CreditCardForm({ onSubmit, title = '', submitText = 'Salvar' }: Props) {
+export default function CreditCardForm({
+  onSubmit,
+  title = '',
+  submitText = 'Salvar',
+  isLoading,
+}: Props) {
   const {
     control,
     handleSubmit,
@@ -160,7 +166,7 @@ export default function CreditCardForm({ onSubmit, title = '', submitText = 'Sal
         </Input>
         <FormControlErrorText>{errors.expirationDate?.message}</FormControlErrorText>
       </FormControl>
-      <Button onPress={handleSubmit(onSubmit)}>
+      <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
         <ButtonText>{submitText}</ButtonText>
       </Button>
     </>

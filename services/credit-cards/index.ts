@@ -1,24 +1,20 @@
 import { CreditCardFormValues } from '@/components/forms/credit-card-form';
+import { CreditCard } from '@/models/credit-card';
 import { applyMask, REGEX } from '@/utils/regex';
 import { request } from '@/utils/request';
 
-type GetMyCreditCardsResponse = {
-  id: string;
-  cardNumber: string;
-}[];
+type GetMyCreditCardsResponse = CreditCard[];
 const getAll = async (): Promise<GetMyCreditCardsResponse> => {
   return request.get(`/credit-card`);
 };
 
 type AddCreditCardResponse = {
-  creditCard: {
-    cardNumber: string;
-  };
+  creditCard: CreditCard;
   message: string;
 };
 
 const add = async (data: CreditCardFormValues): Promise<AddCreditCardResponse> => {
-  return request.post(`/address`, {
+  return request.post(`/credit-card`, {
     ...data,
     cardNumber: applyMask(data.cardNumber, REGEX.ONLY_NUMBERS),
     cpf: applyMask(data.cpf, REGEX.ONLY_NUMBERS),
