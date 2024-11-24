@@ -38,8 +38,7 @@ export default function Login() {
       router.replace('/(home)');
     },
     onError: (error: any) => {
-      console.log('🚀 ~ Login ~ error:', error);
-      Alert.alert('Erro', error.msg || ERROR.GENERIC);
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
     },
   });
 

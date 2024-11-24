@@ -12,7 +12,7 @@ export default function UserInfo() {
     try {
       router.back();
     } catch (error: any) {
-      Alert.alert('Erro', error.msg || ERROR.GENERIC);
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
     }
   };
 

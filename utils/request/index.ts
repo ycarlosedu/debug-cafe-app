@@ -56,7 +56,7 @@ request.interceptors.response.use(
       Alert.alert('Atenção!', 'Sua sessão foi expirada. Por favor, faça login novamente!');
     }
 
-    return Promise.reject(response);
+    return Promise.reject(response.data);
   }
 );
 
@@ -64,7 +64,7 @@ function getHeaders() {
   return {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: secureStore.getToken(),
+    Authorization: 'Bearer ' + secureStore.getToken(),
   } as AxiosRequestHeaders;
 }
 

@@ -16,5 +16,7 @@ export type ProductInCart = Product & {
 export type ProductCategory = {
   id: number;
   name: PRODUCT_CATEGORY;
-  image: any;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
 };

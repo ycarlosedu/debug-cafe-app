@@ -35,7 +35,7 @@ export default function Search() {
     try {
       console.log(data);
     } catch (error: any) {
-      Alert.alert('Erro', error.msg || ERROR.GENERIC);
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
     }
   };
 

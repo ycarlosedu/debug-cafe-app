@@ -19,8 +19,7 @@ export default function Register() {
       router.replace('/(home)');
     },
     onError: (error: any) => {
-      console.log('🚀 ~ RegisterUser ~ error:', error);
-      Alert.alert('Erro', error.msg || ERROR.GENERIC);
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
     },
   });
 
