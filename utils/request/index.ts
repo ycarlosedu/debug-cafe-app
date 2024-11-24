@@ -1,5 +1,7 @@
-import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
+import axios, { AxiosRequestHeaders } from 'axios';
 import { Alert } from 'react-native';
+
+import { secureStore } from '../secureStore';
 
 import { API_URL } from '@/constants';
 import useAuthStore from '@/stores/useAuthStore';
@@ -42,8 +44,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   async (response) => {
     console.log('Request response:', response.data);
-
-    return response;
+    return response.data;
   },
   (error: any) => {
     console.log('Response error:', JSON.stringify(error, null, 2));
@@ -63,7 +64,7 @@ function getHeaders() {
   return {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    // Authorization: KeyStorage.getToken(),
+    Authorization: secureStore.getToken(),
   } as AxiosRequestHeaders;
 }
 

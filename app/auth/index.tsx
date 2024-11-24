@@ -23,6 +23,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 export default function Login() {
+  const { handleLogin } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
@@ -37,10 +38,11 @@ export default function Login() {
   const signInMutation = useMutation({
     mutationFn: auth.signIn,
     onSuccess: ({ token, user }) => {
-      useAuthStore.getState().handleLogin(token, user);
+      handleLogin(token, user);
       router.replace('/(home)');
     },
     onError: (error: any) => {
+      console.log('🚀 ~ Login ~ error:', error);
       Alert.alert('Erro', error.msg || ERROR.GENERIC);
     },
   });
@@ -82,6 +84,7 @@ export default function Login() {
                     type="text"
                     placeholder="exemplo@cafeteria.com"
                     keyboardType="email-address"
+                    autoCapitalize="none"
                   />
                 )}
                 name="email"
@@ -103,6 +106,7 @@ export default function Login() {
                     value={value}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="********"
+                    autoCapitalize="none"
                   />
                 )}
                 name="password"

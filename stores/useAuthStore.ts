@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import { UserStored } from '@/models/user';
+import { secureStore } from '@/utils/secureStore';
 
 type Store = {
   isAuthenticated: boolean;
@@ -18,8 +19,8 @@ type Actions = {
 };
 
 const handleAuth = () => {
-  const token = ''; // KeyStorage.getToken();
-  const user = ''; // KeyStorage.getUser();
+  const token = secureStore.getToken();
+  const user = secureStore.getUser();
   if (!token || !user) {
     return false;
   }
@@ -34,15 +35,15 @@ const initialState: Store = {
 const useAuthStore = create<Store & Actions>((set, get) => ({
   ...initialState,
   handleLogin: (token: string, user: UserStored) => {
-    // KeyStorage.setToken(token);
-    // KeyStorage.setUser(user);
+    secureStore.setToken(token);
+    secureStore.setUser(user);
     set({
       isAuthenticated: handleAuth(),
     });
   },
   handleLogout: ({ needRedirect } = { needRedirect: false }) => {
-    // KeyStorage.setToken('');
-    // KeyStorage.setUser();
+    secureStore.setToken('');
+    secureStore.setUser();
     set({
       isAuthenticated: false,
       needRedirect,
