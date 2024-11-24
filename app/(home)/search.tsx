@@ -19,7 +19,7 @@ import { Product } from '@/models/product';
 import { products } from '@/services/products';
 
 const searchSchema = z.object({
-  name: z.string().min(1, REQUIRED.FIELD).min(3, REQUIRED.MIN(3)).optional(),
+  name: z.string().min(1, REQUIRED.FIELD).min(3, REQUIRED.MIN(3)),
   category: z.string().optional(),
 });
 
@@ -32,16 +32,17 @@ export default function Search() {
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue,
   } = useForm<SearchProductValues>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
       name: '',
-      category: '',
+      category: undefined,
     },
   });
 
   const { isSuccess, ...searchProductsMutation } = useMutation({
-    mutationKey: ['products', getValues().name],
+    mutationKey: ['products', getValues().name, getValues().category],
     mutationFn: products.search,
     onSuccess(data) {
       setProductList(data);
@@ -50,10 +51,19 @@ export default function Search() {
       Alert.alert('Erro', error.message || ERROR.GENERIC);
     },
   });
-  console.log('🚀 ~ Search ~ productsList:', productList);
 
   const onSubmit = (data: SearchProductValues) => {
     searchProductsMutation.mutate(data);
+  };
+
+  const handleChangeCategory = (categoryId: string) => {
+    if (getValues().category === categoryId) {
+      setValue('category', undefined, { shouldValidate: true });
+      handleSubmit(onSubmit)();
+      return;
+    }
+    setValue('category', categoryId, { shouldValidate: true });
+    handleSubmit(onSubmit)();
   };
 
   return (
@@ -84,7 +94,11 @@ export default function Search() {
               <ButtonText>Buscar</ButtonText>
             </Button>
           </View>
-          <ProductCategoriesList title="Filtrar por Categorias" />
+          <ProductCategoriesList
+            title="Filtrar por Categoria"
+            onCategoryPress={handleChangeCategory}
+            selectedCategoryId={getValues().category}
+          />
           <View className="items-center gap-4 px-4">
             {isSuccess && !productList?.length && (
               <Text className="text-lg text-white">Nenhum produto encontrado</Text>
