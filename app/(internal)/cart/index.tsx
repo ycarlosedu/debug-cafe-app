@@ -1,8 +1,8 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import CartProduct from '@/components/cartProduct';
@@ -10,8 +10,10 @@ import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import SelectedAddress from '@/components/selectedAddress';
 import SelectedPayment from '@/components/selectedPayment';
+import { ERROR } from '@/constants';
 import { myAddress } from '@/services/address';
 import { myCreditCards } from '@/services/credit-cards';
+import { myOrders } from '@/services/orders';
 import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
@@ -28,6 +30,19 @@ export default function Cart() {
     queryFn: myCreditCards.getAll,
   });
 
+  const makeOrderMutation = useMutation({
+    mutationFn: myOrders.create,
+    onSuccess: ({ order }) => {
+      router.replace({
+        pathname: '/order/:id',
+        params: { id: order.id },
+      });
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
+    },
+  });
+
   const [selectedPayment, setSelectedPayment] = useState('Pix');
 
   const { products, reset: resetCart } = useCartStore();
@@ -38,6 +53,22 @@ export default function Cart() {
   );
 
   const hasProductsInCart = Boolean(products.length);
+
+  const handleCreateOrder = () => {
+    if (!address) {
+      Alert.alert('Erro', 'Cadastre um endereço para entrega');
+      return;
+    }
+
+    makeOrderMutation.mutate({
+      addressId: address.id,
+      paymentMethod: selectedPayment,
+      products: products.map((product) => ({
+        id: product.id,
+        quantity: product.quantity,
+      })),
+    });
+  };
 
   return (
     <>
@@ -68,7 +99,7 @@ export default function Cart() {
             onChangePayment={setSelectedPayment}
             creditCards={creditCards}
           />
-          <Button disabled={!hasProductsInCart}>
+          <Button disabled={!hasProductsInCart} onPress={handleCreateOrder}>
             <FontAwesome name="cart-arrow-down" size={24} color={colors.brown} />
             <ButtonText>Finalizar Compra</ButtonText>
           </Button>
