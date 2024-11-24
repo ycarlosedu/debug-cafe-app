@@ -23,16 +23,12 @@ import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 export default function Login() {
-  const { handleLogin } = useAuthStore();
+  const { handleLogin, handleGuestLogin } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
     e?.stopPropagation();
     setShowPassword((prevState) => !prevState);
-  };
-
-  const handleGuestLogin = () => {
-    router.replace('/(home)');
   };
 
   const signInMutation = useMutation({

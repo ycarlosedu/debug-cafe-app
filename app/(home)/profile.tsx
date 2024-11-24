@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Link, router, Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { preview } from 'radon-ide';
 import { Image, Text, View } from 'react-native';
 
@@ -8,14 +8,13 @@ import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { USER_TYPE } from '@/constants';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 preview(<Profile />);
 
 export default function Profile() {
-  const handleLogout = () => {
-    router.replace('/auth');
-  };
+  const { handleLogout } = useAuthStore();
 
   return (
     <>

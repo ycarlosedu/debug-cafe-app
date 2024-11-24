@@ -1,8 +1,15 @@
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 export default function InternalLayout() {
+  const { isAuthenticated, isGuest } = useAuthStore();
+
+  if (!isAuthenticated && !isGuest) {
+    return <Redirect href="/auth" />;
+  }
+
   return (
     <Stack
       screenOptions={{

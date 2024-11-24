@@ -52,7 +52,7 @@ request.interceptors.response.use(
     console.log('Response data:', response?.data);
 
     if (isAuthError(response?.status)) {
-      useAuthStore.getState().handleLogout({ needRedirect: true });
+      useAuthStore.getState().handleLogout();
       Alert.alert('Atenção!', 'Sua sessão foi expirada. Por favor, faça login novamente!');
     }
 

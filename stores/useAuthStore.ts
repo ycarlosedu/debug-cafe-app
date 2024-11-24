@@ -5,16 +5,13 @@ import { secureStore } from '@/utils/secureStore';
 
 type Store = {
   isAuthenticated: boolean;
-  needRedirect: boolean;
-};
-
-type LogoutProps = {
-  needRedirect?: boolean;
+  isGuest: boolean;
 };
 
 type Actions = {
   handleLogin: (token: string, user: UserStored) => void;
-  handleLogout: (logoutOptions?: LogoutProps) => void;
+  handleGuestLogin: () => void;
+  handleLogout: () => void;
   reset: () => void;
 };
 
@@ -29,7 +26,7 @@ const handleAuth = () => {
 
 const initialState: Store = {
   isAuthenticated: handleAuth(),
-  needRedirect: false,
+  isGuest: false,
 };
 
 const useAuthStore = create<Store & Actions>((set, get) => ({
@@ -41,12 +38,17 @@ const useAuthStore = create<Store & Actions>((set, get) => ({
       isAuthenticated: handleAuth(),
     });
   },
-  handleLogout: ({ needRedirect } = { needRedirect: false }) => {
+  handleGuestLogin: () => {
+    set({
+      isGuest: true,
+    });
+  },
+  handleLogout: () => {
     secureStore.setToken('');
     secureStore.setUser();
     set({
       isAuthenticated: false,
-      needRedirect,
+      isGuest: false,
     });
   },
   reset: () => {
