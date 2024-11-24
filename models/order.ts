@@ -8,7 +8,7 @@ type Feedback = {
 };
 
 export type Order = {
-  id: number;
+  id: string;
   date: string;
   status: ORDER_STATUS;
   products: ProductInCart[];

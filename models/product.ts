@@ -1,7 +1,7 @@
 import { PRODUCT_CATEGORY } from '@/constants';
 
 export type Product = {
-  id: number;
+  id: string;
   name: string;
   image: any;
   price: number;
@@ -14,7 +14,7 @@ export type ProductInCart = Product & {
 };
 
 export type ProductCategory = {
-  id: number;
+  id: string;
   name: PRODUCT_CATEGORY;
   image: string;
   createdAt: string;

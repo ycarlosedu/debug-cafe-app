@@ -37,7 +37,7 @@ type Params = {
 
 export default function OrderFeedback() {
   const { id } = useLocalSearchParams<Params>();
-  const order = orders.find((order) => order.id.toString() === id);
+  const order = orders.find((order) => order.id === id);
 
   const {
     control,

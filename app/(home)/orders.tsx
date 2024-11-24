@@ -30,9 +30,9 @@ export default function Orders() {
           className="w-full bg-transparent">
           <FlatList
             data={orders}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <AccordionItem value={item.id.toString()} className="mt-6 rounded-lg bg-beige">
+              <AccordionItem value={item.id} className="mt-6 rounded-lg bg-beige">
                 <AccordionHeader>
                   <AccordionTrigger className="gap-4">
                     {({ isExpanded }) => {
@@ -82,7 +82,7 @@ export default function Orders() {
                   <Link
                     href={{
                       pathname: '/order/[id]',
-                      params: { id: item.id.toString() },
+                      params: { id: item.id },
                     }}
                     className="flex flex-row items-center justify-center gap-1 rounded-lg bg-brown px-2 py-3">
                     <AccordionContentText className="text-center text-beige">

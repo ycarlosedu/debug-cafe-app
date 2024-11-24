@@ -14,7 +14,7 @@ export default function ProductCategoriesList({ title, ...props }: Props) {
   });
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Text className="pl-4 text-lg font-medium text-beige">Buscando categorias...</Text>;
   }
 
   return (

@@ -17,7 +17,7 @@ type Params = {
 
 export default function Product() {
   const { id } = useLocalSearchParams<Params>();
-  const product = products.find((product) => product.id.toString() === id);
+  const product = products.find((product) => product.id === id);
 
   const { addProduct, removeProduct, isProductInCart } = useCartStore();
 

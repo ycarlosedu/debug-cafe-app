@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { Image, Text, View } from 'react-native';
 
@@ -8,9 +9,15 @@ import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import ProductList from '@/components/productList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { categories } from '@/services/categories';
 import colors from '@/styles/colors';
 
 export default function Home() {
+  const { data: categoriesList } = useQuery({
+    queryKey: ['categories'],
+    queryFn: categories.getAll,
+  });
+
   return (
     <>
       <Stack.Screen options={{ title: 'Debug Café' }} />
@@ -30,8 +37,12 @@ export default function Home() {
           </View>
 
           <ProductCategoriesList title="Categorias" />
-          <ProductList title="Café da manhã" />
-          <ProductList title="Almoço" />
+          {categoriesList && (
+            <>
+              <ProductList categoryId={categoriesList[0].id} />
+              <ProductList categoryId={categoriesList[1].id} />
+            </>
+          )}
         </Container>
       </ScrollViewContainer>
       <CartButton />

@@ -18,7 +18,7 @@ type Params = {
 
 export default function Order() {
   const { id } = useLocalSearchParams<Params>();
-  const order = orders.find((order) => order.id.toString() === id);
+  const order = orders.find((order) => order.id === id);
 
   if (!order) {
     return (
@@ -72,7 +72,7 @@ export default function Order() {
             <Link
               href={{
                 pathname: '/order-feedback/[id]',
-                params: { id: order.id.toString() },
+                params: { id: order.id },
               }}
               asChild>
               <Button>
