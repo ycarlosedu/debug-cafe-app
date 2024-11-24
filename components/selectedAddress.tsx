@@ -21,16 +21,15 @@ type Props = {
 };
 
 export default function SelectedAddress({ address }: Props) {
+  console.log('🚀 ~ SelectedAddress ~ address:', address);
   return (
     <View className="gap-2">
       <Text className="text-base text-beige">Endereço</Text>
       {!address && (
         <Link
           href="/edit-address"
-          className="flex flex-row items-center justify-center gap-1 rounded-lg bg-brown px-2 py-3">
-          <AccordionContentText className="text-center text-beige">
-            Adicionar Endereço
-          </AccordionContentText>
+          className="flex flex-row items-center justify-center gap-1 rounded-lg bg-beige px-2 py-3">
+          <Text className="text-center text-lg font-normal text-brown">Adicionar Endereço</Text>
         </Link>
       )}
 

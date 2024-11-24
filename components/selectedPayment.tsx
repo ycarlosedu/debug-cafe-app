@@ -23,6 +23,7 @@ type Props = {
 };
 
 export default function SelectedPayment({ selectedPayment, onChangePayment, creditCards }: Props) {
+  console.log('🚀 ~ SelectedPayment ~ creditCards:', creditCards);
   return (
     <View className="gap-2">
       <Text className="text-base text-beige">Pagamento</Text>

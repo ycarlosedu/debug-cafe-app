@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import useCartStore from './useCartStore';
+
 import { USER_TYPE } from '@/constants';
 import { UserStored } from '@/models/user';
 import { secureStore } from '@/utils/secureStore';
@@ -15,6 +17,7 @@ type Actions = {
   handleLogin: (token: string, user: UserStored) => void;
   handleGuestLogin: () => void;
   handleLogout: () => void;
+  handleChangeUserType: (userType: USER_TYPE) => void;
   handleChangeUserInfos: (user: UserStored) => void;
   reset: () => void;
 };
@@ -53,6 +56,8 @@ const useAuthStore = create<Store & Actions>((set, get) => ({
   handleLogout: () => {
     secureStore.setToken('');
     secureStore.setUser();
+    get().handleChangeUserType(USER_TYPE.CLIENT);
+    useCartStore.getState().reset();
     set({
       isAuthenticated: false,
       isGuest: false,
