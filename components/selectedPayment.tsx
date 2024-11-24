@@ -13,15 +13,16 @@ import {
 } from './ui/accordion';
 import { Radio, RadioGroup, RadioIndicator, RadioLabel } from './ui/radio';
 
-import { creditCards } from '@/mocks/credit-cards';
+import { CreditCard } from '@/models/credit-card';
 import colors from '@/styles/colors';
 
 type Props = {
   selectedPayment: string;
   onChangePayment: (payment: string) => void;
+  creditCards?: CreditCard[];
 };
 
-export default function SelectedPayment({ selectedPayment, onChangePayment }: Props) {
+export default function SelectedPayment({ selectedPayment, onChangePayment, creditCards }: Props) {
   return (
     <View className="gap-2">
       <Text className="text-base text-beige">Pagamento</Text>
@@ -61,12 +62,12 @@ export default function SelectedPayment({ selectedPayment, onChangePayment }: Pr
                 </RadioIndicator>
                 <RadioLabel>Pix</RadioLabel>
               </Radio>
-              {creditCards.map((card) => (
-                <Radio key={card.id} value={card.name} size="lg">
+              {creditCards?.map((card) => (
+                <Radio key={card.id} value={card.cardNumber} size="lg">
                   <RadioIndicator>
-                    {selectedPayment === card.name && <FontAwesome name="circle" size={16} />}
+                    {selectedPayment === card.cardNumber && <FontAwesome name="circle" size={16} />}
                   </RadioIndicator>
-                  <RadioLabel>{card.name}</RadioLabel>
+                  <RadioLabel>{card.cardNumber}</RadioLabel>
                 </Radio>
               ))}
             </RadioGroup>
