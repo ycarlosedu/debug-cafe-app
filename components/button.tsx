@@ -3,6 +3,8 @@ import { tva } from '@gluestack-ui/nativewind-utils/tva';
 import { forwardRef } from 'react';
 import { Text, TouchableOpacity, TouchableOpacityProps, TextProps } from 'react-native';
 
+import { Spinner } from './ui/spinner';
+
 const buttonStyle = tva({
   base: 'flex-row items-center justify-center gap-4 shadow-md disabled:opacity-50',
   variants: {
@@ -17,17 +19,24 @@ const buttonStyle = tva({
   },
 });
 
-type ButtonProps = TouchableOpacityProps & VariantProps<typeof buttonStyle>;
+type ButtonProps = TouchableOpacityProps &
+  VariantProps<typeof buttonStyle> & {
+    isLoading?: boolean;
+  };
 
 export const Button = forwardRef<typeof TouchableOpacity, ButtonProps>(
-  ({ children, className, appearance = 'primary', size = 'full', ...props }, ref) => {
+  (
+    { children, className, appearance = 'primary', size = 'full', isLoading, disabled, ...props },
+    ref
+  ) => {
     return (
       <TouchableOpacity
         // @ts-ignore
         ref={ref}
         {...props}
+        disabled={isLoading || disabled}
         className={buttonStyle({ class: className, appearance, size })}>
-        {children}
+        {isLoading ? <Spinner appearance={appearance} /> : children}
       </TouchableOpacity>
     );
   }

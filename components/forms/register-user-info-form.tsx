@@ -31,6 +31,7 @@ type Props = {
   title?: string;
   submitText?: string;
   defaultValues?: RegisterUserFormValues;
+  isLoading?: boolean;
 };
 
 export default function RegisterUserForm({
@@ -38,6 +39,7 @@ export default function RegisterUserForm({
   title = '',
   submitText = 'Salvar',
   defaultValues,
+  isLoading,
 }: Props) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -155,7 +157,7 @@ export default function RegisterUserForm({
         </Input>
         <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
       </FormControl>
-      <Button onPress={handleSubmit(onSubmit)}>
+      <Button onPress={handleSubmit(onSubmit)} isLoading={isLoading}>
         <ButtonText>{submitText}</ButtonText>
       </Button>
     </>

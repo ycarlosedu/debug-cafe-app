@@ -38,6 +38,7 @@ export default function Register() {
             onSubmit={onSubmitUserForm}
             title="Cadastre-se conosco"
             submitText="Avançar"
+            isLoading={signUpMutation.isPending}
           />
         </Container>
       </ScrollViewContainer>

@@ -27,9 +27,15 @@ type Props = {
   onSubmit: (data: ChangeUserInfoFormValues) => void;
   title?: string;
   submitText?: string;
+  isLoading?: boolean;
 };
 
-export default function ChangeUserInfoForm({ onSubmit, title = '', submitText = 'Salvar' }: Props) {
+export default function ChangeUserInfoForm({
+  onSubmit,
+  title = '',
+  submitText = 'Salvar',
+  isLoading,
+}: Props) {
   const { user } = useAuthStore();
 
   const {
@@ -120,7 +126,7 @@ export default function ChangeUserInfoForm({ onSubmit, title = '', submitText = 
         </Input>
         <FormControlErrorText>{errors.phone?.message}</FormControlErrorText>
       </FormControl>
-      <Button onPress={handleSubmit(onSubmit)}>
+      <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
         <ButtonText>{submitText}</ButtonText>
       </Button>
     </>

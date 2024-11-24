@@ -119,8 +119,8 @@ export default function Login() {
           <Link href="/(home)" className="self-end text-sm text-beige">
             Esqueci minha senha
           </Link>
-          <Button onPress={handleSubmit(onSubmit)} disabled={signInMutation.isPending}>
-            <ButtonText>{signInMutation.isPending ? 'Carregando...' : 'Continuar'}</ButtonText>
+          <Button onPress={handleSubmit(onSubmit)} isLoading={signInMutation.isPending}>
+            <ButtonText>Continuar</ButtonText>
           </Button>
           <Button appearance="secondary" onPress={handleGuestLogin}>
             <ButtonText appearance="secondary">Entrar como convidado</ButtonText>
