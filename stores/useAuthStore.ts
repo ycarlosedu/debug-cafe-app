@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 
+import { USER_TYPE } from '@/constants';
 import { UserStored } from '@/models/user';
 import { secureStore } from '@/utils/secureStore';
 
 type Store = {
   isAuthenticated: boolean;
   isGuest: boolean;
+  userType: USER_TYPE;
 };
 
 type Actions = {
@@ -27,6 +29,7 @@ const handleAuth = () => {
 const initialState: Store = {
   isAuthenticated: handleAuth(),
   isGuest: false,
+  userType: secureStore.getUserType() || USER_TYPE.CLIENT,
 };
 
 const useAuthStore = create<Store & Actions>((set, get) => ({
@@ -49,6 +52,12 @@ const useAuthStore = create<Store & Actions>((set, get) => ({
     set({
       isAuthenticated: false,
       isGuest: false,
+    });
+  },
+  handleChangeUserType: (userType: USER_TYPE) => {
+    secureStore.setUserType(userType);
+    set({
+      userType,
     });
   },
   reset: () => {

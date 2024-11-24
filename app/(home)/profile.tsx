@@ -10,15 +10,24 @@ import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { USER_TYPE } from '@/constants';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
+import { secureStore } from '@/utils/secureStore';
 
 preview(<Profile />);
 
+const USER_TYPE_LABEL = {
+  [USER_TYPE.CLIENT]: 'Cliente',
+  [USER_TYPE.STAFF]: 'Funcionário',
+  [USER_TYPE.MANAGER]: 'Supervisor',
+  [USER_TYPE.DELIVERY]: 'Motoboy',
+};
+
 export default function Profile() {
-  const { handleLogout } = useAuthStore();
+  const { handleLogout, isGuest, isAuthenticated, userType } = useAuthStore();
+  const user = secureStore.getUser();
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Meu Perfil (Cliente)' }} />
+      <Stack.Screen options={{ title: `Meu Perfil (${USER_TYPE_LABEL[userType]})` }} />
       <ScrollViewContainer>
         <Container className="gap-6 px-4">
           <View className="flex-row items-center gap-6">
@@ -27,127 +36,159 @@ export default function Profile() {
               className="rounded-full border-2 border-beige"
               style={{ width: 56, height: 56 }}
             />
-            <Text className="text-lg font-medium text-white">Carlos Eduardo</Text>
+            <Text className="text-lg font-medium text-white">
+              {isGuest ? 'Convidado' : user?.fullName}
+            </Text>
           </View>
 
-          <Link href="/edit-user-info" asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="address-card" color={colors.brown} />
-                <ButtonText>Minhas informações</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+          {isGuest && (
+            <>
+              <Text className="text-center text-lg font-medium text-beige">
+                Para acessar suas informações, você deve estar conectado em sua conta!
+              </Text>
+              <Button className="justify-between" onPress={handleLogout}>
+                <View className="flex-row items-center gap-2">
+                  <FontAwesome size={24} name="user" color={colors.brown} />
+                  <ButtonText>Fazer Login</ButtonText>
+                </View>
+                <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+              </Button>
+            </>
+          )}
 
-          <Link href="/edit-address" asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="map-signs" color={colors.brown} />
-                <ButtonText>Meu endereço</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+          {isAuthenticated && (
+            <>
+              <Link href="/edit-user-info" asChild>
+                <Button className="justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <FontAwesome size={24} name="address-card" color={colors.brown} />
+                    <ButtonText>Minhas informações</ButtonText>
+                  </View>
+                  <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                </Button>
+              </Link>
 
-          <Link href="/credit-cards" asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="credit-card" color={colors.brown} />
-                <ButtonText>Minhas formas de pagamento</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              <Link href="/edit-address" asChild>
+                <Button className="justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <FontAwesome size={24} name="map-signs" color={colors.brown} />
+                    <ButtonText>Meu endereço</ButtonText>
+                  </View>
+                  <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                </Button>
+              </Link>
 
-          <Text className="text-center text-lg font-medium text-beige">Acessos internos</Text>
+              <Link href="/credit-cards" asChild>
+                <Button className="justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <FontAwesome size={24} name="credit-card" color={colors.brown} />
+                    <ButtonText>Minhas formas de pagamento</ButtonText>
+                  </View>
+                  <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                </Button>
+              </Link>
 
-          <Link
-            href={{
-              pathname: '/internal-access/[user]',
-              params: {
-                user: USER_TYPE.STAFF,
-              },
-            }}
-            asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="users" color={colors.brown} />
-                <ButtonText>Acessar como Funcionário</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              <Text className="text-center text-lg font-medium text-beige">Acessos internos</Text>
 
-          <Link
-            href={{
-              pathname: '/internal-access/[user]',
-              params: {
-                user: USER_TYPE.MANAGER,
-              },
-            }}
-            asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="edit" color={colors.brown} />
-                <ButtonText>Acessar como Supervisor</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              <Link
+                disabled={userType === USER_TYPE.STAFF}
+                href={{
+                  pathname: '/internal-access/[user]',
+                  params: {
+                    user: USER_TYPE.STAFF,
+                  },
+                }}
+                asChild>
+                <Button className="justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <FontAwesome size={24} name="users" color={colors.brown} />
+                    <ButtonText>Acessar como Funcionário</ButtonText>
+                  </View>
+                  <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                </Button>
+              </Link>
 
-          <Link
-            href={{
-              pathname: '/internal-access/[user]',
-              params: {
-                user: USER_TYPE.DELIVERY,
-              },
-            }}
-            asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="motorcycle" color={colors.brown} />
-                <ButtonText>Acessar como Motoboy</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              <Link
+                disabled={userType === USER_TYPE.MANAGER}
+                href={{
+                  pathname: '/internal-access/[user]',
+                  params: {
+                    user: USER_TYPE.MANAGER,
+                  },
+                }}
+                asChild>
+                <Button className="justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <FontAwesome size={24} name="edit" color={colors.brown} />
+                    <ButtonText>Acessar como Supervisor</ButtonText>
+                  </View>
+                  <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                </Button>
+              </Link>
 
-          <Text className="text-center text-lg font-medium text-beige">Funções internas</Text>
+              <Link
+                disabled={userType === USER_TYPE.DELIVERY}
+                href={{
+                  pathname: '/internal-access/[user]',
+                  params: {
+                    user: USER_TYPE.DELIVERY,
+                  },
+                }}
+                asChild>
+                <Button className="justify-between">
+                  <View className="flex-row items-center gap-2">
+                    <FontAwesome size={24} name="motorcycle" color={colors.brown} />
+                    <ButtonText>Acessar como Motoboy</ButtonText>
+                  </View>
+                  <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                </Button>
+              </Link>
 
-          <Link href="/(home)" asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="users" color={colors.brown} />
-                <ButtonText>Pedidos para preparo (funcionários)</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              {userType !== USER_TYPE.CLIENT && (
+                <Text className="text-center text-lg font-medium text-beige">Funções internas</Text>
+              )}
 
-          <Link href="/(home)" asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="edit" color={colors.brown} />
-                <ButtonText>Revisar alterações (supervisores)</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              {userType === USER_TYPE.STAFF && (
+                <Link href="/(home)" asChild>
+                  <Button className="justify-between">
+                    <View className="flex-row items-center gap-2">
+                      <FontAwesome size={24} name="users" color={colors.brown} />
+                      <ButtonText>Pedidos para preparo (funcionários)</ButtonText>
+                    </View>
+                    <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                  </Button>
+                </Link>
+              )}
 
-          <Link href="/(home)" asChild>
-            <Button className="justify-between">
-              <View className="flex-row items-center gap-2">
-                <FontAwesome size={24} name="motorcycle" color={colors.brown} />
-                <ButtonText>Pedidos para entrega (motoboys)</ButtonText>
-              </View>
-              <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-            </Button>
-          </Link>
+              {userType === USER_TYPE.MANAGER && (
+                <Link href="/(home)" asChild>
+                  <Button className="justify-between">
+                    <View className="flex-row items-center gap-2">
+                      <FontAwesome size={24} name="edit" color={colors.brown} />
+                      <ButtonText>Revisar alterações (supervisores)</ButtonText>
+                    </View>
+                    <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                  </Button>
+                </Link>
+              )}
 
-          <Button onPress={handleLogout} className="mt-8">
-            <ButtonText>Sair</ButtonText>
-          </Button>
+              {userType === USER_TYPE.DELIVERY && (
+                <Link href="/(home)" asChild>
+                  <Button className="justify-between">
+                    <View className="flex-row items-center gap-2">
+                      <FontAwesome size={24} name="motorcycle" color={colors.brown} />
+                      <ButtonText>Pedidos para entrega (motoboys)</ButtonText>
+                    </View>
+                    <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                  </Button>
+                </Link>
+              )}
+
+              <Button onPress={handleLogout} className="mt-8">
+                <ButtonText>Sair</ButtonText>
+              </Button>
+            </>
+          )}
         </Container>
       </ScrollViewContainer>
     </>

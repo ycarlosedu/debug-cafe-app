@@ -1,10 +1,14 @@
 import * as SecureStore from 'expo-secure-store';
 
+import { get } from '../request';
+
+import { USER_TYPE } from '@/constants';
 import { UserStored } from '@/models/user';
 
 export enum SECURE_STORE {
   TOKEN = 'TOKEN',
   USER = 'USER',
+  USER_TYPE = 'USER_TYPE',
 }
 
 const toObject = (value?: string | null) => {
@@ -24,5 +28,11 @@ export const secureStore = {
   getUser: () => {
     const user = SecureStore.getItem(SECURE_STORE.USER);
     return toObject(user) as UserStored;
+  },
+  setUserType: (userType: USER_TYPE) => {
+    return SecureStore.setItem(SECURE_STORE.USER_TYPE, userType);
+  },
+  getUserType: () => {
+    return SecureStore.getItem(SECURE_STORE.USER_TYPE) as USER_TYPE;
   },
 };
