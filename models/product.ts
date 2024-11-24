@@ -3,10 +3,12 @@ import { PRODUCT_CATEGORY } from '@/constants';
 export type Product = {
   id: string;
   name: string;
-  image: any;
+  image: string;
   price: number;
   description: string;
   categories: PRODUCT_CATEGORY[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ProductInCart = Product & {

@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { Image, Text, View } from 'react-native';
 
@@ -6,7 +7,7 @@ import { Button, ButtonText } from '@/components/button';
 import CartButton from '@/components/cartButton';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
-import { products } from '@/mocks/products';
+import { products } from '@/services/products';
 import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
@@ -17,7 +18,11 @@ type Params = {
 
 export default function Product() {
   const { id } = useLocalSearchParams<Params>();
-  const product = products.find((product) => product.id === id);
+
+  const { data: product } = useQuery({
+    queryKey: ['products', id],
+    queryFn: () => products.getOne(id),
+  });
 
   const { addProduct, removeProduct, isProductInCart } = useCartStore();
 
@@ -40,7 +45,9 @@ export default function Product() {
       <ScrollViewContainer>
         <Container>
           <Image
-            source={product.image}
+            source={{
+              uri: product.image,
+            }}
             className="w-full border-2 border-beige"
             style={{ height: 250 }}
           />
