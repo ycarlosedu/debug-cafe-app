@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
@@ -20,6 +20,8 @@ import { format } from '@/utils/format';
 import { secureStore } from '@/utils/secureStore';
 
 export default function Cart() {
+  const queryClient = useQueryClient();
+
   const { data: address } = useQuery({
     queryKey: ['address', secureStore.getToken()],
     queryFn: myAddress.get,
@@ -33,8 +35,11 @@ export default function Cart() {
   const makeOrderMutation = useMutation({
     mutationFn: myOrders.create,
     onSuccess: ({ order }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['orders', secureStore.getToken()],
+      });
       router.replace({
-        pathname: '/order/:id',
+        pathname: '/order/[id]',
         params: { id: order.id },
       });
     },

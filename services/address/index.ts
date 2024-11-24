@@ -6,7 +6,7 @@ type GetMyAddressResponse = AddressFormValues & {
   id: string;
 };
 const get = async (): Promise<GetMyAddressResponse> => {
-  return request.get(`/address/me`);
+  return request.get(`/addresses/me`);
 };
 
 type UpdateAddressResponse = {
@@ -14,14 +14,14 @@ type UpdateAddressResponse = {
   message: string;
 };
 const update = async (data: AddressFormValues): Promise<UpdateAddressResponse> => {
-  return request.put(`/address/me`, {
+  return request.put(`/addresses/me`, {
     ...data,
     cep: applyMask(data.cep, REGEX.ONLY_NUMBERS),
   });
 };
 
 const create = async (data: AddressFormValues): Promise<UpdateAddressResponse> => {
-  return request.post(`/address`, {
+  return request.post(`/addresses`, {
     ...data,
     cep: applyMask(data.cep, REGEX.ONLY_NUMBERS),
   });

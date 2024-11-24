@@ -1,4 +1,4 @@
-import { ProductInCart } from './product';
+import { ProductInOrder } from './product';
 
 import { ORDER_STATUS } from '@/constants';
 
@@ -9,12 +9,18 @@ type Feedback = {
 
 export type Order = {
   id: string;
-  date: string;
+  createdAt: string;
   status: ORDER_STATUS;
-  products: ProductInCart[];
   totalPrice: number;
   paymentMethod: string;
-  deliveryAddress: string;
+  address: {
+    street: string;
+    number: string;
+  };
   feedback?: Feedback;
   deliveryFeedback?: Feedback;
+};
+
+export type DetailedOrder = Order & {
+  products: ProductInOrder[];
 };

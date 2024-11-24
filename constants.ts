@@ -39,11 +39,11 @@ export enum USER_TYPE {
 }
 
 export enum ORDER_STATUS {
-  PENDING = 'pending',
-  IN_PREPARATION = 'in_preparation',
-  ON_THE_WAY = 'on_the_way',
-  DELIVERED = 'delivered',
-  CANCELED = 'canceled',
+  PENDING = 'PENDING',
+  IN_PREPARATION = 'IN_PREPARATION',
+  ON_THE_WAY = 'ON_THE_WAY',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
 }
 
 export const ORDER_STATUS_LABEL = {

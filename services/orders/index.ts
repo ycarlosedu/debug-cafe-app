@@ -1,9 +1,14 @@
-import { Order } from '@/models/order';
+import { DetailedOrder, Order } from '@/models/order';
 import { request } from '@/utils/request';
 
 type GetMyOrdersResponse = Order[];
 const getAll = async (): Promise<GetMyOrdersResponse> => {
-  return request.get(`/orders/me`);
+  return request.get(`/orders`);
+};
+
+type GetMyOrderResponse = DetailedOrder;
+const getOne = async (id: string): Promise<GetMyOrderResponse> => {
+  return request.get(`/orders/${id}`);
 };
 
 type CreateOrderBody = {
@@ -21,5 +26,6 @@ const create = async (data: CreateOrderBody): Promise<CreateOrderResponse> => {
 
 export const myOrders = {
   getAll,
+  getOne,
   create,
 };

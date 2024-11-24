@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Text, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
@@ -8,9 +9,11 @@ import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
 import { ORDER_STATUS, ORDER_STATUS_COLOR, ORDER_STATUS_LABEL } from '@/constants';
-import { orders } from '@/mocks/orders';
+import { myOrders } from '@/services/orders';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
+import { toBrazilianDate } from '@/utils/format/date';
+import { secureStore } from '@/utils/secureStore';
 
 type Params = {
   id: string;
@@ -18,7 +21,11 @@ type Params = {
 
 export default function Order() {
   const { id } = useLocalSearchParams<Params>();
-  const order = orders.find((order) => order.id === id);
+
+  const { data: order } = useQuery({
+    queryKey: ['order', id, secureStore.getToken()],
+    queryFn: () => myOrders.getOne(id),
+  });
 
   if (!order) {
     return (
@@ -37,7 +44,7 @@ export default function Order() {
       <ScrollViewContainer>
         <Container className="gap-6 px-12">
           <Text className="text-center text-base text-white">
-            Pedido nº {order.id} - {order.date}
+            Pedido realizado em {toBrazilianDate(order.createdAt)}
           </Text>
           <TextHighlight className="">
             Pedido {ORDER_STATUS_LABEL[order.status]}
@@ -47,7 +54,7 @@ export default function Order() {
 
           <View className="gap-4">
             {order.products.map((product) => (
-              <View key={product.id} className="flex-row justify-between">
+              <View key={product.name} className="flex-row justify-between">
                 <Text className="text-beige">
                   x{product.quantity} {product.name}
                 </Text>
@@ -65,7 +72,9 @@ export default function Order() {
           </View>
           <View className="gap-2">
             <Text className="text-lg text-beige">Endereço de Entrega</Text>
-            <TextHighlight>{order.deliveryAddress}</TextHighlight>
+            <TextHighlight>
+              {order.address.street}, {order.address.number}
+            </TextHighlight>
           </View>
 
           {order.status === ORDER_STATUS.DELIVERED && !order.feedback?.stars && (

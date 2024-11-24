@@ -22,3 +22,10 @@ export type ProductCategory = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type ProductInOrder = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+};

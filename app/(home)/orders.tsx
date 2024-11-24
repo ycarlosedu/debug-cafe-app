@@ -1,4 +1,5 @@
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
 import { FlatList, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
@@ -14,10 +15,18 @@ import {
   AccordionContentText,
 } from '@/components/ui/accordion';
 import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL } from '@/constants';
-import { orders } from '@/mocks/orders';
+import { myOrders } from '@/services/orders';
 import colors from '@/styles/colors';
+import { toBrazillianCurrency } from '@/utils/format/currency';
+import { toBrazilianDate } from '@/utils/format/date';
+import { secureStore } from '@/utils/secureStore';
 
 export default function Orders() {
+  const { data: orders } = useQuery({
+    queryKey: ['orders', secureStore.getToken()],
+    queryFn: myOrders.getAll,
+  });
+
   return (
     <>
       <Stack.Screen options={{ title: 'Meus Pedidos' }} />
@@ -39,7 +48,7 @@ export default function Orders() {
                       return (
                         <>
                           <AccordionTitleText className="flex flex-row items-center text-brown">
-                            {item.date} - {ORDER_STATUS_LABEL[item.status]}{' '}
+                            {toBrazilianDate(item.createdAt)} - {ORDER_STATUS_LABEL[item.status]}{' '}
                           </AccordionTitleText>
                           <FontAwesome6
                             size={16}
@@ -62,11 +71,12 @@ export default function Orders() {
                   </AccordionTrigger>
                 </AccordionHeader>
                 <AccordionContent className="flex flex-col gap-5">
-                  {item.products.map((product) => (
-                    <AccordionContentText key={product.id} className="text-white">
-                      x{product.quantity} {product.name}
-                    </AccordionContentText>
-                  ))}
+                  <AccordionContentText className="text-white">
+                    {item.address.street}, {item.address.number}
+                  </AccordionContentText>
+                  <AccordionContentText className="text-white">
+                    {toBrazillianCurrency(item.totalPrice)}
+                  </AccordionContentText>
                   {item.feedback?.stars && (
                     <View className="flex-row items-center">
                       <AccordionContentText className="text-brown">

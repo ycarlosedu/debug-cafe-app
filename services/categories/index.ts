@@ -3,14 +3,14 @@ import { request } from '@/utils/request';
 
 type GetAllCategoriesResponse = ProductCategory[];
 const getAll = async (): Promise<GetAllCategoriesResponse> => {
-  return request.get('/category');
+  return request.get('/categories');
 };
 
 type GetOneCategoryResponse = ProductCategory & {
   products: Product[];
 };
 const getOne = async (categoryId: string): Promise<GetOneCategoryResponse> => {
-  return request.get('/category/' + categoryId);
+  return request.get('/categories/' + categoryId);
 };
 
 export const categories = {
