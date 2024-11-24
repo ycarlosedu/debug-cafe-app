@@ -71,6 +71,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
                 value={value}
                 type="text"
                 placeholder="Como se chama?"
+                autoCapitalize="words"
               />
             )}
             name="fullName"
@@ -93,6 +94,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
                 type="text"
                 keyboardType="email-address"
                 placeholder="exemplo@cafeteria.com"
+                autoCapitalize="none"
               />
             )}
             name="email"
@@ -141,6 +143,7 @@ export default function RegisterUserForm({ onSubmit, title = '', submitText = 'S
                 value={value}
                 type={showPassword ? 'text' : 'password'}
                 placeholder="********"
+                autoCapitalize="none"
               />
             )}
             name="password"
