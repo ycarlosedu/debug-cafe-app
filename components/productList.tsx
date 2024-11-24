@@ -11,7 +11,7 @@ type Props = ViewProps & {
 
 export default function ProductList({ categoryId, ...props }: Props) {
   const {
-    data: categorie,
+    data: category,
     isLoading,
     isFetched,
   } = useQuery({
@@ -19,17 +19,20 @@ export default function ProductList({ categoryId, ...props }: Props) {
     queryFn: () => categories.getOne(categoryId),
   });
 
-  if (isFetched && !categorie) {
+  if (isFetched && !category) {
     return null;
   }
 
   return (
-    <View className="gap-4" {...props}>
+    <View className="w-full gap-4" {...props}>
       <Text className="pl-4 text-lg font-medium text-beige">
-        {isLoading ? `Buscando produtos...` : categorie?.name}
+        {isLoading ? `Buscando produtos...` : category?.name}
       </Text>
       <ScrollView horizontal className="grow-0 px-4 pb-2">
-        {categorie?.products?.map((product) => <ProductCard key={product.id} product={product} />)}
+        {category?.products?.length === 0 && (
+          <Text className="text-beige">Nenhum produto nesta categoria...</Text>
+        )}
+        {category?.products?.map((product) => <ProductCard key={product.id} product={product} />)}
       </ScrollView>
     </View>
   );

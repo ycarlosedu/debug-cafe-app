@@ -17,16 +17,15 @@ const categoryImageStyle = tva({
 type Props = ViewProps & {
   title: string;
   onCategoryPress?: (categoryId: string) => void;
-  selectedCategoryId?: string;
+  selectedCategoriesIds?: string[];
 };
 
 export default function ProductCategoriesList({
   title,
   onCategoryPress,
-  selectedCategoryId,
+  selectedCategoriesIds = [],
   ...props
 }: Props) {
-  console.log('🚀 ~ selectedCategoryId:', selectedCategoryId);
   const { data: categoriesList, isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: categories.getAll,
@@ -49,7 +48,9 @@ export default function ProductCategoriesList({
               source={{
                 uri: category.image,
               }}
-              className={categoryImageStyle({ selected: selectedCategoryId === category.id })}
+              className={categoryImageStyle({
+                selected: selectedCategoriesIds.includes(category.id),
+              })}
               style={{ width: 64, height: 64 }}
             />
             <Text className="text-sm text-white">{category.name}</Text>

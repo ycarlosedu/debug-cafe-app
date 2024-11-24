@@ -97,7 +97,7 @@ export default function Search() {
           <ProductCategoriesList
             title="Filtrar por Categoria"
             onCategoryPress={handleChangeCategory}
-            selectedCategoryId={getValues().category}
+            selectedCategoriesIds={getValues().category ? ([getValues().category] as string[]) : []}
           />
           <View className="items-center gap-4 px-4">
             {isSuccess && !productList?.length && (
