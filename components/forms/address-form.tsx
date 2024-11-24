@@ -21,31 +21,30 @@ const registerSchema = z.object({
   number: z.string().min(1, REQUIRED.FIELD),
 });
 
-export type RegisterAddressFormValues = z.infer<typeof registerSchema>;
+export type AddressFormValues = z.infer<typeof registerSchema>;
 
 type Props = {
-  onSubmit: (data: RegisterAddressFormValues) => void;
+  onSubmit: (data: AddressFormValues) => void;
   title?: string;
   submitText?: string;
+  defaultValues?: AddressFormValues;
+  isLoading?: boolean;
 };
 
 export default function RegisterAddressForm({
   onSubmit,
   title = '',
   submitText = 'Salvar',
+  defaultValues,
+  isLoading,
 }: Props) {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterAddressFormValues>({
+  } = useForm<AddressFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      cep: '',
-      city: '',
-      street: '',
-      number: '',
-    },
+    defaultValues,
   });
 
   return (
@@ -145,7 +144,7 @@ export default function RegisterAddressForm({
         </Input>
         <FormControlErrorText>{errors.number?.message}</FormControlErrorText>
       </FormControl>
-      <Button onPress={handleSubmit(onSubmit)}>
+      <Button onPress={handleSubmit(onSubmit)} isLoading={isLoading}>
         <ButtonText>{submitText}</ButtonText>
       </Button>
     </>
