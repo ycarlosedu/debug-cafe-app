@@ -9,13 +9,20 @@ import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import ProductList from '@/components/productList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { myAddress } from '@/services/address';
 import { categories } from '@/services/categories';
 import colors from '@/styles/colors';
+import { secureStore } from '@/utils/secureStore';
 
 export default function Home() {
   const { data: categoriesList } = useQuery({
     queryKey: ['categories'],
     queryFn: categories.getAll,
+  });
+
+  const { data: address } = useQuery({
+    queryKey: ['address', secureStore.getToken()],
+    queryFn: myAddress.get,
   });
 
   return (
@@ -31,7 +38,9 @@ export default function Home() {
             />
             <View className="flex-row items-center justify-center gap-2">
               <FontAwesome size={16} color={colors.white} name="map-marker" />
-              <Text className="text-sm text-white">Porto Alegre, RS</Text>
+              <Text className="text-sm text-white">
+                {address?.city || 'Endereço não cadastrado'}
+              </Text>
             </View>
             <Text className="text-lg font-medium text-beige">O que vamos comer hoje?</Text>
           </View>

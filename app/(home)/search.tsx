@@ -1,42 +1,59 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
 import CartButton from '@/components/cartButton';
 import { Container } from '@/components/container';
+import ProductCard from '@/components/productCard';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { FormControl, FormControlErrorText } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
 import { ERROR, REQUIRED } from '@/constants';
+import { Product } from '@/models/product';
+import { products } from '@/services/products';
 
 const searchSchema = z.object({
-  search: z.string().min(1, REQUIRED.FIELD).min(3, REQUIRED.MIN(3)),
+  name: z.string().min(1, REQUIRED.FIELD).min(3, REQUIRED.MIN(3)).optional(),
+  category: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof searchSchema>;
+export type SearchProductValues = z.infer<typeof searchSchema>;
 
 export default function Search() {
+  const [productList, setProductList] = useState<Product[]>([]);
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+    getValues,
+  } = useForm<SearchProductValues>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      search: '',
+      name: '',
+      category: '',
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    try {
-      console.log(data);
-    } catch (error: any) {
+  const { isSuccess, ...searchProductsMutation } = useMutation({
+    mutationKey: ['products', getValues().name],
+    mutationFn: products.search,
+    onSuccess(data) {
+      setProductList(data);
+    },
+    onError: (error: any) => {
       Alert.alert('Erro', error.message || ERROR.GENERIC);
-    }
+    },
+  });
+  console.log('🚀 ~ Search ~ productsList:', productList);
+
+  const onSubmit = (data: SearchProductValues) => {
+    searchProductsMutation.mutate(data);
   };
 
   return (
@@ -58,16 +75,22 @@ export default function Search() {
                       placeholder="Diga o que deseja"
                     />
                   )}
-                  name="search"
+                  name="name"
                 />
               </Input>
-              <FormControlErrorText>{errors.search?.message}</FormControlErrorText>
+              <FormControlErrorText>{errors.name?.message}</FormControlErrorText>
             </FormControl>
             <Button onPress={handleSubmit(onSubmit)}>
               <ButtonText>Buscar</ButtonText>
             </Button>
           </View>
           <ProductCategoriesList title="Filtrar por Categorias" />
+          <View className="items-center gap-4 px-4">
+            {isSuccess && !productList?.length && (
+              <Text className="text-lg text-white">Nenhum produto encontrado</Text>
+            )}
+            {productList?.map((product) => <ProductCard key={product.id} product={product} />)}
+          </View>
         </Container>
       </ScrollViewContainer>
       <CartButton />
