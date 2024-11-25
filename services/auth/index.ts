@@ -1,3 +1,4 @@
+import { InternalAccessValues } from '@/app/(internal)/internal-access/[user]';
 import { RegisterUserFormValues } from '@/components/forms/register-user-info-form';
 import { UserStored } from '@/models/user';
 import { SignInValues } from '@/schemas';
@@ -19,7 +20,12 @@ const signUp = async (values: RegisterUserFormValues): Promise<SignInResponse> =
   });
 };
 
+const changeUserType = async (values: InternalAccessValues): Promise<SignInResponse> => {
+  return request.post('/auth/change-user-type', values);
+};
+
 export const auth = {
   signIn,
   signUp,
+  changeUserType,
 };

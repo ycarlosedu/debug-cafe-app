@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 
 import { secureStore } from '../secureStore';
 
-import { API_URL } from '@/constants';
+import { API_URL, ERROR } from '@/constants';
 import useAuthStore from '@/stores/useAuthStore';
 
 const isAuthError = (status: string | number): boolean => {
@@ -56,7 +56,11 @@ request.interceptors.response.use(
       Alert.alert('Atenção!', 'Sua sessão foi expirada. Por favor, faça login novamente!');
     }
 
-    return Promise.reject(response.data);
+    return Promise.reject(
+      response?.data || {
+        message: ERROR.GENERIC,
+      }
+    );
   }
 );
 

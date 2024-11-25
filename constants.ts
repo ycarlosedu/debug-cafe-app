@@ -32,10 +32,10 @@ export enum PRODUCT_CATEGORY {
 }
 
 export enum USER_TYPE {
-  CLIENT = 'client',
-  STAFF = 'staff',
-  MANAGER = 'manager',
-  DELIVERY = 'delivery',
+  CLIENT = 'CLIENT',
+  STAFF = 'STAFF',
+  MANAGER = 'MANAGER',
+  DELIVERY = 'DELIVERY',
 }
 
 export enum ORDER_STATUS {

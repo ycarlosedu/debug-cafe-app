@@ -18,24 +18,31 @@ import {
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { ERROR, REQUIRED, USER_TYPE } from '@/constants';
 import colors from '@/styles/colors';
+import { useMutation } from '@tanstack/react-query';
+import { auth } from '@/services/auth';
+import useAuthStore from '@/stores/useAuthStore';
 
 const internalAccessSchema = z.object({
+  userType: z.nativeEnum(USER_TYPE),
   password: z.string().min(1, REQUIRED.FIELD),
 });
 
-type FormValues = z.infer<typeof internalAccessSchema>;
+export type InternalAccessValues = z.infer<typeof internalAccessSchema>;
 
 type Params = {
   user: USER_TYPE;
 };
 
 const USER_TYPE_LABEL = {
+  [USER_TYPE.CLIENT]: 'Cliente',
   [USER_TYPE.STAFF]: 'Funcionário',
   [USER_TYPE.MANAGER]: 'Supervisor',
   [USER_TYPE.DELIVERY]: 'Motoboy',
 };
 
 export default function InternalAccess() {
+  const { handleLogin } = useAuthStore();
+
   const params = useLocalSearchParams<Params>();
   const userLabel = USER_TYPE_LABEL[params.user];
 
@@ -50,20 +57,27 @@ export default function InternalAccess() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<InternalAccessValues>({
     resolver: zodResolver(internalAccessSchema),
     defaultValues: {
+      userType: params.user,
       password: '',
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    try {
-      router.replace('/profile');
-    } catch (error: any) {
+  const changeUserTypeMutation = useMutation({
+    mutationFn: auth.changeUserType,
+    onSuccess: ({ token, user }) => {
+      handleLogin(token, user);
+      router.back();
+    },
+    onError: (error: any) => {
       Alert.alert('Erro', error.message || ERROR.GENERIC);
-    }
+    },
+  });
+
+  const onSubmit = (data: InternalAccessValues) => {
+    changeUserTypeMutation.mutate(data);
   };
 
   return (
@@ -101,7 +115,7 @@ export default function InternalAccess() {
             </Input>
             <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
           </FormControl>
-          <Button onPress={handleSubmit(onSubmit)}>
+          <Button isLoading={changeUserTypeMutation.isPending} onPress={handleSubmit(onSubmit)}>
             <ButtonText>Continuar</ButtonText>
           </Button>
         </Container>

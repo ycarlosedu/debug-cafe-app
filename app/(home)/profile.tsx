@@ -21,11 +21,13 @@ const USER_TYPE_LABEL = {
 };
 
 export default function Profile() {
-  const { handleLogout, isGuest, isAuthenticated, userType, user } = useAuthStore();
+  const { handleLogout, isGuest, isAuthenticated, user } = useAuthStore();
 
   return (
     <>
-      <Stack.Screen options={{ title: `Meu Perfil (${USER_TYPE_LABEL[userType]})` }} />
+      <Stack.Screen
+        options={{ title: `Meu Perfil (${USER_TYPE_LABEL[user?.userType || USER_TYPE.CLIENT]})` }}
+      />
       <ScrollViewContainer>
         <Container className="gap-6 px-4">
           <View className="flex-row items-center gap-6">
@@ -89,7 +91,7 @@ export default function Profile() {
               <Text className="text-center text-lg font-medium text-beige">Acessos internos</Text>
 
               <Link
-                disabled={userType === USER_TYPE.STAFF}
+                disabled={user?.userType === USER_TYPE.STAFF}
                 href={{
                   pathname: '/internal-access/[user]',
                   params: {
@@ -107,7 +109,7 @@ export default function Profile() {
               </Link>
 
               <Link
-                disabled={userType === USER_TYPE.MANAGER}
+                disabled={user?.userType === USER_TYPE.MANAGER}
                 href={{
                   pathname: '/internal-access/[user]',
                   params: {
@@ -125,7 +127,7 @@ export default function Profile() {
               </Link>
 
               <Link
-                disabled={userType === USER_TYPE.DELIVERY}
+                disabled={user?.userType === USER_TYPE.DELIVERY}
                 href={{
                   pathname: '/internal-access/[user]',
                   params: {
@@ -142,11 +144,11 @@ export default function Profile() {
                 </Button>
               </Link>
 
-              {userType !== USER_TYPE.CLIENT && (
+              {user?.userType !== USER_TYPE.CLIENT && (
                 <Text className="text-center text-lg font-medium text-beige">Funções internas</Text>
               )}
 
-              {userType === USER_TYPE.STAFF && (
+              {user?.userType === USER_TYPE.STAFF && (
                 <Link href="/(home)" asChild>
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
@@ -158,7 +160,7 @@ export default function Profile() {
                 </Link>
               )}
 
-              {userType === USER_TYPE.MANAGER && (
+              {user?.userType === USER_TYPE.MANAGER && (
                 <Link href="/(home)" asChild>
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
@@ -170,7 +172,7 @@ export default function Profile() {
                 </Link>
               )}
 
-              {userType === USER_TYPE.DELIVERY && (
+              {user?.userType === USER_TYPE.DELIVERY && (
                 <Link href="/(home)" asChild>
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
