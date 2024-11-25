@@ -18,7 +18,9 @@ import {
 } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
 import { ERROR, REQUIRED } from '@/constants';
-import { orders } from '@/mocks/orders';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { myOrders } from '@/services/orders';
+import { secureStore } from '@/utils/secureStore';
 
 const FEEDBACK_MAX_LENGTH = 255;
 
@@ -29,7 +31,7 @@ const feedbackSchema = z.object({
   deliveryFeedbackStars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
 });
 
-type FormValues = z.infer<typeof feedbackSchema>;
+export type FeedbackValues = z.infer<typeof feedbackSchema>;
 
 type Params = {
   id: string;
@@ -37,13 +39,26 @@ type Params = {
 
 export default function OrderFeedback() {
   const { id } = useLocalSearchParams<Params>();
-  const order = orders.find((order) => order.id === id);
+  const queryClient = useQueryClient();
+
+  const addFeedbackMutation = useMutation({
+    mutationFn: myOrders.addFeedback,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['order', id, secureStore.getToken()],
+      });
+      router.back();
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
+    },
+  });
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<FeedbackValues>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
       feedbackComment: '',
@@ -53,25 +68,9 @@ export default function OrderFeedback() {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    try {
-      router.back();
-    } catch (error: any) {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
-    }
+  const onSubmit = (data: FeedbackValues) => {
+    addFeedbackMutation.mutate({ orderId: id, ...data });
   };
-
-  if (!order) {
-    return (
-      <>
-        <Stack.Screen options={{ title: 'Oops' }} />
-        <Container className="items-center justify-center px-12">
-          <Text className="text-center text-white">Pedido não encontrado</Text>
-        </Container>
-      </>
-    );
-  }
 
   return (
     <>
@@ -172,7 +171,7 @@ export default function OrderFeedback() {
             </FormControl>
           </View>
 
-          <Button onPress={handleSubmit(onSubmit)}>
+          <Button onPress={handleSubmit(onSubmit)} isLoading={addFeedbackMutation.isPending}>
             <ButtonText>Enviar Avaliação</ButtonText>
           </Button>
         </Container>

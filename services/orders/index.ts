@@ -1,3 +1,4 @@
+import { FeedbackValues } from '@/app/(internal)/order-feedback/[id]';
 import { ORDER_STATUS } from '@/constants';
 import { DetailedOrder, Order } from '@/models/order';
 import { request } from '@/utils/request';
@@ -25,10 +26,18 @@ const create = async (data: CreateOrderBody): Promise<CreateOrderResponse> => {
   return request.post(`/orders`, data);
 };
 
+type addFeedbackBody = FeedbackValues & {
+  orderId: string;
+};
+const addFeedback = async (data: addFeedbackBody): Promise<void> => {
+  return request.post(`/order-feedback`, data);
+};
+
 export const myOrders = {
   getAll,
   getOne,
   create,
+  addFeedback,
 };
 
 const getPendingOrders = async (): Promise<GetMyOrdersResponse> => {
