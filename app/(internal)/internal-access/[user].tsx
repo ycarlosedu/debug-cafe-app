@@ -100,7 +100,6 @@ export default function InternalAccess() {
                     value={value}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="********"
-                    keyboardType="numeric"
                   />
                 )}
                 name="password"

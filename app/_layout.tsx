@@ -25,6 +25,12 @@ export default function RootLayout() {
                 headerShown: false,
               }}
             />
+            <Stack.Screen
+              name="(team)"
+              options={{
+                headerShown: false,
+              }}
+            />
           </Stack>
         </GestureHandlerRootView>
       </QueryClientProvider>

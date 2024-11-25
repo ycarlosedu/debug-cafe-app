@@ -148,8 +148,8 @@ export default function Profile() {
                 <Text className="text-center text-lg font-medium text-beige">Funções internas</Text>
               )}
 
-              {user?.userType === USER_TYPE.STAFF && (
-                <Link href="/(home)" asChild>
+              {(user?.userType === USER_TYPE.STAFF || user?.userType === USER_TYPE.MANAGER) && (
+                <Link href="/(team)/orders" asChild>
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
                       <FontAwesome size={24} name="users" color={colors.brown} />
@@ -161,7 +161,7 @@ export default function Profile() {
               )}
 
               {user?.userType === USER_TYPE.MANAGER && (
-                <Link href="/(home)" asChild>
+                <Link href="/(team)/orders" asChild>
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
                       <FontAwesome size={24} name="edit" color={colors.brown} />
@@ -173,7 +173,7 @@ export default function Profile() {
               )}
 
               {user?.userType === USER_TYPE.DELIVERY && (
-                <Link href="/(home)" asChild>
+                <Link href="/(team)/orders" asChild>
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
                       <FontAwesome size={24} name="motorcycle" color={colors.brown} />

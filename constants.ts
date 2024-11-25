@@ -38,6 +38,11 @@ export enum USER_TYPE {
   DELIVERY = 'DELIVERY',
 }
 
+export const isUserFromTeam = (userType?: USER_TYPE) => {
+  if (!userType) return false;
+  return [USER_TYPE.STAFF, USER_TYPE.MANAGER, USER_TYPE.DELIVERY].includes(userType);
+};
+
 export enum ORDER_STATUS {
   PENDING = 'PENDING',
   IN_PREPARATION = 'IN_PREPARATION',

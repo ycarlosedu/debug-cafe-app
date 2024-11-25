@@ -1,3 +1,4 @@
+import { ORDER_STATUS } from '@/constants';
 import { DetailedOrder, Order } from '@/models/order';
 import { request } from '@/utils/request';
 
@@ -28,4 +29,26 @@ export const myOrders = {
   getAll,
   getOne,
   create,
+};
+
+const getPendingOrders = async (): Promise<GetMyOrdersResponse> => {
+  return request.get(`/orders/pending`);
+};
+
+const getPendingOrder = async (id: string): Promise<GetMyOrderResponse> => {
+  return request.get(`/orders/pending/${id}`);
+};
+
+type UpdateOrderStatusResponse = {
+  status: ORDER_STATUS;
+  message: string;
+};
+const updateOrderStatus = async (id: string): Promise<UpdateOrderStatusResponse> => {
+  return request.patch(`/orders/pending/${id}`);
+};
+
+export const teamOrders = {
+  getPendingOrders,
+  getPendingOrder,
+  updateOrderStatus,
 };

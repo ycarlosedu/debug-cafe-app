@@ -1,7 +1,7 @@
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 import { Container } from '@/components/container';
@@ -15,22 +15,25 @@ import {
   AccordionContentText,
 } from '@/components/ui/accordion';
 import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL } from '@/constants';
-import { myOrders } from '@/services/orders';
+import { teamOrders } from '@/services/orders';
 import colors from '@/styles/colors';
 import { toBrazillianCurrency } from '@/utils/format/currency';
 import { toBrazilianDate } from '@/utils/format/date';
 import { secureStore } from '@/utils/secureStore';
 
-export default function Orders() {
-  const { data: orders } = useQuery({
-    queryKey: ['orders', secureStore.getToken()],
-    queryFn: myOrders.getAll,
+export default function MyOrders() {
+  const { data: orders, isFetched } = useQuery({
+    queryKey: ['pending-orders', secureStore.getToken()],
+    queryFn: teamOrders.getPendingOrders,
   });
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Meus Pedidos' }} />
+      <Stack.Screen options={{ title: 'Pedidos em Andamento' }} />
       <Container className="px-4">
+        {isFetched && !orders && (
+          <Text className="text-center text-2xl text-white">Nenhum pedido encontrado...</Text>
+        )}
         <Accordion
           size="lg"
           variant="filled"
@@ -91,7 +94,7 @@ export default function Orders() {
                   )}
                   <Link
                     href={{
-                      pathname: '/order/[id]',
+                      pathname: '/pending-order/[id]',
                       params: { id: item.id },
                     }}
                     className="flex flex-row items-center justify-center gap-1 rounded-lg bg-brown px-2 py-3">

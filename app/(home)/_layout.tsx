@@ -46,7 +46,7 @@ export default function HomeLayout() {
         }}
       />
       <Tabs.Screen
-        name="orders"
+        name="my-orders"
         options={{
           title: 'Meus Pedidos',
           tabBarIcon: ({ color }) => <TabBarIcon name="history" color={color} />,

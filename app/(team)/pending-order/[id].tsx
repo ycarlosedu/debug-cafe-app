@@ -1,38 +1,66 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
-import { Text, View } from 'react-native';
-import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { Alert, Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
-import { ORDER_STATUS, ORDER_STATUS_COLOR, ORDER_STATUS_LABEL } from '@/constants';
-import { myOrders } from '@/services/orders';
-import colors from '@/styles/colors';
+import {
+  ERROR,
+  isUserFromTeam,
+  ORDER_STATUS,
+  ORDER_STATUS_COLOR,
+  ORDER_STATUS_LABEL,
+  USER_TYPE,
+} from '@/constants';
+import { teamOrders } from '@/services/orders';
 import { format } from '@/utils/format';
 import { toBrazilianDate } from '@/utils/format/date';
 import { secureStore } from '@/utils/secureStore';
 import Loader from '@/components/loader';
+import { DetailedOrder } from '@/models/order';
+import useAuthStore from '@/stores/useAuthStore';
 
 type Params = {
   id: string;
 };
 
-export default function Order() {
+export default function PendingOrder() {
+  const queryClient = useQueryClient();
   const { id } = useLocalSearchParams<Params>();
+  const { user } = useAuthStore();
 
   const { data: order, isLoading } = useQuery({
-    queryKey: ['order', id, secureStore.getToken()],
-    queryFn: () => myOrders.getOne(id),
+    queryKey: ['pending-order', id, secureStore.getToken()],
+    queryFn: () => teamOrders.getPendingOrder(id),
+  });
+
+  const updateOrderStatusMutation = useMutation({
+    mutationFn: teamOrders.updateOrderStatus,
+    onSuccess: ({ status }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['pending-orders', secureStore.getToken()],
+      });
+      queryClient.setQueryData(
+        ['pending-order', id, secureStore.getToken()],
+        (data: DetailedOrder) => ({
+          ...data,
+          status,
+        })
+      );
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
+    },
   });
 
   if (isLoading) {
     return <Loader />;
   }
 
-  if (!order) {
+  if (!order || !isUserFromTeam(user?.userType) || !user?.userType) {
     return (
       <>
         <Stack.Screen options={{ title: 'Oops' }} />
@@ -82,51 +110,38 @@ export default function Order() {
             </TextHighlight>
           </View>
 
-          {order.status === ORDER_STATUS.DELIVERED && !order.feedback?.stars && (
-            <Link
-              href={{
-                pathname: '/order-feedback/[id]',
-                params: { id: order.id },
-              }}
-              asChild>
-              <Button>
-                <ButtonText>Avaliar Pedido</ButtonText>
+          {order.status === ORDER_STATUS.PENDING &&
+            [USER_TYPE.STAFF, USER_TYPE.MANAGER].includes(user.userType) && (
+              <Button
+                isLoading={updateOrderStatusMutation.isPending}
+                onPress={() => {
+                  updateOrderStatusMutation.mutate(id);
+                }}>
+                <ButtonText>Confirmar Pedido</ButtonText>
               </Button>
-            </Link>
-          )}
+            )}
 
-          {order.status === ORDER_STATUS.DELIVERED && order.feedback?.stars && (
-            <>
-              <Text className="text-center text-2xl text-beige">Sua Avaliação</Text>
-              <View className="gap-2">
-                <Text className="text-lg text-beige">Produtos:</Text>
-                <TextHighlight>{order.feedback.comment || 'Sem comentário.'}</TextHighlight>
-                <View className="flex-row items-center justify-between">
-                  <Text className="w-1/3 text-lg text-beige">Satisfação:</Text>
-                  <StarRatingDisplay
-                    rating={order.feedback.stars}
-                    starSize={24}
-                    color={colors.beige}
-                  />
-                </View>
-              </View>
-            </>
-          )}
+          {order.status === ORDER_STATUS.IN_PREPARATION &&
+            [USER_TYPE.DELIVERY, USER_TYPE.MANAGER].includes(user.userType) && (
+              <Button
+                isLoading={updateOrderStatusMutation.isPending}
+                onPress={() => {
+                  updateOrderStatusMutation.mutate(id);
+                }}>
+                <ButtonText>Iniciar Entrega</ButtonText>
+              </Button>
+            )}
 
-          {order.status === ORDER_STATUS.DELIVERED && order.deliveryFeedback?.stars && (
-            <View className="gap-2">
-              <Text className="text-lg text-beige">Entrega:</Text>
-              <TextHighlight>{order.deliveryFeedback.comment || 'Sem comentário.'}</TextHighlight>
-              <View className="flex-row items-center justify-between">
-                <Text className="w-1/3 text-lg text-beige">Satisfação:</Text>
-                <StarRatingDisplay
-                  rating={order.deliveryFeedback.stars}
-                  starSize={24}
-                  color={colors.beige}
-                />
-              </View>
-            </View>
-          )}
+          {order.status === ORDER_STATUS.ON_THE_WAY &&
+            [USER_TYPE.DELIVERY, USER_TYPE.MANAGER].includes(user.userType) && (
+              <Button
+                isLoading={updateOrderStatusMutation.isPending}
+                onPress={() => {
+                  updateOrderStatusMutation.mutate(id);
+                }}>
+                <ButtonText>Finalizar Entrega</ButtonText>
+              </Button>
+            )}
         </Container>
       </ScrollViewContainer>
     </>
