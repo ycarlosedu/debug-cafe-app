@@ -56,6 +56,28 @@ export default function PendingOrder() {
     },
   });
 
+  const cancelOrderMutation = useMutation({
+    mutationFn: teamOrders.cancelOrder,
+    onSuccess: ({ status }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['orders', secureStore.getToken()],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['pending-orders', secureStore.getToken()],
+      });
+      queryClient.setQueryData(
+        ['pending-order', id, secureStore.getToken()],
+        (data: DetailedOrder) => ({
+          ...data,
+          status,
+        })
+      );
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
+    },
+  });
+
   if (isLoading) {
     return <Loader />;
   }
@@ -140,6 +162,18 @@ export default function PendingOrder() {
                   updateOrderStatusMutation.mutate(id);
                 }}>
                 <ButtonText>Finalizar Entrega</ButtonText>
+              </Button>
+            )}
+
+          {![ORDER_STATUS.DELIVERED, ORDER_STATUS.CANCELED].includes(order.status) &&
+            [USER_TYPE.STAFF, USER_TYPE.MANAGER].includes(user.userType) && (
+              <Button
+                appearance="secondary"
+                isLoading={cancelOrderMutation.isPending}
+                onPress={() => {
+                  cancelOrderMutation.mutate(id);
+                }}>
+                <ButtonText appearance="secondary">Cancelar Pedido</ButtonText>
               </Button>
             )}
         </Container>

@@ -47,8 +47,13 @@ const updateOrderStatus = async (id: string): Promise<UpdateOrderStatusResponse>
   return request.patch(`/orders/pending/${id}`);
 };
 
+const cancelOrder = async (id: string): Promise<UpdateOrderStatusResponse> => {
+  return request.delete(`/orders/pending/${id}`);
+};
+
 export const teamOrders = {
   getPendingOrders,
   getPendingOrder,
   updateOrderStatus,
+  cancelOrder,
 };

@@ -31,7 +31,7 @@ export default function MyOrders() {
     <>
       <Stack.Screen options={{ title: 'Pedidos em Andamento' }} />
       <Container className="px-4">
-        {isFetched && !orders && (
+        {isFetched && !orders?.length && (
           <Text className="text-center text-2xl text-white">Nenhum pedido encontrado...</Text>
         )}
         <Accordion
