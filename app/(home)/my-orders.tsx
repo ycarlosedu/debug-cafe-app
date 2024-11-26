@@ -25,7 +25,7 @@ import { toBrazilianDate } from '@/utils/format/date';
 export default function MyOrders() {
   const { user, handleLogout } = useAuthStore();
 
-  const { data: orders } = useQuery({
+  const { data: orders, isFetched } = useQuery({
     queryKey: ['orders', user?.email],
     queryFn: myOrders.getAll,
     enabled: user?.userType !== USER_TYPE.GUEST,
@@ -44,6 +44,9 @@ export default function MyOrders() {
               <ButtonText>Fazer Login</ButtonText>
             </Button>
           </View>
+        )}
+        {isFetched && !orders?.length && (
+          <Text className="text-center text-xl text-white">Você ainda não realizou pedidos.</Text>
         )}
         <Accordion
           size="lg"

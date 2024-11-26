@@ -18,7 +18,7 @@ export default function Payment() {
     mutationFn: myCreditCards.add,
     onSuccess: ({ creditCard }) => {
       queryClient.setQueryData(['credit-cards', user?.email], (oldData: CreditCard[]) => [
-        ...oldData,
+        ...(oldData || []),
         creditCard,
       ]);
       router.back();

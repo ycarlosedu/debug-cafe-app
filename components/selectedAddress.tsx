@@ -21,7 +21,6 @@ type Props = {
 };
 
 export default function SelectedAddress({ address }: Props) {
-  console.log('🚀 ~ SelectedAddress ~ address:', address);
   return (
     <View className="gap-2">
       <Text className="text-base text-beige">Endereço</Text>

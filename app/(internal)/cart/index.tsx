@@ -37,7 +37,11 @@ export default function Cart() {
   const makeOrderMutation = useMutation({
     mutationFn: myOrders.create,
     onSuccess: ({ order }) => {
-      queryClient.setQueryData(['orders', user?.email], (oldData: Order[]) => [order, ...oldData]);
+      useCartStore.getState().reset();
+      queryClient.setQueryData(['orders', user?.email], (oldData: Order[]) => [
+        order,
+        ...(oldData || []),
+      ]);
       router.replace({
         pathname: '/order/[id]',
         params: { id: order.id },
