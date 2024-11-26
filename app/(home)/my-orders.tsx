@@ -1,11 +1,12 @@
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
-import { FlatList, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
+import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import {
   Accordion,
   AccordionItem,
@@ -34,31 +35,29 @@ export default function MyOrders() {
   return (
     <>
       <Stack.Screen options={{ title: 'Meus Pedidos' }} />
-      <Container className="px-4">
-        {user?.userType === USER_TYPE.GUEST && (
-          <View className="gap-4">
-            <Text className="text-center text-xl text-white">
-              Usuários convidados não podem realizar pedidos.
-            </Text>
-            <Button onPress={handleLogout}>
-              <ButtonText>Fazer Login</ButtonText>
-            </Button>
-          </View>
-        )}
-        {isFetched && !orders?.length && (
-          <Text className="text-center text-xl text-white">Você ainda não realizou pedidos.</Text>
-        )}
-        <Accordion
-          size="lg"
-          variant="filled"
-          type="single"
-          isCollapsible
-          className="w-full bg-transparent">
-          <FlatList
-            data={orders}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <AccordionItem value={item.id} className="mt-6 rounded-lg bg-beige">
+      <ScrollViewContainer>
+        <Container className="px-4">
+          {user?.userType === USER_TYPE.GUEST && (
+            <View className="gap-4">
+              <Text className="text-center text-xl text-white">
+                Usuários convidados não podem realizar pedidos.
+              </Text>
+              <Button onPress={handleLogout}>
+                <ButtonText>Fazer Login</ButtonText>
+              </Button>
+            </View>
+          )}
+          {isFetched && !orders?.length && (
+            <Text className="text-center text-xl text-white">Você ainda não realizou pedidos.</Text>
+          )}
+          <Accordion
+            size="lg"
+            variant="filled"
+            type="single"
+            isCollapsible
+            className="w-full bg-transparent">
+            {orders?.map((item) => (
+              <AccordionItem key={item.id} value={item.id} className="mt-6 rounded-lg bg-beige">
                 <AccordionHeader>
                   <AccordionTrigger className="gap-4">
                     {({ isExpanded }) => {
@@ -118,10 +117,10 @@ export default function MyOrders() {
                   </Link>
                 </AccordionContent>
               </AccordionItem>
-            )}
-          />
-        </Accordion>
-      </Container>
+            ))}
+          </Accordion>
+        </Container>
+      </ScrollViewContainer>
     </>
   );
 }
