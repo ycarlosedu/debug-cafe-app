@@ -144,7 +144,7 @@ export default function Profile() {
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
                       <FontAwesome size={24} name="users" color={colors.brown} />
-                      <ButtonText>Pedidos para preparo (funcionários)</ButtonText>
+                      <ButtonText>Pedidos para preparo</ButtonText>
                     </View>
                     <FontAwesome size={24} name="arrow-right" color={colors.brown} />
                   </Button>
@@ -152,15 +152,27 @@ export default function Profile() {
               )}
 
               {user?.userType === USER_TYPE.MANAGER && (
-                <Link href="/(team)/orders" asChild>
-                  <Button className="justify-between">
-                    <View className="flex-row items-center gap-2">
-                      <FontAwesome size={24} name="edit" color={colors.brown} />
-                      <ButtonText>Adicionar produtos (supervisores)</ButtonText>
-                    </View>
-                    <FontAwesome size={24} name="arrow-right" color={colors.brown} />
-                  </Button>
-                </Link>
+                <>
+                  <Link href="/(team)/add-product" asChild>
+                    <Button className="justify-between">
+                      <View className="flex-row items-center gap-2">
+                        <FontAwesome size={24} name="plus" color={colors.brown} />
+                        <ButtonText>Adicionar produtos</ButtonText>
+                      </View>
+                      <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                    </Button>
+                  </Link>
+
+                  <Link href="/(team)/orders" asChild>
+                    <Button className="justify-between">
+                      <View className="flex-row items-center gap-2">
+                        <FontAwesome size={24} name="tag" color={colors.brown} />
+                        <ButtonText>Adicionar categorias</ButtonText>
+                      </View>
+                      <FontAwesome size={24} name="arrow-right" color={colors.brown} />
+                    </Button>
+                  </Link>
+                </>
               )}
 
               {user?.userType === USER_TYPE.DELIVERY && (
@@ -168,7 +180,7 @@ export default function Profile() {
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
                       <FontAwesome size={24} name="motorcycle" color={colors.brown} />
-                      <ButtonText>Pedidos para entrega (motoboys)</ButtonText>
+                      <ButtonText>Pedidos para entrega</ButtonText>
                     </View>
                     <FontAwesome size={24} name="arrow-right" color={colors.brown} />
                   </Button>

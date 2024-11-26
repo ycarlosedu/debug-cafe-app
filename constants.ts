@@ -9,6 +9,8 @@ export const INVALID = {
   CPF: 'CPF inválido',
   CREDIT_CARD: 'Cartão inválido',
   EXPIRATION_DATE: 'A data deve ser no formato Mês/Ano',
+  URL: 'URL inválida',
+  NUMBER: 'Número inválido',
 };
 
 export const REQUIRED = {
@@ -16,6 +18,7 @@ export const REQUIRED = {
   MIN: (min: number) => `Mínimo de ${min} caracteres`,
   MAX: (max: number) => `Máximo de ${max} caracteres`,
   MAX_STARS: 'Máximo de 5 estrelas',
+  MIN_OPTIONS: 'Selecione ao menos uma opção',
 };
 
 export const ERROR = {

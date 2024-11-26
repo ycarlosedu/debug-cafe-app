@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
-import { Container } from './container';
 import { Text } from 'react-native';
+
+import { Container } from './container';
 
 export default function Loader() {
   return (

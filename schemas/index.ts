@@ -1,6 +1,15 @@
-import { z } from 'zod';
+import { z, ZodTypeAny } from 'zod';
 
 import { INVALID, REQUIRED } from '@/constants';
+
+export const zodInputStringToNumberPipe = (zodPipe: ZodTypeAny) =>
+  z
+    .string()
+    .transform((value) => (!value ? 0 : value))
+    .refine((value) => !value || !isNaN(Number(value)), {
+      message: INVALID.NUMBER,
+    })
+    .pipe(zodPipe);
 
 export const signInSchema = z.object({
   email: z.string().min(1, REQUIRED.FIELD).email(INVALID.EMAIL),
@@ -8,3 +17,15 @@ export const signInSchema = z.object({
 });
 
 export type SignInValues = z.infer<typeof signInSchema>;
+
+export const addProductSchema = z.object({
+  name: z.string().min(1, REQUIRED.FIELD).max(255, REQUIRED.MAX(255)),
+  image: z.string().min(1, REQUIRED.FIELD).url(INVALID.URL),
+  price: zodInputStringToNumberPipe(
+    z.number().min(0, REQUIRED.MIN(0)).max(9999, REQUIRED.MAX(9999))
+  ),
+  description: z.string().min(1, REQUIRED.FIELD).max(255, REQUIRED.MAX(255)),
+  categories: z.array(z.string().cuid()).min(1, REQUIRED.MIN_OPTIONS),
+});
+
+export type AddProductValues = z.infer<typeof addProductSchema>;
