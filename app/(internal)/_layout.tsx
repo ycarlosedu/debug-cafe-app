@@ -4,9 +4,9 @@ import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 export default function InternalLayout() {
-  const { isAuthenticated, isGuest } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
 
-  if (!isAuthenticated && !isGuest) {
+  if (!isAuthenticated) {
     return <Redirect href="/auth" />;
   }
 

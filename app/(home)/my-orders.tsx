@@ -1,9 +1,10 @@
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
+import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import {
   Accordion,
@@ -14,23 +15,37 @@ import {
   AccordionContent,
   AccordionContentText,
 } from '@/components/ui/accordion';
-import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL } from '@/constants';
+import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL, USER_TYPE } from '@/constants';
 import { myOrders } from '@/services/orders';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 import { toBrazillianCurrency } from '@/utils/format/currency';
 import { toBrazilianDate } from '@/utils/format/date';
 import { secureStore } from '@/utils/secureStore';
 
 export default function MyOrders() {
+  const { user, handleLogout } = useAuthStore();
+
   const { data: orders } = useQuery({
     queryKey: ['orders', secureStore.getToken()],
     queryFn: myOrders.getAll,
+    enabled: user?.userType !== USER_TYPE.GUEST,
   });
 
   return (
     <>
       <Stack.Screen options={{ title: 'Meus Pedidos' }} />
       <Container className="px-4">
+        {user?.userType === USER_TYPE.GUEST && (
+          <View className="gap-4">
+            <Text className="text-center text-xl text-white">
+              Usuários convidados não podem realizar pedidos.
+            </Text>
+            <Button onPress={handleLogout}>
+              <ButtonText>Fazer Login</ButtonText>
+            </Button>
+          </View>
+        )}
         <Accordion
           size="lg"
           variant="filled"

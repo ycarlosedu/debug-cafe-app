@@ -32,6 +32,7 @@ export enum PRODUCT_CATEGORY {
 }
 
 export enum USER_TYPE {
+  GUEST = 'GUEST',
   CLIENT = 'CLIENT',
   STAFF = 'STAFF',
   MANAGER = 'MANAGER',

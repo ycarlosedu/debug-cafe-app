@@ -7,7 +7,9 @@ import { Button, ButtonText } from '@/components/button';
 import CartButton from '@/components/cartButton';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { USER_TYPE } from '@/constants';
 import { products } from '@/services/products';
+import useAuthStore from '@/stores/useAuthStore';
 import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
@@ -18,6 +20,7 @@ type Params = {
 
 export default function Product() {
   const { id } = useLocalSearchParams<Params>();
+  const { user } = useAuthStore();
 
   const { data: product } = useQuery({
     queryKey: ['products', id],
@@ -57,9 +60,11 @@ export default function Product() {
               <Text className="text-3xl text-white">
                 {format.toBrazillianCurrency(product.price)}
               </Text>
-              <Button size="icon">
-                <FontAwesome name="heart-o" size={16} color={colors.brown} />
-              </Button>
+              {user?.userType !== USER_TYPE.GUEST && (
+                <Button size="icon">
+                  <FontAwesome name="heart-o" size={16} color={colors.brown} />
+                </Button>
+              )}
             </View>
 
             <Text className="text-base text-gray-light">{product.description}</Text>

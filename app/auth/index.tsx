@@ -23,7 +23,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 export default function Login() {
-  const { handleLogin, handleGuestLogin } = useAuthStore();
+  const { handleLogin } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
@@ -33,6 +33,17 @@ export default function Login() {
 
   const signInMutation = useMutation({
     mutationFn: auth.signIn,
+    onSuccess: ({ token, user }) => {
+      handleLogin(token, user);
+      router.replace('/(home)');
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
+    },
+  });
+
+  const guestMutation = useMutation({
+    mutationFn: auth.guestSignIn,
     onSuccess: ({ token, user }) => {
       handleLogin(token, user);
       router.replace('/(home)');
@@ -122,7 +133,10 @@ export default function Login() {
           <Button onPress={handleSubmit(onSubmit)} isLoading={signInMutation.isPending}>
             <ButtonText>Continuar</ButtonText>
           </Button>
-          <Button appearance="secondary" onPress={handleGuestLogin}>
+          <Button
+            appearance="secondary"
+            onPress={() => guestMutation.mutate()}
+            isLoading={guestMutation.isPending}>
             <ButtonText appearance="secondary">Entrar como convidado</ButtonText>
           </Button>
         </Container>

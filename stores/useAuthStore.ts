@@ -1,20 +1,15 @@
 import { create } from 'zustand';
 
-import useCartStore from './useCartStore';
-
-import { USER_TYPE } from '@/constants';
 import { UserStored } from '@/models/user';
 import { secureStore } from '@/utils/secureStore';
 
 type Store = {
   isAuthenticated: boolean;
-  isGuest: boolean;
   user?: UserStored;
 };
 
 type Actions = {
   handleLogin: (token: string, user: UserStored) => void;
-  handleGuestLogin: () => void;
   handleLogout: () => void;
   handleChangeUserInfos: (user: UserStored) => void;
   reset: () => void;
@@ -31,7 +26,6 @@ const handleAuth = () => {
 
 const initialState: Store = {
   isAuthenticated: handleAuth(),
-  isGuest: false,
   user: secureStore.getUser(),
 };
 
@@ -45,18 +39,11 @@ const useAuthStore = create<Store & Actions>((set, get) => ({
       user,
     });
   },
-  handleGuestLogin: () => {
-    set({
-      isGuest: true,
-    });
-  },
   handleLogout: () => {
     secureStore.setToken('');
     secureStore.setUser();
-    useCartStore.getState().reset();
     set({
       isAuthenticated: false,
-      isGuest: false,
       user: undefined,
     });
   },

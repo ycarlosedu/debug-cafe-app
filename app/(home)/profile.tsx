@@ -14,6 +14,7 @@ import colors from '@/styles/colors';
 preview(<Profile />);
 
 const USER_TYPE_LABEL = {
+  [USER_TYPE.GUEST]: 'Convidado',
   [USER_TYPE.CLIENT]: 'Cliente',
   [USER_TYPE.STAFF]: 'Funcionário',
   [USER_TYPE.MANAGER]: 'Supervisor',
@@ -21,7 +22,7 @@ const USER_TYPE_LABEL = {
 };
 
 export default function Profile() {
-  const { handleLogout, isGuest, isAuthenticated, user } = useAuthStore();
+  const { handleLogout, isAuthenticated, user } = useAuthStore();
 
   return (
     <>
@@ -36,12 +37,10 @@ export default function Profile() {
               className="rounded-full border-2 border-beige"
               style={{ width: 56, height: 56 }}
             />
-            <Text className="text-lg font-medium text-white">
-              {isGuest ? 'Convidado' : user?.fullName}
-            </Text>
+            <Text className="text-lg font-medium text-white">{user?.fullName}</Text>
           </View>
 
-          {isGuest && (
+          {user?.userType === USER_TYPE.GUEST && (
             <>
               <Text className="text-center text-lg font-medium text-beige">
                 Para acessar suas informações, você deve estar conectado em sua conta!
@@ -56,7 +55,7 @@ export default function Profile() {
             </>
           )}
 
-          {isAuthenticated && (
+          {user?.userType !== USER_TYPE.GUEST && (
             <>
               <Link href="/edit-user-info" asChild>
                 <Button className="justify-between">

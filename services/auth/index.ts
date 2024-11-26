@@ -24,8 +24,13 @@ const changeUserType = async (values: InternalAccessValues): Promise<SignInRespo
   return request.post('/auth/change-user-type', values);
 };
 
+const guestSignIn = async (): Promise<SignInResponse> => {
+  return request.post('/auth/guest');
+};
+
 export const auth = {
   signIn,
   signUp,
   changeUserType,
+  guestSignIn,
 };

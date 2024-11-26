@@ -10,12 +10,15 @@ import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import ProductList from '@/components/productList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { USER_TYPE } from '@/constants';
 import { myAddress } from '@/services/address';
 import { categories } from '@/services/categories';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 import { secureStore } from '@/utils/secureStore';
 
 export default function Home() {
+  const { user } = useAuthStore();
   const [categoriesIds, setCategoriesIds] = useState<string[]>();
 
   const { data: categoriesList } = useQuery({
@@ -30,6 +33,7 @@ export default function Home() {
   const { data: address } = useQuery({
     queryKey: ['address', secureStore.getToken()],
     queryFn: myAddress.get,
+    enabled: user?.userType !== USER_TYPE.GUEST,
   });
 
   const handleChangeCategory = (categoryId: string) => {

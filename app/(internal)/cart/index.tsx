@@ -10,10 +10,11 @@ import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import SelectedAddress from '@/components/selectedAddress';
 import SelectedPayment from '@/components/selectedPayment';
-import { ERROR } from '@/constants';
+import { ERROR, USER_TYPE } from '@/constants';
 import { myAddress } from '@/services/address';
 import { myCreditCards } from '@/services/credit-cards';
 import { myOrders } from '@/services/orders';
+import useAuthStore from '@/stores/useAuthStore';
 import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
@@ -21,6 +22,7 @@ import { secureStore } from '@/utils/secureStore';
 
 export default function Cart() {
   const queryClient = useQueryClient();
+  const { user, handleLogout } = useAuthStore();
 
   const { data: address } = useQuery({
     queryKey: ['address', secureStore.getToken()],
@@ -98,16 +100,31 @@ export default function Cart() {
           <Text className="text-2xl text-white">
             Total: {format.toBrazillianCurrency(totalPrice)}
           </Text>
-          <SelectedAddress address={address} />
-          <SelectedPayment
-            selectedPayment={selectedPayment}
-            onChangePayment={setSelectedPayment}
-            creditCards={creditCards}
-          />
-          <Button disabled={!hasProductsInCart} onPress={handleCreateOrder}>
-            <FontAwesome name="cart-arrow-down" size={24} color={colors.brown} />
-            <ButtonText>Finalizar Compra</ButtonText>
-          </Button>
+          {user?.userType !== USER_TYPE.GUEST && (
+            <>
+              <SelectedAddress address={address} />
+              <SelectedPayment
+                selectedPayment={selectedPayment}
+                onChangePayment={setSelectedPayment}
+                creditCards={creditCards}
+              />
+              <Button disabled={!hasProductsInCart} onPress={handleCreateOrder}>
+                <FontAwesome name="cart-arrow-down" size={24} color={colors.brown} />
+                <ButtonText>Finalizar Compra</ButtonText>
+              </Button>
+            </>
+          )}
+
+          {user?.userType === USER_TYPE.GUEST && (
+            <View className="gap-4">
+              <Text className="text-center text-xl text-white">
+                Usuários convidados não podem realizar pedidos.
+              </Text>
+              <Button onPress={handleLogout}>
+                <ButtonText>Fazer Login</ButtonText>
+              </Button>
+            </View>
+          )}
         </Container>
       </ScrollViewContainer>
     </>
