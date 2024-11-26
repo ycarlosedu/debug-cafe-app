@@ -6,7 +6,7 @@ export type Product = {
   image: string;
   price: number;
   description: string;
-  categories: PRODUCT_CATEGORY[];
+  categories: ProductCategory[];
   createdAt: string;
   updatedAt: string;
 };

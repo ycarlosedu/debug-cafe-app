@@ -59,6 +59,9 @@ export default function PendingOrder() {
         queryKey: ['orders', user?.email],
       });
       queryClient.invalidateQueries({
+        queryKey: ['order', id, user?.email],
+      });
+      queryClient.invalidateQueries({
         queryKey: ['pending-orders', user?.email],
       });
       queryClient.setQueryData(['pending-order', id, user?.email], (data: DetailedOrder) => ({

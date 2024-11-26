@@ -64,10 +64,11 @@ export default function Cart() {
   const hasProductsInCart = Boolean(products.length);
 
   const handleCreateOrder = () => {
-    if (!address) {
+    if (!address?.id) {
       Alert.alert('Erro', 'Cadastre um endereço para entrega');
       return;
     }
+    console.log('🚀 ~ handleCreateOrder ~ address.id:', address.id);
 
     makeOrderMutation.mutate({
       addressId: address.id,

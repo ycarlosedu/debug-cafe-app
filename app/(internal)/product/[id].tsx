@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Image, Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
@@ -13,6 +13,21 @@ import useAuthStore from '@/stores/useAuthStore';
 import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
+
+const HeaderButton = ({ id }: { id: string }) => {
+  return (
+    <Link
+      asChild
+      href={{
+        pathname: '/(team)/edit-product/[id]',
+        params: { id },
+      }}>
+      <Button size="icon">
+        <FontAwesome name="pencil" size={16} color={colors.brown} />
+      </Button>
+    </Link>
+  );
+};
 
 type Params = {
   id: string;
@@ -44,7 +59,13 @@ export default function Product() {
 
   return (
     <>
-      <Stack.Screen options={{ title: product.name }} />
+      <Stack.Screen
+        options={{
+          title: product.name,
+          headerRight:
+            user?.userType === USER_TYPE.MANAGER ? () => <HeaderButton id={id} /> : undefined,
+        }}
+      />
       <ScrollViewContainer>
         <Container>
           <Image
@@ -73,8 +94,8 @@ export default function Product() {
               <Text className="text-lg text-beige">Categorias</Text>
               <View className="flex-row flex-wrap gap-3">
                 {product.categories.map((category) => (
-                  <Text key={category} className="rounded-2xl bg-orange px-3 py-2 text-white">
-                    {category}
+                  <Text key={category.id} className="rounded-2xl bg-orange px-3 py-2 text-white">
+                    {category.name}
                   </Text>
                 ))}
               </View>

@@ -25,9 +25,17 @@ const addProduct = async (values: AddProductValues): Promise<AddProductResponse>
   return request.post(`/products`, values);
 };
 
+type EditProductBody = AddProductValues & {
+  id: string;
+};
+const editProduct = async (values: EditProductBody): Promise<AddProductResponse> => {
+  return request.put(`/products`, values);
+};
+
 export const products = {
   getAll,
   getOne,
   search,
   addProduct,
+  editProduct,
 };
