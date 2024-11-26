@@ -1,3 +1,5 @@
+import { toBrazillianCurrency } from '../format/currency';
+
 export enum REGEX {
   EMAIL_ADRESS = '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$',
   PHONE_NUMBER = '^\\([1-9]{2}\\) (?:[2-8]|9[1-9])[0-9]{3}-[0-9]{4}$',
@@ -8,6 +10,8 @@ export enum REGEX {
   CREDIT_CARD = '^\\d{4} \\d{4} \\d{4} \\d{4}$',
   EXPIRATION_DATE = '^(0[1-9]|1[0-2])\\/?([0-9]{4})$',
   ONLY_NUMBERS = '^[0-9]*$',
+  ONLY_NUMBERS_AND_DOTS = '^[0-9.,]*$',
+  BR_PRICE = '^(R\\$ )?\\d{1,3}(\\.\\d{3})*(,\\d{2})?$',
 }
 
 export const validate = (value: string, regex: REGEX) => {
@@ -37,6 +41,8 @@ export const applyMask = (value: string, regex: REGEX) => {
       return value.replace(/^(\d{2})(\d{4})/, '$1/$2');
     case REGEX.ONLY_NUMBERS:
       return value.replace(/\D/g, '');
+    case REGEX.BR_PRICE:
+      return toBrazillianCurrency(parseFloat(value || '0'));
     default:
       return value;
   }

@@ -1,9 +1,9 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { Text, TouchableOpacity, View } from 'react-native';
+import CurrencyInput from 'react-native-currency-input';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputCurrency, InputField } from '@/components/ui/input';
 import { addProductSchema, AddProductValues } from '@/schemas';
 import { categories } from '@/services/categories';
 
@@ -35,7 +35,7 @@ export default function AddProduct() {
     defaultValues: {
       name: '',
       image: '',
-      price: '0',
+      price: 0,
       description: '',
       categories: [],
     },
@@ -115,13 +115,11 @@ export default function AddProduct() {
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <InputField
-                    onBlur={onBlur}
-                    onChangeText={onChange}
+                  <InputCurrency
                     value={value}
-                    type="text"
-                    placeholder="R$ 0,00"
-                    keyboardType="numeric"
+                    onChangeValue={onChange}
+                    onBlur={onBlur}
+                    maxValue={99999}
                   />
                 )}
                 name="price"

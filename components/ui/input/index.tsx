@@ -8,6 +8,7 @@ import { withStyleContextAndStates } from '@gluestack-ui/nativewind-utils/withSt
 import { cssInterop } from 'nativewind';
 import React, { useMemo } from 'react';
 import { View, Pressable, TextInput, Platform } from 'react-native';
+import CurrencyInput from 'react-native-currency-input';
 import { Svg } from 'react-native-svg';
 const SCOPE = 'INPUT';
 
@@ -91,9 +92,9 @@ cssInterop(UIInput.Slot, { className: 'style' });
 cssInterop(UIInput.Input, {
   className: { target: 'style', nativeStyleToProp: { textAlign: true } },
 });
-//@ts-ignore
 cssInterop(UIInput.Icon, {
   className: {
+    //@ts-ignore
     target: 'style',
     nativeStyleToProp: {
       height: true,
@@ -165,9 +166,32 @@ const InputField = React.forwardRef<React.ElementRef<typeof UIInput.Input>, IInp
   }
 );
 
+type IInputCurrencyProps = React.ComponentProps<typeof CurrencyInput> &
+  VariantProps<typeof inputFieldStyle> & { className?: string };
+
+const InputCurrency = React.forwardRef<React.ElementRef<typeof CurrencyInput>, IInputCurrencyProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <CurrencyInput
+        ref={ref}
+        prefix="R$ "
+        delimiter="."
+        separator=","
+        precision={2}
+        minValue={0}
+        {...props}
+        className={inputFieldStyle({
+          class: className,
+        })}
+      />
+    );
+  }
+);
+
 Input.displayName = 'Input';
 InputIcon.displayName = 'InputIcon';
 InputSlot.displayName = 'InputSlot';
 InputField.displayName = 'InputField';
+InputCurrency.displayName = 'InputCurrency';
 
-export { Input, InputField, InputIcon, InputSlot };
+export { Input, InputField, InputCurrency, InputIcon, InputSlot };

@@ -11,6 +11,8 @@ export const INVALID = {
   EXPIRATION_DATE: 'A data deve ser no formato Mês/Ano',
   URL: 'URL inválida',
   NUMBER: 'Número inválido',
+  MIN_VALUE: (min: number | string) => `Valor mínimo: ${min}`,
+  MAX_VALUE: (max: number | string) => `Valor máximo: ${max}`,
 };
 
 export const REQUIRED = {
