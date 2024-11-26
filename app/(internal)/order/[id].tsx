@@ -6,6 +6,7 @@ import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
+import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
 import { ORDER_STATUS, ORDER_STATUS_COLOR, ORDER_STATUS_LABEL } from '@/constants';
@@ -14,7 +15,6 @@ import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 import { toBrazilianDate } from '@/utils/format/date';
 import { secureStore } from '@/utils/secureStore';
-import Loader from '@/components/loader';
 
 type Params = {
   id: string;
@@ -113,14 +113,14 @@ export default function Order() {
             </>
           )}
 
-          {order.status === ORDER_STATUS.DELIVERED && order.deliveryFeedback?.stars && (
+          {order.status === ORDER_STATUS.DELIVERED && order.feedback?.deliveryStars && (
             <View className="gap-2">
               <Text className="text-lg text-beige">Entrega:</Text>
-              <TextHighlight>{order.deliveryFeedback.comment || 'Sem comentário.'}</TextHighlight>
+              <TextHighlight>{order.feedback.deliveryComment || 'Sem comentário.'}</TextHighlight>
               <View className="flex-row items-center justify-between">
                 <Text className="w-1/3 text-lg text-beige">Satisfação:</Text>
                 <StarRatingDisplay
-                  rating={order.deliveryFeedback.stars}
+                  rating={order.feedback.deliveryStars}
                   starSize={24}
                   color={colors.beige}
                 />

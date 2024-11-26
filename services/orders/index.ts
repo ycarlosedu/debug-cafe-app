@@ -29,7 +29,7 @@ const create = async (data: CreateOrderBody): Promise<CreateOrderResponse> => {
 type addFeedbackBody = FeedbackValues & {
   orderId: string;
 };
-const addFeedback = async (data: addFeedbackBody): Promise<void> => {
+const addFeedback = async (data: addFeedbackBody): Promise<FeedbackValues> => {
   return request.post(`/order-feedback`, data);
 };
 

@@ -1,11 +1,7 @@
 import { ProductInOrder } from './product';
 
+import { FeedbackValues } from '@/app/(internal)/order-feedback/[id]';
 import { ORDER_STATUS } from '@/constants';
-
-type Feedback = {
-  comment: string;
-  stars: number;
-};
 
 export type Order = {
   id: string;
@@ -17,8 +13,7 @@ export type Order = {
     street: string;
     number: string;
   };
-  feedback?: Feedback;
-  deliveryFeedback?: Feedback;
+  feedback?: FeedbackValues;
 };
 
 export type DetailedOrder = Order & {

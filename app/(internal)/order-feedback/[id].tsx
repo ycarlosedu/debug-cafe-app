@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, Text, View } from 'react-native';
@@ -18,17 +19,17 @@ import {
 } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
 import { ERROR, REQUIRED } from '@/constants';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Order } from '@/models/order';
 import { myOrders } from '@/services/orders';
 import { secureStore } from '@/utils/secureStore';
 
 const FEEDBACK_MAX_LENGTH = 255;
 
 const feedbackSchema = z.object({
-  feedbackComment: z.string().max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
-  feedbackStars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
-  deliveryFeedbackComment: z.string().max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
-  deliveryFeedbackStars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
+  comment: z.string().max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
+  stars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
+  deliveryComment: z.string().max(FEEDBACK_MAX_LENGTH, REQUIRED.MAX(FEEDBACK_MAX_LENGTH)),
+  deliveryStars: z.number().min(1, REQUIRED.FIELD).max(5, REQUIRED.MAX_STARS),
 });
 
 export type FeedbackValues = z.infer<typeof feedbackSchema>;
@@ -43,9 +44,13 @@ export default function OrderFeedback() {
 
   const addFeedbackMutation = useMutation({
     mutationFn: myOrders.addFeedback,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['order', id, secureStore.getToken()],
+    onSuccess: (feedback) => {
+      queryClient.setQueryData(['order', id, secureStore.getToken()], (data: Order) => ({
+        ...data,
+        feedback,
+      }));
+      queryClient.setQueryData(['orders', secureStore.getToken()], (data: Order[]) => {
+        return data.map((order) => (order.id === id ? { ...order, feedback } : order));
       });
       router.back();
     },
@@ -61,10 +66,10 @@ export default function OrderFeedback() {
   } = useForm<FeedbackValues>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      feedbackComment: '',
-      feedbackStars: 1,
-      deliveryFeedbackComment: '',
-      deliveryFeedbackStars: 1,
+      comment: '',
+      stars: 1,
+      deliveryComment: '',
+      deliveryStars: 1,
     },
   });
 
@@ -79,25 +84,25 @@ export default function OrderFeedback() {
         <Container className="gap-6 px-12">
           <View className="gap-2">
             <Text className="text-center text-2xl font-bold text-beige">Sobre os Produtos</Text>
-            <FormControl isInvalid={Boolean(errors.feedbackStars?.message)}>
+            <FormControl isInvalid={Boolean(errors.stars?.message)}>
               <FormControlLabel>
                 <FormControlLabelText>Satisfação</FormControlLabelText>
               </FormControlLabel>
               <Controller
                 control={control}
-                name="feedbackStars"
+                name="stars"
                 render={({ field: { onChange, value } }) => (
                   <StarRating enableHalfStar={false} rating={value} onChange={onChange} />
                 )}
               />
             </FormControl>
-            <FormControl isInvalid={Boolean(errors.feedbackComment?.message)}>
+            <FormControl isInvalid={Boolean(errors.comment?.message)}>
               <FormControlLabel>
                 <FormControlLabelText>Algum comentário?</FormControlLabelText>
               </FormControlLabel>
               <Controller
                 control={control}
-                name="feedbackComment"
+                name="comment"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <>
                     <Input>
@@ -120,31 +125,31 @@ export default function OrderFeedback() {
                   </>
                 )}
               />
-              <FormControlErrorText>{errors.feedbackComment?.message}</FormControlErrorText>
+              <FormControlErrorText>{errors.comment?.message}</FormControlErrorText>
             </FormControl>
           </View>
 
           <View className="gap-2">
             <Text className="text-center text-2xl font-bold text-beige">Sobre a Entrega</Text>
-            <FormControl isInvalid={Boolean(errors.deliveryFeedbackStars?.message)}>
+            <FormControl isInvalid={Boolean(errors.deliveryStars?.message)}>
               <FormControlLabel>
                 <FormControlLabelText>Satisfação</FormControlLabelText>
               </FormControlLabel>
               <Controller
                 control={control}
-                name="deliveryFeedbackStars"
+                name="deliveryStars"
                 render={({ field: { onChange, value } }) => (
                   <StarRating enableHalfStar={false} rating={value} onChange={onChange} />
                 )}
               />
             </FormControl>
-            <FormControl isInvalid={Boolean(errors.deliveryFeedbackComment?.message)}>
+            <FormControl isInvalid={Boolean(errors.deliveryComment?.message)}>
               <FormControlLabel>
                 <FormControlLabelText>Algum comentário?</FormControlLabelText>
               </FormControlLabel>
               <Controller
                 control={control}
-                name="deliveryFeedbackComment"
+                name="deliveryComment"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <>
                     <Input>
@@ -167,7 +172,7 @@ export default function OrderFeedback() {
                   </>
                 )}
               />
-              <FormControlErrorText>{errors.deliveryFeedbackComment?.message}</FormControlErrorText>
+              <FormControlErrorText>{errors.deliveryComment?.message}</FormControlErrorText>
             </FormControl>
           </View>
 

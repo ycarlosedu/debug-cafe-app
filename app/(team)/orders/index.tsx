@@ -86,7 +86,7 @@ export default function MyOrders() {
                         Avaliação -
                       </AccordionContentText>
                       <StarRatingDisplay
-                        rating={item.feedback.stars}
+                        rating={item.feedback?.stars}
                         starSize={24}
                         color={colors.brown}
                       />
