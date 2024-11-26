@@ -23,7 +23,7 @@ export default function Product() {
   const { user } = useAuthStore();
 
   const { data: product } = useQuery({
-    queryKey: ['products', id],
+    queryKey: ['product', id],
     queryFn: () => products.getOne(id),
   });
 

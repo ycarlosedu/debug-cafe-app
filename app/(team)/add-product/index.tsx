@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Stack, router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import CurrencyInput from 'react-native-currency-input';
 
 import { Button, ButtonText } from '@/components/button';
@@ -15,10 +15,14 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputCurrency, InputField } from '@/components/ui/input';
+import { ERROR } from '@/constants';
 import { addProductSchema, AddProductValues } from '@/schemas';
 import { categories } from '@/services/categories';
+import { products } from '@/services/products';
 
 export default function AddProduct() {
+  const queryClient = useQueryClient();
+
   const { data: categoriesList } = useQuery({
     queryKey: ['categories'],
     queryFn: categories.getAll,
@@ -29,6 +33,7 @@ export default function AddProduct() {
     handleSubmit,
     setValue,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<AddProductValues>({
     resolver: zodResolver(addProductSchema),
@@ -41,8 +46,24 @@ export default function AddProduct() {
     },
   });
 
+  const addProductMutation = useMutation({
+    mutationFn: products.addProduct,
+    onSuccess: ({ product }) => {
+      console.log('🚀 ~ AddProduct ~ product:', product);
+      queryClient.invalidateQueries({
+        queryKey: ['products'],
+      });
+      queryClient.setQueryData(['product', product.id], product);
+      reset();
+      router.push(`/product/${product.id}`);
+    },
+    onError: (error: any) => {
+      Alert.alert('Erro', error.message || ERROR.GENERIC);
+    },
+  });
+
   const onSubmit = async (values: AddProductValues) => {
-    console.log(values);
+    addProductMutation.mutate(values);
   };
 
   const handleCategory = (categoryId: string) => {
@@ -97,7 +118,6 @@ export default function AddProduct() {
                     onChangeText={onChange}
                     value={value}
                     type="text"
-                    keyboardType="url"
                     placeholder="https://www.example.com/image.jpg"
                     autoCapitalize="none"
                   />
@@ -172,10 +192,7 @@ export default function AddProduct() {
             <FormControlErrorText>{errors.categories?.message}</FormControlErrorText>
           </FormControl>
 
-          <Button
-            onPress={handleSubmit(onSubmit)}
-            // isLoading={signInMutation.isPending}
-          >
+          <Button onPress={handleSubmit(onSubmit)} isLoading={addProductMutation.isPending}>
             <ButtonText>Salvar</ButtonText>
           </Button>
         </Container>

@@ -1,5 +1,6 @@
 import { SearchProductValues } from '@/app/(home)/search';
 import { Product } from '@/models/product';
+import { AddProductValues } from '@/schemas';
 import { request } from '@/utils/request';
 
 type GetAllProductsResponse = Product[];
@@ -16,8 +17,17 @@ const search = async (values: SearchProductValues): Promise<GetAllProductsRespon
   return request.post(`/products/search`, values);
 };
 
+type AddProductResponse = {
+  product: Product;
+  message: string;
+};
+const addProduct = async (values: AddProductValues): Promise<AddProductResponse> => {
+  return request.post(`/products`, values);
+};
+
 export const products = {
   getAll,
   getOne,
   search,
+  addProduct,
 };
