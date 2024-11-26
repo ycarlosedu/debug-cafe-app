@@ -31,3 +31,10 @@ export const addProductSchema = z.object({
 });
 
 export type AddProductValues = z.infer<typeof addProductSchema>;
+
+export const addCategorySchema = z.object({
+  name: z.string().min(1, REQUIRED.FIELD).max(255, REQUIRED.MAX(255)),
+  image: z.string().min(1, REQUIRED.FIELD).url(INVALID.URL),
+});
+
+export type AddCategoryValues = z.infer<typeof addCategorySchema>;

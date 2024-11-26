@@ -6,6 +6,7 @@ import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
+import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import {
   Accordion,
@@ -26,11 +27,19 @@ import { toBrazilianDate } from '@/utils/format/date';
 export default function MyOrders() {
   const { user, handleLogout } = useAuthStore();
 
-  const { data: orders, isFetched } = useQuery({
+  const {
+    data: orders,
+    isFetched,
+    isLoading,
+  } = useQuery({
     queryKey: ['orders', user?.email],
     queryFn: myOrders.getAll,
     enabled: user?.userType !== USER_TYPE.GUEST,
   });
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>

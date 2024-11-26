@@ -163,7 +163,7 @@ export default function Profile() {
                     </Button>
                   </Link>
 
-                  <Link href="/(team)/orders" asChild>
+                  <Link href="/(team)/add-category" asChild>
                     <Button className="justify-between">
                       <View className="flex-row items-center gap-2">
                         <FontAwesome size={24} name="tag" color={colors.brown} />

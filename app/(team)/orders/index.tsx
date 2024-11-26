@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 import { Container } from '@/components/container';
+import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import {
   Accordion,
@@ -25,10 +26,18 @@ import { toBrazilianDate } from '@/utils/format/date';
 export default function MyOrders() {
   const { user } = useAuthStore();
 
-  const { data: orders, isFetched } = useQuery({
+  const {
+    data: orders,
+    isFetched,
+    isLoading,
+  } = useQuery({
     queryKey: ['pending-orders', user?.email],
     queryFn: teamOrders.getPendingOrders,
   });
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>

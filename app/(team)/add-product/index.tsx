@@ -49,7 +49,6 @@ export default function AddProduct() {
   const addProductMutation = useMutation({
     mutationFn: products.addProduct,
     onSuccess: ({ product }) => {
-      console.log('🚀 ~ AddProduct ~ product:', product);
       queryClient.invalidateQueries({
         queryKey: ['products'],
       });
