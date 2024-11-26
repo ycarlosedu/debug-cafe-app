@@ -16,14 +16,16 @@ import {
 } from '@/components/ui/accordion';
 import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL } from '@/constants';
 import { teamOrders } from '@/services/orders';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 import { toBrazillianCurrency } from '@/utils/format/currency';
 import { toBrazilianDate } from '@/utils/format/date';
-import { secureStore } from '@/utils/secureStore';
 
 export default function MyOrders() {
+  const { user } = useAuthStore();
+
   const { data: orders, isFetched } = useQuery({
-    queryKey: ['pending-orders', secureStore.getToken()],
+    queryKey: ['pending-orders', user?.email],
     queryFn: teamOrders.getPendingOrders,
   });
 

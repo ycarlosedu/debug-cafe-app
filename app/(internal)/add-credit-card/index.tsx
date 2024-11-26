@@ -8,18 +8,19 @@ import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { ERROR } from '@/constants';
 import { CreditCard } from '@/models/credit-card';
 import { myCreditCards } from '@/services/credit-cards';
-import { secureStore } from '@/utils/secureStore';
+import useAuthStore from '@/stores/useAuthStore';
 
 export default function Payment() {
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const addCreditCardMutation = useMutation({
     mutationFn: myCreditCards.add,
     onSuccess: ({ creditCard }) => {
-      queryClient.setQueryData(
-        ['credit-cards', secureStore.getToken()],
-        (oldData: CreditCard[]) => [...oldData, creditCard]
-      );
+      queryClient.setQueryData(['credit-cards', user?.email], (oldData: CreditCard[]) => [
+        ...oldData,
+        creditCard,
+      ]);
       router.back();
     },
     onError: (error: any) => {

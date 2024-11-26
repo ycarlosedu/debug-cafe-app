@@ -1,13 +1,13 @@
 import { Redirect, Stack } from 'expo-router';
 
+import { isUserFromTeam } from '@/constants';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
-import { USER_TYPE } from '@/constants';
 
 export default function InternalLayout() {
   const { isAuthenticated, user } = useAuthStore();
 
-  if (!isAuthenticated || user?.userType === USER_TYPE.CLIENT) {
+  if (!isAuthenticated || !isUserFromTeam(user?.userType)) {
     return <Redirect href="/(home)" />;
   }
 

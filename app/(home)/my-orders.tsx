@@ -21,13 +21,12 @@ import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 import { toBrazillianCurrency } from '@/utils/format/currency';
 import { toBrazilianDate } from '@/utils/format/date';
-import { secureStore } from '@/utils/secureStore';
 
 export default function MyOrders() {
   const { user, handleLogout } = useAuthStore();
 
   const { data: orders } = useQuery({
-    queryKey: ['orders', secureStore.getToken()],
+    queryKey: ['orders', user?.email],
     queryFn: myOrders.getAll,
     enabled: user?.userType !== USER_TYPE.GUEST,
   });

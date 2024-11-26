@@ -11,10 +11,10 @@ import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
 import { ORDER_STATUS, ORDER_STATUS_COLOR, ORDER_STATUS_LABEL } from '@/constants';
 import { myOrders } from '@/services/orders';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 import { toBrazilianDate } from '@/utils/format/date';
-import { secureStore } from '@/utils/secureStore';
 
 type Params = {
   id: string;
@@ -22,9 +22,10 @@ type Params = {
 
 export default function Order() {
   const { id } = useLocalSearchParams<Params>();
+  const { user } = useAuthStore();
 
   const { data: order, isLoading } = useQuery({
-    queryKey: ['order', id, secureStore.getToken()],
+    queryKey: ['order', id, user?.email],
     queryFn: () => myOrders.getOne(id),
   });
 

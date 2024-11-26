@@ -11,6 +11,7 @@ import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import SelectedAddress from '@/components/selectedAddress';
 import SelectedPayment from '@/components/selectedPayment';
 import { ERROR, USER_TYPE } from '@/constants';
+import { Order } from '@/models/order';
 import { myAddress } from '@/services/address';
 import { myCreditCards } from '@/services/credit-cards';
 import { myOrders } from '@/services/orders';
@@ -18,28 +19,25 @@ import useAuthStore from '@/stores/useAuthStore';
 import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
-import { secureStore } from '@/utils/secureStore';
 
 export default function Cart() {
   const queryClient = useQueryClient();
   const { user, handleLogout } = useAuthStore();
 
   const { data: address } = useQuery({
-    queryKey: ['address', secureStore.getToken()],
+    queryKey: ['address', user?.email],
     queryFn: myAddress.get,
   });
 
   const { data: creditCards } = useQuery({
-    queryKey: ['credit-cards', secureStore.getToken()],
+    queryKey: ['credit-cards', user?.email],
     queryFn: myCreditCards.getAll,
   });
 
   const makeOrderMutation = useMutation({
     mutationFn: myOrders.create,
     onSuccess: ({ order }) => {
-      queryClient.invalidateQueries({
-        queryKey: ['orders', secureStore.getToken()],
-      });
+      queryClient.setQueryData(['orders', user?.email], (oldData: Order[]) => [order, ...oldData]);
       router.replace({
         pathname: '/order/[id]',
         params: { id: order.id },

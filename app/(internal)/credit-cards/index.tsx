@@ -9,14 +9,15 @@ import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { Spinner } from '@/components/ui/spinner';
 import { ERROR } from '@/constants';
 import { myCreditCards } from '@/services/credit-cards';
+import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
-import { secureStore } from '@/utils/secureStore';
 
 export default function CreditCards() {
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const { data: creditCards } = useQuery({
-    queryKey: ['credit-cards', secureStore.getToken()],
+    queryKey: ['credit-cards', user?.email],
     queryFn: myCreditCards.getAll,
   });
 
@@ -24,7 +25,7 @@ export default function CreditCards() {
     mutationFn: myCreditCards.deleteCard,
     onSuccess: ({ id }) => {
       queryClient.setQueryData(
-        ['credit-cards', secureStore.getToken()],
+        ['credit-cards', user?.email],
         creditCards?.filter((card) => card.id !== id)
       );
     },

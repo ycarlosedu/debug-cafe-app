@@ -21,7 +21,7 @@ import { Input, InputField } from '@/components/ui/input';
 import { ERROR, REQUIRED } from '@/constants';
 import { Order } from '@/models/order';
 import { myOrders } from '@/services/orders';
-import { secureStore } from '@/utils/secureStore';
+import useAuthStore from '@/stores/useAuthStore';
 
 const FEEDBACK_MAX_LENGTH = 255;
 
@@ -41,15 +41,16 @@ type Params = {
 export default function OrderFeedback() {
   const { id } = useLocalSearchParams<Params>();
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const addFeedbackMutation = useMutation({
     mutationFn: myOrders.addFeedback,
     onSuccess: (feedback) => {
-      queryClient.setQueryData(['order', id, secureStore.getToken()], (data: Order) => ({
+      queryClient.setQueryData(['order', id, user?.email], (data: Order) => ({
         ...data,
         feedback,
       }));
-      queryClient.setQueryData(['orders', secureStore.getToken()], (data: Order[]) => {
+      queryClient.setQueryData(['orders', user?.email], (data: Order[]) => {
         return data.map((order) => (order.id === id ? { ...order, feedback } : order));
       });
       router.back();

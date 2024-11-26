@@ -7,22 +7,14 @@ import UserImage from '@/assets/images/user.png';
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
-import { USER_TYPE } from '@/constants';
+import { USER_TYPE, USER_TYPE_LABEL } from '@/constants';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
 
 preview(<Profile />);
 
-const USER_TYPE_LABEL = {
-  [USER_TYPE.GUEST]: 'Convidado',
-  [USER_TYPE.CLIENT]: 'Cliente',
-  [USER_TYPE.STAFF]: 'Funcionário',
-  [USER_TYPE.MANAGER]: 'Supervisor',
-  [USER_TYPE.DELIVERY]: 'Motoboy',
-};
-
 export default function Profile() {
-  const { handleLogout, isAuthenticated, user } = useAuthStore();
+  const { handleLogout, user } = useAuthStore();
 
   return (
     <>
@@ -164,7 +156,7 @@ export default function Profile() {
                   <Button className="justify-between">
                     <View className="flex-row items-center gap-2">
                       <FontAwesome size={24} name="edit" color={colors.brown} />
-                      <ButtonText>Revisar alterações (supervisores)</ButtonText>
+                      <ButtonText>Adicionar produtos (supervisores)</ButtonText>
                     </View>
                     <FontAwesome size={24} name="arrow-right" color={colors.brown} />
                   </Button>

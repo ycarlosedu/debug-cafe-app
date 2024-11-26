@@ -15,7 +15,6 @@ import { myAddress } from '@/services/address';
 import { categories } from '@/services/categories';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
-import { secureStore } from '@/utils/secureStore';
 
 export default function Home() {
   const { user } = useAuthStore();
@@ -31,7 +30,7 @@ export default function Home() {
   }
 
   const { data: address } = useQuery({
-    queryKey: ['address', secureStore.getToken()],
+    queryKey: ['address', user?.email],
     queryFn: myAddress.get,
     enabled: user?.userType !== USER_TYPE.GUEST,
   });

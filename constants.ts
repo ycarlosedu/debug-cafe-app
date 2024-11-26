@@ -39,6 +39,14 @@ export enum USER_TYPE {
   DELIVERY = 'DELIVERY',
 }
 
+export const USER_TYPE_LABEL = {
+  [USER_TYPE.GUEST]: 'Convidado',
+  [USER_TYPE.CLIENT]: 'Cliente',
+  [USER_TYPE.STAFF]: 'Funcionário',
+  [USER_TYPE.MANAGER]: 'Supervisor',
+  [USER_TYPE.DELIVERY]: 'Motoboy',
+};
+
 export const isUserFromTeam = (userType?: USER_TYPE) => {
   if (!userType) return false;
   return [USER_TYPE.STAFF, USER_TYPE.MANAGER, USER_TYPE.DELIVERY].includes(userType);

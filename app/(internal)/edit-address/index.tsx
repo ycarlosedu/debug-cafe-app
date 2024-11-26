@@ -7,14 +7,15 @@ import RegisterAddressForm, { AddressFormValues } from '@/components/forms/addre
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { ERROR } from '@/constants';
 import { myAddress } from '@/services/address';
+import useAuthStore from '@/stores/useAuthStore';
 import { applyMask, REGEX } from '@/utils/regex';
-import { secureStore } from '@/utils/secureStore';
 
 export default function Address() {
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const { data: address } = useQuery({
-    queryKey: ['address', secureStore.getToken()],
+    queryKey: ['address', user?.email],
     queryFn: myAddress.get,
   });
 
@@ -28,7 +29,7 @@ export default function Address() {
   const updateAddressMutation = useMutation({
     mutationFn: myAddress.update,
     onSuccess: ({ address }) => {
-      queryClient.setQueryData(['address', secureStore.getToken()], address);
+      queryClient.setQueryData(['address', user?.email], address);
       router.back();
     },
     onError: (error: any) => {
@@ -39,7 +40,7 @@ export default function Address() {
   const createAddressMutation = useMutation({
     mutationFn: myAddress.create,
     onSuccess: ({ address }) => {
-      queryClient.setQueryData(['address', secureStore.getToken()], address);
+      queryClient.setQueryData(['address', user?.email], address);
       router.back();
     },
     onError: (error: any) => {

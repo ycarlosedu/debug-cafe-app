@@ -1,5 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -16,11 +17,10 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { ERROR, REQUIRED, USER_TYPE } from '@/constants';
-import colors from '@/styles/colors';
-import { useMutation } from '@tanstack/react-query';
+import { ERROR, REQUIRED, USER_TYPE, USER_TYPE_LABEL } from '@/constants';
 import { auth } from '@/services/auth';
 import useAuthStore from '@/stores/useAuthStore';
+import colors from '@/styles/colors';
 
 const internalAccessSchema = z.object({
   userType: z.nativeEnum(USER_TYPE),
@@ -31,13 +31,6 @@ export type InternalAccessValues = z.infer<typeof internalAccessSchema>;
 
 type Params = {
   user: USER_TYPE;
-};
-
-const USER_TYPE_LABEL = {
-  [USER_TYPE.CLIENT]: 'Cliente',
-  [USER_TYPE.STAFF]: 'Funcionário',
-  [USER_TYPE.MANAGER]: 'Supervisor',
-  [USER_TYPE.DELIVERY]: 'Motoboy',
 };
 
 export default function InternalAccess() {

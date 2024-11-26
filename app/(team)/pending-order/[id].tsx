@@ -5,6 +5,7 @@ import { Alert, Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
+import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
 import {
@@ -15,13 +16,11 @@ import {
   ORDER_STATUS_LABEL,
   USER_TYPE,
 } from '@/constants';
+import { DetailedOrder } from '@/models/order';
 import { teamOrders } from '@/services/orders';
+import useAuthStore from '@/stores/useAuthStore';
 import { format } from '@/utils/format';
 import { toBrazilianDate } from '@/utils/format/date';
-import { secureStore } from '@/utils/secureStore';
-import Loader from '@/components/loader';
-import { DetailedOrder } from '@/models/order';
-import useAuthStore from '@/stores/useAuthStore';
 
 type Params = {
   id: string;
@@ -33,23 +32,20 @@ export default function PendingOrder() {
   const { user } = useAuthStore();
 
   const { data: order, isLoading } = useQuery({
-    queryKey: ['pending-order', id, secureStore.getToken()],
+    queryKey: ['pending-order', id, user?.email],
     queryFn: () => teamOrders.getPendingOrder(id),
   });
 
   const updateOrderStatusMutation = useMutation({
     mutationFn: teamOrders.updateOrderStatus,
     onSuccess: ({ status }) => {
-      queryClient.invalidateQueries({
-        queryKey: ['pending-orders', secureStore.getToken()],
-      });
-      queryClient.setQueryData(
-        ['pending-order', id, secureStore.getToken()],
-        (data: DetailedOrder) => ({
-          ...data,
-          status,
-        })
+      queryClient.setQueryData(['pending-orders', user?.email], (oldData: DetailedOrder[]) =>
+        oldData.map((oldOrder) => (oldOrder.id === id ? { ...oldOrder, status } : oldOrder))
       );
+      queryClient.setQueryData(['pending-order', id, user?.email], (data: DetailedOrder) => ({
+        ...data,
+        status,
+      }));
     },
     onError: (error: any) => {
       Alert.alert('Erro', error.message || ERROR.GENERIC);
@@ -60,18 +56,15 @@ export default function PendingOrder() {
     mutationFn: teamOrders.cancelOrder,
     onSuccess: ({ status }) => {
       queryClient.invalidateQueries({
-        queryKey: ['orders', secureStore.getToken()],
+        queryKey: ['orders', user?.email],
       });
       queryClient.invalidateQueries({
-        queryKey: ['pending-orders', secureStore.getToken()],
+        queryKey: ['pending-orders', user?.email],
       });
-      queryClient.setQueryData(
-        ['pending-order', id, secureStore.getToken()],
-        (data: DetailedOrder) => ({
-          ...data,
-          status,
-        })
-      );
+      queryClient.setQueryData(['pending-order', id, user?.email], (data: DetailedOrder) => ({
+        ...data,
+        status,
+      }));
     },
     onError: (error: any) => {
       Alert.alert('Erro', error.message || ERROR.GENERIC);
