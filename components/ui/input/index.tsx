@@ -72,7 +72,7 @@ const UIInput = createInput({
 });
 
 const inputStyle = tva({
-  base: 'flex-row content-center items-center overflow-hidden rounded-lg border border-beige px-1 py-3 outline-none data-[invalid=true]:border-error-900 data-[focus=true]:border-white data-[disabled=true]:bg-gray-light data-[disabled=true]:opacity-40 data-[disabled=true]:hover:border-background-300',
+  base: 'flex-row content-center items-center overflow-hidden rounded-lg border border-beige px-1 py-3 outline-none data-[invalid=true]:border-error-500 data-[focus=true]:border-white data-[disabled=true]:bg-gray-light data-[disabled=true]:opacity-40 data-[disabled=true]:hover:border-background-300',
 });
 
 const inputIconStyle = tva({

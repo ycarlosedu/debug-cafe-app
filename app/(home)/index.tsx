@@ -4,7 +4,7 @@ import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Image, Text, View } from 'react-native';
 
-import UserImage from '@/assets/images/user.png';
+import LogoImage from '@/assets/icon.png';
 import CartButton from '@/components/cartButton';
 import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
@@ -20,7 +20,11 @@ export default function Home() {
   const { user } = useAuthStore();
   const [categoriesIds, setCategoriesIds] = useState<string[]>();
 
-  const { data: categoriesList } = useQuery({
+  const {
+    data: categoriesList,
+    isLoading: isLoadingCategories,
+    isError,
+  } = useQuery({
     queryKey: ['categories'],
     queryFn: categories.getAll,
   });
@@ -29,7 +33,7 @@ export default function Home() {
     setCategoriesIds([categoriesList[0]?.id, categoriesList[1]?.id]);
   }
 
-  const { data: address } = useQuery({
+  const { data: address, isLoading: isLoadingAddress } = useQuery({
     queryKey: ['address', user?.email],
     queryFn: myAddress.get,
     enabled: user?.userType !== USER_TYPE.GUEST,
@@ -53,14 +57,16 @@ export default function Home() {
         <Container className="items-center gap-8">
           <View className="items-center gap-3">
             <Image
-              source={UserImage}
+              source={LogoImage}
               className="rounded-full border-2 border-beige"
-              style={{ width: 56, height: 56 }}
+              style={{ width: 80, height: 80 }}
             />
             <View className="flex-row items-center justify-center gap-2">
               <FontAwesome size={16} color={colors.white} name="map-marker" />
               <Text className="text-sm text-white">
-                {address?.city || 'Endereço não cadastrado'}
+                {isLoadingAddress
+                  ? 'Buscando endereço...'
+                  : address?.city || 'Endereço não encontrado'}
               </Text>
             </View>
             <Text className="text-lg font-medium text-beige">O que vamos comer hoje?</Text>
@@ -71,6 +77,10 @@ export default function Home() {
             selectedCategoriesIds={categoriesIds}
             onCategoryPress={handleChangeCategory}
           />
+          {isError && <Text className="w-full pl-4 text-white">Erro ao buscar produtos</Text>}
+          {isLoadingCategories && (
+            <Text className="w-full pl-4 text-white">Buscando produtos...</Text>
+          )}
           {categoriesIds?.map((categoryId) => (
             <ProductList key={categoryId} categoryId={categoryId} />
           ))}

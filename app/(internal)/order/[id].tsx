@@ -27,6 +27,11 @@ export default function Order() {
   const { data: order, isLoading } = useQuery({
     queryKey: ['order', id, user?.email],
     queryFn: () => myOrders.getOne(id),
+    staleTime({ state: { data } }) {
+      if (data?.status === ORDER_STATUS.CANCELED || data?.status === ORDER_STATUS.DELIVERED)
+        return 1000 * 60 * 60; // 1 hour
+      return 1000 * 60; // 1 minute
+    },
   });
 
   if (isLoading) {

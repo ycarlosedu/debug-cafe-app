@@ -90,7 +90,7 @@ export default function Search() {
               </Input>
               <FormControlErrorText>{errors.name?.message}</FormControlErrorText>
             </FormControl>
-            <Button onPress={handleSubmit(onSubmit)}>
+            <Button onPress={handleSubmit(onSubmit)} isLoading={searchProductsMutation.isPending}>
               <ButtonText>Buscar</ButtonText>
             </Button>
           </View>

@@ -6,9 +6,9 @@ import { Container } from './container';
 export default function Loader() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Carregando' }} />
+      <Stack.Screen options={{ title: 'Carregando...' }} />
       <Container className="items-center justify-center px-12">
-        <Text className="text-center text-white">Aguarde um Momento</Text>
+        <Text className="text-center text-white">Aguarde um momento</Text>
       </Container>
     </>
   );

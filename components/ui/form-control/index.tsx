@@ -11,7 +11,7 @@ const formControlStyle = tva({
 });
 
 const formControlErrorTextStyle = tva({
-  base: 'mt-2 text-base text-error-950',
+  base: 'mt-2 rounded-md text-base text-error-300',
 });
 
 const formControlHelperStyle = tva({

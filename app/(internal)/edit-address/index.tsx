@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
 
 import { Container } from '@/components/container';
 import RegisterAddressForm, { AddressFormValues } from '@/components/forms/address-form';
@@ -14,7 +14,7 @@ export default function Address() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
 
-  const { data: address } = useQuery({
+  const { data: address, isLoading } = useQuery({
     queryKey: ['address', user?.email],
     queryFn: myAddress.get,
   });
@@ -57,6 +57,11 @@ export default function Address() {
       <Stack.Screen options={{ title: 'Alterar Endereço' }} />
       <ScrollViewContainer>
         <Container className="gap-8 px-12">
+          {isLoading && (
+            <Text className="text-center text-white">
+              Verificando se você possui endereço cadastrado...
+            </Text>
+          )}
           <RegisterAddressForm
             onSubmit={onSubmitAddressForm}
             defaultValues={defaultValues}

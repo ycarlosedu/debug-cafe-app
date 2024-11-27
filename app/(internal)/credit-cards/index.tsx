@@ -5,6 +5,7 @@ import { Alert, Text, TouchableOpacity, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
+import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { Spinner } from '@/components/ui/spinner';
 import { ERROR } from '@/constants';
@@ -16,7 +17,12 @@ export default function CreditCards() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
 
-  const { data: creditCards } = useQuery({
+  const {
+    data: creditCards,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery({
     queryKey: ['credit-cards', user?.email],
     queryFn: myCreditCards.getAll,
   });
@@ -34,14 +40,23 @@ export default function CreditCards() {
     },
   });
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: 'Meus Cartões' }} />
       <ScrollViewContainer>
         <Container className="gap-8 px-4">
           <View className="gap-4">
-            {creditCards?.length === 0 && (
+            {!creditCards?.length && isSuccess && (
               <Text className="text-center text-xl text-white">Nenhum cartão cadastrado</Text>
+            )}
+            {isError && (
+              <Text className="text-center text-xl text-white">
+                Houve um erro ao buscar os cartões
+              </Text>
             )}
             {creditCards?.map((card) => {
               const isLoading =

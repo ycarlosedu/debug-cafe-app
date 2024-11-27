@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, GestureResponderEvent, Text } from 'react-native';
+import { Alert, GestureResponderEvent, Text, View } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
@@ -79,6 +79,14 @@ export default function InternalAccess() {
       <ScrollViewContainer>
         <Container className="gap-12 px-12">
           <Text className="text-2xl text-white">Acesse como {userLabel}</Text>
+          <View className="gap-2">
+            <Text className="text-lg text-white">
+              Por questões de testes, as senhas são as seguintes:
+            </Text>
+            <Text className="text-white">Funcionário: STAFF</Text>
+            <Text className="text-white">Supervisor: MANAGER</Text>
+            <Text className="text-white">Motoboy: DELIVERY</Text>
+          </View>
           <FormControl isInvalid={Boolean(errors.password?.message)}>
             <FormControlLabel>
               <FormControlLabelText>Senha de {userLabel}</FormControlLabelText>

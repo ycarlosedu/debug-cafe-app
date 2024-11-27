@@ -17,7 +17,13 @@ import {
   AccordionContent,
   AccordionContentText,
 } from '@/components/ui/accordion';
-import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL, USER_TYPE } from '@/constants';
+import {
+  ORDER_STATUS,
+  ORDER_STATUS_COLOR,
+  ORDER_STATUS_ICON,
+  ORDER_STATUS_LABEL,
+  USER_TYPE,
+} from '@/constants';
 import { myOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
@@ -29,12 +35,22 @@ export default function MyOrders() {
 
   const {
     data: orders,
-    isFetched,
+    isSuccess,
     isLoading,
+    isError,
   } = useQuery({
     queryKey: ['orders', user?.email],
     queryFn: myOrders.getAll,
     enabled: user?.userType !== USER_TYPE.GUEST,
+    staleTime({ state: { data } }) {
+      if (
+        data?.every(
+          ({ status }) => status === ORDER_STATUS.CANCELED || status === ORDER_STATUS.DELIVERED
+        )
+      )
+        return 1000 * 60 * 60; // 1 hour
+      return 1000 * 60; // 1 minute
+    },
   });
 
   if (isLoading) {
@@ -49,15 +65,20 @@ export default function MyOrders() {
           {user?.userType === USER_TYPE.GUEST && (
             <View className="gap-4">
               <Text className="text-center text-xl text-white">
-                Usuários convidados não podem realizar pedidos.
+                Usuários convidados não podem realizar pedidos
               </Text>
               <Button onPress={handleLogout}>
                 <ButtonText>Fazer Login</ButtonText>
               </Button>
             </View>
           )}
-          {isFetched && !orders?.length && (
-            <Text className="text-center text-xl text-white">Você ainda não realizou pedidos.</Text>
+          {isError && (
+            <Text className="text-center text-xl text-white">
+              Houve um erro ao buscar seus pedidos
+            </Text>
+          )}
+          {isSuccess && !orders?.length && (
+            <Text className="text-center text-xl text-white">Você ainda não realizou pedidos</Text>
           )}
           <Accordion
             size="lg"
