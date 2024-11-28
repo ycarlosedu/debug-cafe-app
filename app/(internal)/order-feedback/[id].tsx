@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import StarRating from 'react-native-star-rating-widget';
 import { z } from 'zod';
 
@@ -18,7 +18,9 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
-import { ERROR, REQUIRED } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { REQUIRED } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import { Order } from '@/models/order';
 import { myOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
@@ -42,6 +44,7 @@ export default function OrderFeedback() {
   const { id } = useLocalSearchParams<Params>();
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const addFeedbackMutation = useMutation({
     mutationFn: myOrders.addFeedback,
@@ -56,7 +59,11 @@ export default function OrderFeedback() {
       router.back();
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

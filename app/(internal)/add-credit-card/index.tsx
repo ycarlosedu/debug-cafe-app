@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
-import { Alert } from 'react-native';
 
 import { Container } from '@/components/container';
 import CreditCardForm, { CreditCardFormValues } from '@/components/forms/credit-card-form';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
-import { ERROR } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { useMyToast } from '@/hooks/useMyToast';
 import { CreditCard } from '@/models/credit-card';
 import { myCreditCards } from '@/services/credit-cards';
 import useAuthStore from '@/stores/useAuthStore';
@@ -13,6 +13,7 @@ import useAuthStore from '@/stores/useAuthStore';
 export default function Payment() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const addCreditCardMutation = useMutation({
     mutationFn: myCreditCards.add,
@@ -21,10 +22,19 @@ export default function Payment() {
         ...(oldData || []),
         creditCard,
       ]);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message: 'Cartão adicionado com sucesso',
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

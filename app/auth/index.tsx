@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Link, router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, GestureResponderEvent, Text } from 'react-native';
+import { GestureResponderEvent, Text } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
@@ -16,7 +16,9 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
 import { ERROR } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import { signInSchema, SignInValues } from '@/schemas';
 import { auth } from '@/services/auth';
 import useAuthStore from '@/stores/useAuthStore';
@@ -24,6 +26,7 @@ import colors from '@/styles/colors';
 
 export default function Login() {
   const { handleLogin } = useAuthStore();
+  const { showToast } = useMyToast();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = (e: GestureResponderEvent) => {
@@ -38,7 +41,11 @@ export default function Login() {
       router.replace('/(home)');
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 
@@ -49,7 +56,11 @@ export default function Login() {
       router.replace('/(home)');
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

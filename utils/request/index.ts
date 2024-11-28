@@ -37,7 +37,11 @@ request.interceptors.request.use(
   },
   (error) => {
     console.log('Request error:', error);
-    Promise.reject(error);
+    if (error?.message) {
+      return Promise.reject(error);
+    }
+
+    return Promise.reject(new Error(ERROR.GENERIC));
   }
 );
 
@@ -56,11 +60,11 @@ request.interceptors.response.use(
       Alert.alert('Atenção!', 'Sua sessão foi expirada. Por favor, faça login novamente!');
     }
 
-    return Promise.reject(
-      response?.data || {
-        message: ERROR.GENERIC,
-      }
-    );
+    if (response?.data?.message) {
+      return Promise.reject(response?.data);
+    }
+
+    return Promise.reject(new Error(ERROR.GENERIC));
   }
 );
 
@@ -70,50 +74,4 @@ function getHeaders() {
     Accept: 'application/json',
     Authorization: 'Bearer ' + secureStore.getToken(),
   } as AxiosRequestHeaders;
-}
-
-export type EndpointUtils = {
-  onError?: (error: any) => void;
-  onSuccess?: (data: any) => void;
-};
-
-export async function get(uri: string, { onError, onSuccess }: EndpointUtils): Promise<any> {
-  try {
-    const response = await request.get(uri);
-    onSuccess && onSuccess(response.data);
-    return response.data;
-  } catch (error: any) {
-    onError && !isAuthError(error?.status) && onError(error);
-    throw new Error(error);
-  }
-}
-
-export async function post(
-  uri: string,
-  body: any,
-  { onError, onSuccess }: EndpointUtils
-): Promise<any> {
-  try {
-    const response = await request.post(uri, body);
-    onSuccess && onSuccess(response.data);
-    return response.data;
-  } catch (error: any) {
-    onError && !isAuthError(error?.status) && onError(error);
-    throw new Error(error);
-  }
-}
-
-export async function put(
-  uri: string,
-  body: any,
-  { onError, onSuccess }: EndpointUtils
-): Promise<any> {
-  try {
-    const response = await request.put(uri, body);
-    onSuccess && onSuccess(response.data);
-    return response.data;
-  } catch (error: any) {
-    onError && !isAuthError(error?.status) && onError(error);
-    throw new Error(error);
-  }
 }

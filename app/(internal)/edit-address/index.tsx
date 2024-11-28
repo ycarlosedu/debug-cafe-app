@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
-import { Alert, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import { Container } from '@/components/container';
 import RegisterAddressForm, { AddressFormValues } from '@/components/forms/address-form';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
-import { ERROR } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { useMyToast } from '@/hooks/useMyToast';
 import { myAddress } from '@/services/address';
 import useAuthStore from '@/stores/useAuthStore';
 import { applyMask, REGEX } from '@/utils/regex';
@@ -13,6 +14,7 @@ import { applyMask, REGEX } from '@/utils/regex';
 export default function Address() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const { data: address, isLoading } = useQuery({
     queryKey: ['address', user?.email],
@@ -33,7 +35,11 @@ export default function Address() {
       router.back();
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 
@@ -44,7 +50,11 @@ export default function Address() {
       router.back();
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

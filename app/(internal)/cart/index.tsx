@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import CartProduct from '@/components/cartProduct';
@@ -10,7 +10,9 @@ import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import SelectedAddress from '@/components/selectedAddress';
 import SelectedPayment from '@/components/selectedPayment';
-import { ERROR, USER_TYPE } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { USER_TYPE } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import { Order } from '@/models/order';
 import { myAddress } from '@/services/address';
 import { myCreditCards } from '@/services/credit-cards';
@@ -23,6 +25,7 @@ import { format } from '@/utils/format';
 export default function Cart() {
   const queryClient = useQueryClient();
   const { user, handleLogout } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const { data: address } = useQuery({
     queryKey: ['address', user?.email],
@@ -48,7 +51,11 @@ export default function Cart() {
       });
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 
@@ -65,11 +72,12 @@ export default function Cart() {
 
   const handleCreateOrder = () => {
     if (!address?.id) {
-      Alert.alert('Erro', 'Cadastre um endereço para entrega');
-      return;
+      return showToast({
+        title: TOAST_TITLE.WARNING,
+        message: 'Cadastre um endereço para entrega',
+        action: TOAST_ACTION.WARNING,
+      });
     }
-    console.log('🚀 ~ handleCreateOrder ~ address.id:', address.id);
-
     makeOrderMutation.mutate({
       addressId: address.id,
       paymentMethod: selectedPayment,

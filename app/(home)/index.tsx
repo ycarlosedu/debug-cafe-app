@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Image, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 import LogoImage from '@/assets/icon.png';
 import CartButton from '@/components/cartButton';
@@ -10,7 +10,9 @@ import { Container } from '@/components/container';
 import ProductCategoriesList from '@/components/productCategoriesList';
 import ProductList from '@/components/productList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
 import { USER_TYPE } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import { myAddress } from '@/services/address';
 import { categories } from '@/services/categories';
 import useAuthStore from '@/stores/useAuthStore';
@@ -18,6 +20,7 @@ import colors from '@/styles/colors';
 
 export default function Home() {
   const { user } = useAuthStore();
+  const { showToast } = useMyToast();
   const [categoriesIds, setCategoriesIds] = useState<string[]>();
 
   const {
@@ -42,7 +45,11 @@ export default function Home() {
   const handleChangeCategory = (categoryId: string) => {
     if (categoriesIds?.includes(categoryId)) {
       if (categoriesIds?.length === 1) {
-        return Alert.alert('Erro', 'Mantenha ao menos uma categoria selecionada!');
+        return showToast({
+          title: TOAST_TITLE.WARNING,
+          message: 'Mantenha ao menos uma categoria selecionada!',
+          action: TOAST_ACTION.WARNING,
+        });
       }
       setCategoriesIds((prevState) => prevState?.filter((id) => id !== categoryId));
       return;

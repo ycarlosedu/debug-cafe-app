@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, GestureResponderEvent, Text, View } from 'react-native';
+import { GestureResponderEvent, Text, View } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
@@ -17,7 +17,9 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { ERROR, REQUIRED, USER_TYPE, USER_TYPE_LABEL } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { REQUIRED, USER_TYPE, USER_TYPE_LABEL } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import { auth } from '@/services/auth';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
@@ -35,6 +37,7 @@ type Params = {
 
 export default function InternalAccess() {
   const { handleLogin } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const params = useLocalSearchParams<Params>();
   const userLabel = USER_TYPE_LABEL[params.user];
@@ -65,7 +68,11 @@ export default function InternalAccess() {
       router.back();
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

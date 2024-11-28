@@ -2,8 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import CurrencyInput from 'react-native-currency-input';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
@@ -15,13 +14,15 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputCurrency, InputField } from '@/components/ui/input';
-import { ERROR } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { useMyToast } from '@/hooks/useMyToast';
 import { addProductSchema, AddProductValues } from '@/schemas';
 import { categories } from '@/services/categories';
 import { products } from '@/services/products';
 
 export default function AddProduct() {
   const queryClient = useQueryClient();
+  const { showToast } = useMyToast();
 
   const { data: categoriesList } = useQuery({
     queryKey: ['categories'],
@@ -57,7 +58,11 @@ export default function AddProduct() {
       router.push(`/product/${product.id}`);
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

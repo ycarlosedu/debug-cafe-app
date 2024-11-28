@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
@@ -14,13 +14,15 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
-import { ERROR } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { useMyToast } from '@/hooks/useMyToast';
 import { ProductCategory } from '@/models/product';
 import { addCategorySchema, AddCategoryValues } from '@/schemas';
 import { categories } from '@/services/categories';
 
 export default function AddCategory() {
   const queryClient = useQueryClient();
+  const { showToast } = useMyToast();
 
   const {
     control,
@@ -40,10 +42,18 @@ export default function AddCategory() {
     onSuccess: ({ category, message }) => {
       queryClient.setQueryData(['categories'], (data: ProductCategory[]) => [...data, category]);
       reset();
-      Alert.alert('Sucesso', message);
+      return showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

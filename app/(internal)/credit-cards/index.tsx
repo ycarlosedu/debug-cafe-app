@@ -1,14 +1,15 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { Spinner } from '@/components/ui/spinner';
-import { ERROR } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { useMyToast } from '@/hooks/useMyToast';
 import { myCreditCards } from '@/services/credit-cards';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
@@ -16,6 +17,7 @@ import colors from '@/styles/colors';
 export default function CreditCards() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const {
     data: creditCards,
@@ -36,7 +38,11 @@ export default function CreditCards() {
       );
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

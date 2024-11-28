@@ -1,18 +1,19 @@
 import { useMutation } from '@tanstack/react-query';
 import { router, Stack } from 'expo-router';
-import { Alert } from 'react-native';
 
 import { Container } from '@/components/container';
 import RegisterUserForm, {
   RegisterUserFormValues,
 } from '@/components/forms/register-user-info-form';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
-import { ERROR } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { useMyToast } from '@/hooks/useMyToast';
 import { auth } from '@/services/auth';
 import useAuthStore from '@/stores/useAuthStore';
 
 export default function Register() {
   const { handleLogin } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const signUpMutation = useMutation({
     mutationFn: auth.signUp,
@@ -21,7 +22,11 @@ export default function Register() {
       router.replace('/(home)');
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

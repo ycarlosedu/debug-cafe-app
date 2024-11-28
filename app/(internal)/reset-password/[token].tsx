@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, GestureResponderEvent, Text } from 'react-native';
+import { GestureResponderEvent, Text } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
@@ -16,7 +16,9 @@ import {
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
-import { ERROR, REQUIRED } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { REQUIRED } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import colors from '@/styles/colors';
 
 const resetPasswordSchema = z.object({
@@ -31,6 +33,7 @@ type Params = {
 
 export default function ResetPassword() {
   const params = useLocalSearchParams<Params>();
+  const { showToast } = useMyToast();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,7 +59,11 @@ export default function ResetPassword() {
     try {
       router.replace('/(home)');
     } catch (error: any) {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     }
   };
 

@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { z } from 'zod';
 
 import { Button, ButtonText } from '@/components/button';
@@ -14,7 +14,9 @@ import ProductCategoriesList from '@/components/productCategoriesList';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { FormControl, FormControlErrorText } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
-import { ERROR, REQUIRED } from '@/constants';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
+import { REQUIRED } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
 import { Product } from '@/models/product';
 import { products } from '@/services/products';
 
@@ -26,6 +28,8 @@ const searchSchema = z.object({
 export type SearchProductValues = z.infer<typeof searchSchema>;
 
 export default function Search() {
+  const { showToast } = useMyToast();
+
   const [productList, setProductList] = useState<Product[]>([]);
   const {
     control,
@@ -48,7 +52,11 @@ export default function Search() {
       setProductList(data);
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

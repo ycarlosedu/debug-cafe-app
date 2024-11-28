@@ -1,22 +1,23 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import TextHighlight from '@/components/textHighlight';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
 import {
-  ERROR,
   isUserFromTeam,
   ORDER_STATUS,
   ORDER_STATUS_COLOR,
   ORDER_STATUS_LABEL,
   USER_TYPE,
 } from '@/constants';
-import { DetailedOrder, Order } from '@/models/order';
+import { useMyToast } from '@/hooks/useMyToast';
+import { DetailedOrder } from '@/models/order';
 import { teamOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
 import { format } from '@/utils/format';
@@ -30,6 +31,7 @@ export default function PendingOrder() {
   const queryClient = useQueryClient();
   const { id } = useLocalSearchParams<Params>();
   const { user } = useAuthStore();
+  const { showToast } = useMyToast();
 
   const { data: order, isLoading } = useQuery({
     queryKey: ['pending-order', id, user?.email],
@@ -55,7 +57,11 @@ export default function PendingOrder() {
       }));
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 
@@ -77,7 +83,11 @@ export default function PendingOrder() {
       }));
     },
     onError: (error: any) => {
-      Alert.alert('Erro', error.message || ERROR.GENERIC);
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
     },
   });
 

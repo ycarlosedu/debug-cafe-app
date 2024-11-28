@@ -21,10 +21,10 @@ export default function InternalLayout() {
         headerBackground: () => null,
         headerTitleAlign: 'center',
       }}>
-      <Stack.Screen name="orders/index" options={{ title: 'Pedidos em Andamento' }} />
-      <Stack.Screen name="pending-order/[id]" options={{ title: 'Detalhes do Pedido' }} />
-      <Stack.Screen name="add-product/index" options={{ title: 'Adicionar Produto' }} />
-      <Stack.Screen name="edit-product/[id]" options={{ title: 'Editar Produto' }} />
+      <Stack.Screen name="orders/index" />
+      <Stack.Screen name="pending-order/[id]" />
+      <Stack.Screen name="add-product/index" />
+      <Stack.Screen name="edit-product/[id]" />
     </Stack>
   );
 }
