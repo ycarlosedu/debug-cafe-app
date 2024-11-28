@@ -18,7 +18,19 @@
           "launchMode": "most-recent"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#6F4E37",
+          "image": "./assets/splash.png",
+          "dark": {
+            "image": "./assets/splash.png",
+            "backgroundColor": "#6F4E37"
+          },
+          "imageWidth": 300
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
