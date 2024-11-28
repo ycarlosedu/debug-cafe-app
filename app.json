@@ -28,7 +28,7 @@
             "image": "./assets/splash.png",
             "backgroundColor": "#6F4E37"
           },
-          "imageWidth": 300
+          "imageWidth": 100
         }
       ]
     ],

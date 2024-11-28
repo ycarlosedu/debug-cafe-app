@@ -30,7 +30,7 @@ As cores foram cuidadosamente escolhidas para refletir o tema aconchegante e env
 ## 🚀 Como testar o aplicativo em seu celular
 
 1. Acesse e baixe:
-   [v1.0.0](https://github.com/ycarlosedu/debug-cafe-app/releases/download/1.0.0/debug-cafe-v.1.0.0.apk)
+   [v1.0.1](https://github.com/ycarlosedu/debug-cafe-app/releases/download/1.0.1/debug-cafe-1.0.1.apk)
 
 2. Abra o arquivo em seu celular e instale (pode aparecer algum aviso de perigo, mas é normal, apenas confirme)
 
