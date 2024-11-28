@@ -6,6 +6,7 @@ import { Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
 import CartProduct from '@/components/cartProduct';
+import ConfirmDeleteDialog from '@/components/confirmDeleteDialog';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import SelectedAddress from '@/components/selectedAddress';
@@ -19,12 +20,14 @@ import { myCreditCards } from '@/services/credit-cards';
 import { myOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
 import useCartStore from '@/stores/useCartStore';
+import useMenuStore, { MENU_STORE } from '@/stores/useMenuStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 
 export default function Cart() {
   const queryClient = useQueryClient();
   const { user, handleLogout } = useAuthStore();
+  const { handleChangeMenu } = useMenuStore();
   const { showToast } = useMyToast();
 
   const { data: address } = useQuery({
@@ -102,6 +105,11 @@ export default function Cart() {
       <Stack.Screen options={{ title: 'Meu Carrinho' }} />
       <ScrollViewContainer>
         <Container className="gap-6 px-4">
+          <ConfirmDeleteDialog
+            title="Tem certeza que deseja remover todos os itens do carrinho?"
+            message="Essa ação não pode ser desfeita."
+            handleSubmit={resetCart}
+          />
           <View className="gap-1">
             {products.map((product) => (
               <CartProduct key={product.id} product={product} />
@@ -112,7 +120,9 @@ export default function Cart() {
             )}
           </View>
           {hasProductsInCart && (
-            <Button appearance="secondary" onPress={resetCart}>
+            <Button
+              appearance="secondary"
+              onPress={() => handleChangeMenu(MENU_STORE.DELETE_DIALOG, true)}>
               <FontAwesome name="trash" size={24} color={colors.beige} />
               <ButtonText appearance="secondary">Limpar Carrinho</ButtonText>
             </Button>
