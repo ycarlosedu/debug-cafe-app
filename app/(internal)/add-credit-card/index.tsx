@@ -17,14 +17,14 @@ export default function Payment() {
 
   const addCreditCardMutation = useMutation({
     mutationFn: myCreditCards.add,
-    onSuccess: ({ creditCard }) => {
+    onSuccess: ({ creditCard, message }) => {
       queryClient.setQueryData(['credit-cards', user?.email], (oldData: CreditCard[]) => [
         ...(oldData || []),
         creditCard,
       ]);
       showToast({
         title: TOAST_TITLE.SUCCESS,
-        message: 'Cartão adicionado com sucesso',
+        message,
         action: TOAST_ACTION.SUCCESS,
       });
       router.back();

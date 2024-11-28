@@ -58,11 +58,16 @@ export default function EditProduct() {
 
   const editProductMutation = useMutation({
     mutationFn: products.editProduct,
-    onSuccess: ({ product }) => {
+    onSuccess: ({ product, message }) => {
       queryClient.invalidateQueries({
         queryKey: ['products'],
       });
       queryClient.setQueryData(['product', product.id], product);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {

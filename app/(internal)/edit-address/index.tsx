@@ -30,8 +30,13 @@ export default function Address() {
 
   const updateAddressMutation = useMutation({
     mutationFn: myAddress.update,
-    onSuccess: ({ address }) => {
+    onSuccess: ({ address, message }) => {
       queryClient.setQueryData(['address', user?.email], address);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {
@@ -45,8 +50,13 @@ export default function Address() {
 
   const createAddressMutation = useMutation({
     mutationFn: myAddress.create,
-    onSuccess: ({ address }) => {
+    onSuccess: ({ address, message }) => {
       queryClient.setQueryData(['address', user?.email], address);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {

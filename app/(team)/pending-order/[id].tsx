@@ -17,7 +17,7 @@ import {
   USER_TYPE,
 } from '@/constants';
 import { useMyToast } from '@/hooks/useMyToast';
-import { DetailedOrder } from '@/models/order';
+import { DetailedOrder, Order } from '@/models/order';
 import { teamOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
 import { format } from '@/utils/format';
@@ -41,7 +41,12 @@ export default function PendingOrder() {
 
   const updateOrderStatusMutation = useMutation({
     mutationFn: teamOrders.updateOrderStatus,
-    onSuccess: ({ status }) => {
+    onSuccess: ({ status, message }) => {
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       queryClient.invalidateQueries({
         queryKey: ['orders', user?.email],
       });
@@ -67,14 +72,19 @@ export default function PendingOrder() {
 
   const cancelOrderMutation = useMutation({
     mutationFn: teamOrders.cancelOrder,
-    onSuccess: ({ status }) => {
+    onSuccess: ({ status, message }) => {
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       queryClient.invalidateQueries({
         queryKey: ['orders', user?.email],
       });
       queryClient.invalidateQueries({
         queryKey: ['order', id, user?.email],
       });
-      queryClient.setQueryData(['pending-orders', user?.email], (oldData: DetailedOrder[]) =>
+      queryClient.setQueryData(['pending-orders', user?.email], (oldData: Order[]) =>
         oldData.map((oldOrder) => (oldOrder.id === id ? { ...oldOrder, status } : oldOrder))
       );
       queryClient.setQueryData(['pending-order', id, user?.email], (oldData: DetailedOrder) => ({

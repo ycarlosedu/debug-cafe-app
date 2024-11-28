@@ -17,8 +17,13 @@ export default function UserInfo() {
 
   const updateUserMutation = useMutation({
     mutationFn: user.updateInfo,
-    onSuccess: ({ user }) => {
+    onSuccess: ({ user, message }) => {
       handleChangeUserInfos(user);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {

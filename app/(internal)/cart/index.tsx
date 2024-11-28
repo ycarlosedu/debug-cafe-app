@@ -39,12 +39,21 @@ export default function Cart() {
 
   const makeOrderMutation = useMutation({
     mutationFn: myOrders.create,
-    onSuccess: ({ order }) => {
+    onSuccess: ({ order, message }) => {
       useCartStore.getState().reset();
       queryClient.setQueryData(['orders', user?.email], (oldData: Order[]) => [
         order,
         ...(oldData || []),
       ]);
+      queryClient.setQueryData(['pending-orders', user?.email], (oldData: Order[]) => [
+        order,
+        ...(oldData || []),
+      ]);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.replace({
         pathname: '/order/[id]',
         params: { id: order.id },

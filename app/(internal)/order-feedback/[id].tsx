@@ -56,6 +56,11 @@ export default function OrderFeedback() {
       queryClient.setQueryData(['orders', user?.email], (data: Order[]) => {
         return data.map((order) => (order.id === id ? { ...order, feedback } : order));
       });
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message: 'Avaliação adicionada com sucesso!',
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {

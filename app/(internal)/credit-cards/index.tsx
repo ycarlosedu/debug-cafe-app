@@ -31,11 +31,16 @@ export default function CreditCards() {
 
   const deleteCreditCardMutation = useMutation({
     mutationFn: myCreditCards.deleteCard,
-    onSuccess: ({ id }) => {
+    onSuccess: ({ id, message }) => {
       queryClient.setQueryData(
         ['credit-cards', user?.email],
         creditCards?.filter((card) => card.id !== id)
       );
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
     },
     onError: (error: any) => {
       return showToast({

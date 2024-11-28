@@ -16,7 +16,12 @@ import {
   AccordionContent,
   AccordionContentText,
 } from '@/components/ui/accordion';
-import { ORDER_STATUS_COLOR, ORDER_STATUS_ICON, ORDER_STATUS_LABEL } from '@/constants';
+import {
+  ORDER_STATUS,
+  ORDER_STATUS_COLOR,
+  ORDER_STATUS_ICON,
+  ORDER_STATUS_LABEL,
+} from '@/constants';
 import { teamOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
 import colors from '@/styles/colors';
@@ -35,6 +40,11 @@ export default function MyOrders() {
     queryKey: ['pending-orders', user?.email],
     queryFn: teamOrders.getPendingOrders,
     staleTime: 1000 * 60, // 1 minute
+    select: (data) => {
+      return data?.filter(
+        (order) => ![ORDER_STATUS.CANCELED, ORDER_STATUS.DELIVERED].includes(order.status)
+      );
+    },
   });
 
   if (isLoading) {

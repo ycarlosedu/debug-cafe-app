@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native';
 import { SafeAreaViewProps } from 'react-native-safe-area-context';
 
 const containerStyle = tva({
-  base: 'flex w-full flex-1 flex-col bg-brown pb-6',
+  base: 'flex w-full flex-1 flex-col bg-brown py-4 pb-6',
 });
 
 type Props = SafeAreaViewProps;

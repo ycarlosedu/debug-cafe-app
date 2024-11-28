@@ -65,6 +65,11 @@ export default function InternalAccess() {
     mutationFn: auth.changeUserType,
     onSuccess: ({ token, user }) => {
       handleLogin(token, user);
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message: `Usuário alterado com sucesso para ${userLabel}`,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.back();
     },
     onError: (error: any) => {

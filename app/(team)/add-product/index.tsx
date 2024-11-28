@@ -49,12 +49,17 @@ export default function AddProduct() {
 
   const addProductMutation = useMutation({
     mutationFn: products.addProduct,
-    onSuccess: ({ product }) => {
+    onSuccess: ({ product, message }) => {
       queryClient.invalidateQueries({
         queryKey: ['products'],
       });
       queryClient.setQueryData(['product', product.id], product);
       reset();
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
       router.push(`/product/${product.id}`);
     },
     onError: (error: any) => {
