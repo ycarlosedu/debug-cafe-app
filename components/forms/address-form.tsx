@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import { Text } from 'react-native';
 import { z } from 'zod';
@@ -7,11 +8,13 @@ import { Button, ButtonText } from '@/components/button';
 import {
   FormControl,
   FormControlErrorText,
+  FormControlHelperText,
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control';
 import { Input, InputField } from '@/components/ui/input';
 import { INVALID, REQUIRED } from '@/constants';
+import { myAddress } from '@/services/address';
 import { applyMask, REGEX } from '@/utils/regex';
 
 const registerSchema = z.object({
@@ -41,11 +44,22 @@ export default function RegisterAddressForm({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<AddressFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues,
   });
+
+  const findByCepMutation = useMutation({
+    mutationFn: myAddress.findByCep,
+    onSuccess: ({ address }) => {
+      setValue('city', address.city, { shouldValidate: true });
+      setValue('street', address.street, { shouldValidate: true });
+    },
+  });
+
+  const helpText = findByCepMutation.isPending ? '(Buscando pelo cep...)' : '';
 
   return (
     <>
@@ -63,6 +77,7 @@ export default function RegisterAddressForm({
                 onBlur={onBlur}
                 onChangeText={(e) => {
                   const numbers = applyMask(e, REGEX.ONLY_NUMBERS);
+                  if (numbers.length === 8) findByCepMutation.mutate(numbers);
                   const cep = applyMask(numbers, REGEX.CEP);
                   onChange(cep);
                 }}
@@ -97,6 +112,7 @@ export default function RegisterAddressForm({
           />
         </Input>
         <FormControlErrorText>{errors.city?.message}</FormControlErrorText>
+        <FormControlHelperText>{helpText}</FormControlHelperText>
       </FormControl>
       <FormControl isInvalid={Boolean(errors.street?.message)}>
         <FormControlLabel>
@@ -118,6 +134,7 @@ export default function RegisterAddressForm({
           />
         </Input>
         <FormControlErrorText>{errors.street?.message}</FormControlErrorText>
+        <FormControlHelperText>{helpText}</FormControlHelperText>
       </FormControl>
       <FormControl isInvalid={Boolean(errors.number?.message)}>
         <FormControlLabel>

@@ -27,8 +27,13 @@ const create = async (data: AddressFormValues): Promise<UpdateAddressResponse> =
   });
 };
 
+const findByCep = async (cep: string): Promise<UpdateAddressResponse> => {
+  return request.get(`/addresses/cep/${cep}`);
+};
+
 export const myAddress = {
   get,
   update,
   create,
+  findByCep,
 };
