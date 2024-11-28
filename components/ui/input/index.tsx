@@ -72,7 +72,7 @@ const UIInput = createInput({
 });
 
 const inputStyle = tva({
-  base: 'flex-row content-center items-center overflow-hidden rounded-lg border border-beige px-1 py-3 outline-none data-[invalid=true]:border-error-500 data-[focus=true]:border-white data-[disabled=true]:bg-gray-light data-[disabled=true]:opacity-40 data-[disabled=true]:hover:border-background-300',
+  base: 'min-h-14 flex-row content-center items-center overflow-hidden rounded-lg border border-beige px-1 py-3 outline-none data-[invalid=true]:border-error-500 data-[focus=true]:border-white data-[disabled=true]:bg-gray-light data-[disabled=true]:opacity-40 data-[disabled=true]:hover:border-background-300',
 });
 
 const inputIconStyle = tva({
@@ -84,7 +84,7 @@ const inputSlotStyle = tva({
 });
 
 const inputFieldStyle = tva({
-  base: 'py-auto ios:leading-[0px] h-full flex-1 px-3 text-white placeholder:text-gray-light web:cursor-text  web:data-[disabled=true]:cursor-not-allowed',
+  base: 'py-auto ios:leading-[0px] h-full flex-1 px-3 text-white outline-none placeholder:text-gray-light web:cursor-text  web:data-[disabled=true]:cursor-not-allowed',
 });
 
 cssInterop(InputWrapper, { className: 'style' });

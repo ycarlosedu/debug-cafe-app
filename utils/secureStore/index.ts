@@ -1,6 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-
-import { get } from '../request';
+import { Platform } from 'react-native';
 
 import { USER_TYPE } from '@/constants';
 import { UserStored } from '@/models/user';
@@ -15,24 +14,39 @@ const toObject = (value?: string | null) => {
   return value ? JSON.parse(value) : {};
 };
 
+function saveItem(key: SECURE_STORE, value: string) {
+  if (Platform.OS === 'web') {
+    return localStorage.setItem(key, value);
+  }
+
+  SecureStore.setItem(key, value);
+}
+
+function getItem(key: SECURE_STORE) {
+  if (Platform.OS === 'web') {
+    return localStorage.getItem(key);
+  }
+  return SecureStore.getItem(key);
+}
+
 export const secureStore = {
   setToken: (token: string) => {
-    return SecureStore.setItem(SECURE_STORE.TOKEN, token);
+    return saveItem(SECURE_STORE.TOKEN, token);
   },
   getToken: () => {
-    return SecureStore.getItem(SECURE_STORE.TOKEN);
+    return getItem(SECURE_STORE.TOKEN);
   },
   setUser: (user?: UserStored) => {
-    return SecureStore.setItem(SECURE_STORE.USER, user ? JSON.stringify(user) : '');
+    return saveItem(SECURE_STORE.USER, user ? JSON.stringify(user) : '');
   },
   getUser: () => {
-    const user = SecureStore.getItem(SECURE_STORE.USER);
+    const user = getItem(SECURE_STORE.USER);
     return toObject(user) as UserStored;
   },
   setUserType: (userType: USER_TYPE) => {
-    return SecureStore.setItem(SECURE_STORE.USER_TYPE, userType);
+    return saveItem(SECURE_STORE.USER_TYPE, userType);
   },
   getUserType: () => {
-    return SecureStore.getItem(SECURE_STORE.USER_TYPE) as USER_TYPE;
+    return getItem(SECURE_STORE.USER_TYPE) as USER_TYPE;
   },
 };
