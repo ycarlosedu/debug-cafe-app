@@ -8,7 +8,7 @@ import ChangeUserInfoForm, {
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
 import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
 import { useMyToast } from '@/hooks/useMyToast';
-import { user } from '@/services/user';
+import { myAccount } from '@/services/user';
 import useAuthStore from '@/stores/useAuthStore';
 
 export default function UserInfo() {
@@ -16,7 +16,7 @@ export default function UserInfo() {
   const { showToast } = useMyToast();
 
   const updateUserMutation = useMutation({
-    mutationFn: user.updateInfo,
+    mutationFn: myAccount.updateInfo,
     onSuccess: ({ user, message }) => {
       handleChangeUserInfos(user);
       showToast({

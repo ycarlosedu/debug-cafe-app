@@ -18,7 +18,7 @@ import colors from '@/styles/colors';
 import { applyMask, REGEX } from '@/utils/regex';
 
 const registerSchema = z.object({
-  fullName: z.string().min(1, REQUIRED.FIELD).min(10, REQUIRED.MIN(10)),
+  fullName: z.string().min(1, REQUIRED.FIELD).min(5, REQUIRED.MIN(5)),
   email: z.string().min(1, REQUIRED.FIELD).email(INVALID.EMAIL),
   phone: z.string().min(1, REQUIRED.FIELD).regex(new RegExp(REGEX.PHONE_NUMBER), INVALID.PHONE),
   password: z.string().min(1, REQUIRED.FIELD).min(8, REQUIRED.MIN(8)).max(20, REQUIRED.MAX(20)),

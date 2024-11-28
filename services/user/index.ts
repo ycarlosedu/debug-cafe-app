@@ -19,7 +19,15 @@ const updateInfo = async (data: ChangeUserInfoFormValues): Promise<UpdateInfoRes
   });
 };
 
-export const user = {
+type DeleteAccountResponse = {
+  message: string;
+};
+const deleteAccount = async (): Promise<DeleteAccountResponse> => {
+  return request.delete(`/users/me`);
+};
+
+export const myAccount = {
   getInfo,
   updateInfo,
+  deleteAccount,
 };

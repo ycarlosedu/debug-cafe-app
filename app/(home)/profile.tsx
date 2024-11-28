@@ -1,20 +1,47 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useMutation } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
 import { preview } from 'radon-ide';
 import { Image, Text, View } from 'react-native';
 
 import UserImage from '@/assets/images/user.png';
 import { Button, ButtonText } from '@/components/button';
+import ConfirmDeleteDialog from '@/components/confirmDeleteDialog';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
+import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
 import { USER_TYPE, USER_TYPE_LABEL } from '@/constants';
+import { useMyToast } from '@/hooks/useMyToast';
+import { myAccount } from '@/services/user';
 import useAuthStore from '@/stores/useAuthStore';
+import useMenuStore, { MENU_STORE } from '@/stores/useMenuStore';
 import colors from '@/styles/colors';
 
 preview(<Profile />);
 
 export default function Profile() {
   const { handleLogout, user } = useAuthStore();
+  const { handleChangeMenu } = useMenuStore();
+  const { showToast } = useMyToast();
+
+  const deleteAccountMutation = useMutation({
+    mutationFn: myAccount.deleteAccount,
+    onSuccess: ({ message }) => {
+      showToast({
+        title: TOAST_TITLE.SUCCESS,
+        message,
+        action: TOAST_ACTION.SUCCESS,
+      });
+      handleLogout();
+    },
+    onError: (error: any) => {
+      return showToast({
+        title: TOAST_TITLE.ERROR,
+        message: error.message,
+        action: TOAST_ACTION.ERROR,
+      });
+    },
+  });
 
   return (
     <>
@@ -192,6 +219,19 @@ export default function Profile() {
               <Button onPress={handleLogout} className="mt-8">
                 <ButtonText>Sair</ButtonText>
               </Button>
+
+              <Text className="text-center text-lg font-medium text-beige">Cuidado!</Text>
+              <Button
+                onPress={() => handleChangeMenu(MENU_STORE.DELETE_DIALOG, true)}
+                className="bg-error-500">
+                <ButtonText className="text-white">Excluir minha conta</ButtonText>
+              </Button>
+
+              <ConfirmDeleteDialog
+                title="Tem certeza que deseja excluir sua conta?"
+                message="Essa ação não poderá ser desfeita."
+                handleSubmit={() => deleteAccountMutation.mutate()}
+              />
             </>
           )}
         </Container>
