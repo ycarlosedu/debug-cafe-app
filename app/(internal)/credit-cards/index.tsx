@@ -1,9 +1,11 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, Stack } from 'expo-router';
+import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
+import ConfirmDeleteDialog from '@/components/confirmDeleteDialog';
 import { Container } from '@/components/container';
 import Loader from '@/components/loader';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
@@ -12,12 +14,16 @@ import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
 import { useMyToast } from '@/hooks/useMyToast';
 import { myCreditCards } from '@/services/credit-cards';
 import useAuthStore from '@/stores/useAuthStore';
+import useMenuStore, { MENU_STORE } from '@/stores/useMenuStore';
 import colors from '@/styles/colors';
 
 export default function CreditCards() {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
+  const { handleChangeMenu } = useMenuStore();
   const { showToast } = useMyToast();
+
+  const [creditCardSelectedToDelete, setCreditCardSelectedToDelete] = useState<string>('');
 
   const {
     data: creditCards,
@@ -51,6 +57,11 @@ export default function CreditCards() {
     },
   });
 
+  const handleDeleteCard = (id: string) => {
+    setCreditCardSelectedToDelete(id);
+    handleChangeMenu(MENU_STORE.DELETE_DIALOG, true);
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -60,6 +71,11 @@ export default function CreditCards() {
       <Stack.Screen options={{ title: 'Meus Cartões' }} />
       <ScrollViewContainer>
         <Container className="gap-8 px-4">
+          <ConfirmDeleteDialog
+            title="Tem certeza que deseja remover o cartão?"
+            message="Essa ação não poderá ser desfeita."
+            handleSubmit={() => deleteCreditCardMutation.mutate(creditCardSelectedToDelete)}
+          />
           <View className="gap-4">
             {!creditCards?.length && isSuccess && (
               <Text className="text-center text-xl text-white">Nenhum cartão cadastrado</Text>
@@ -79,9 +95,7 @@ export default function CreditCards() {
                   key={card.id}
                   className="flex-row items-center justify-between rounded-xl border border-white px-4 py-3">
                   <Text className="text-xl text-white">{card.cardNumber}</Text>
-                  <TouchableOpacity
-                    disabled={isLoading}
-                    onPress={() => deleteCreditCardMutation.mutate(card.id)}>
+                  <TouchableOpacity disabled={isLoading} onPress={() => handleDeleteCard(card.id)}>
                     {isLoading ? (
                       <Spinner color={colors.white} />
                     ) : (
