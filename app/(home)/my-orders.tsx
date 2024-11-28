@@ -42,15 +42,7 @@ export default function MyOrders() {
     queryKey: ['orders', user?.email],
     queryFn: myOrders.getAll,
     enabled: user?.userType !== USER_TYPE.GUEST,
-    staleTime({ state: { data } }) {
-      if (
-        data?.every(
-          ({ status }) => status === ORDER_STATUS.CANCELED || status === ORDER_STATUS.DELIVERED
-        )
-      )
-        return 1000 * 60 * 60; // 1 hour
-      return 1000 * 60; // 1 minute
-    },
+    staleTime: 1000 * 60, // 1 minute
   });
 
   if (isLoading) {

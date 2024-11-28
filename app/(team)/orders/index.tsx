@@ -34,6 +34,7 @@ export default function MyOrders() {
   } = useQuery({
     queryKey: ['pending-orders', user?.email],
     queryFn: teamOrders.getPendingOrders,
+    staleTime: 1000 * 60, // 1 minute
   });
 
   if (isLoading) {

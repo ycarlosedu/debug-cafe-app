@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link, Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { Alert, Text, View } from 'react-native';
 
 import { Button, ButtonText } from '@/components/button';
@@ -16,7 +16,7 @@ import {
   ORDER_STATUS_LABEL,
   USER_TYPE,
 } from '@/constants';
-import { DetailedOrder } from '@/models/order';
+import { DetailedOrder, Order } from '@/models/order';
 import { teamOrders } from '@/services/orders';
 import useAuthStore from '@/stores/useAuthStore';
 import { format } from '@/utils/format';
@@ -34,16 +34,23 @@ export default function PendingOrder() {
   const { data: order, isLoading } = useQuery({
     queryKey: ['pending-order', id, user?.email],
     queryFn: () => teamOrders.getPendingOrder(id),
+    staleTime: 1000 * 60, // 1 minute
   });
 
   const updateOrderStatusMutation = useMutation({
     mutationFn: teamOrders.updateOrderStatus,
     onSuccess: ({ status }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['orders', user?.email],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['order', id, user?.email],
+      });
       queryClient.setQueryData(['pending-orders', user?.email], (oldData: DetailedOrder[]) =>
         oldData.map((oldOrder) => (oldOrder.id === id ? { ...oldOrder, status } : oldOrder))
       );
-      queryClient.setQueryData(['pending-order', id, user?.email], (data: DetailedOrder) => ({
-        ...data,
+      queryClient.setQueryData(['pending-order', id, user?.email], (oldData: DetailedOrder) => ({
+        ...oldData,
         status,
       }));
     },
@@ -61,11 +68,11 @@ export default function PendingOrder() {
       queryClient.invalidateQueries({
         queryKey: ['order', id, user?.email],
       });
-      queryClient.invalidateQueries({
-        queryKey: ['pending-orders', user?.email],
-      });
-      queryClient.setQueryData(['pending-order', id, user?.email], (data: DetailedOrder) => ({
-        ...data,
+      queryClient.setQueryData(['pending-orders', user?.email], (oldData: DetailedOrder[]) =>
+        oldData.map((oldOrder) => (oldOrder.id === id ? { ...oldOrder, status } : oldOrder))
+      );
+      queryClient.setQueryData(['pending-order', id, user?.email], (oldData: DetailedOrder) => ({
+        ...oldData,
         status,
       }));
     },
