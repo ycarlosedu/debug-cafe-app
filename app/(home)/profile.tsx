@@ -90,7 +90,7 @@ export default function Profile() {
                   },
                 }}
                 asChild>
-                <Button className="justify-between">
+                <Button className="justify-between" disabled={user?.userType === USER_TYPE.STAFF}>
                   <View className="flex-row items-center gap-2">
                     <FontAwesome size={24} name="users" color={colors.brown} />
                     <ButtonText>Acessar como Funcionário</ButtonText>
@@ -108,7 +108,7 @@ export default function Profile() {
                   },
                 }}
                 asChild>
-                <Button className="justify-between">
+                <Button className="justify-between" disabled={user?.userType === USER_TYPE.MANAGER}>
                   <View className="flex-row items-center gap-2">
                     <FontAwesome size={24} name="edit" color={colors.brown} />
                     <ButtonText>Acessar como Supervisor</ButtonText>
@@ -126,7 +126,9 @@ export default function Profile() {
                   },
                 }}
                 asChild>
-                <Button className="justify-between">
+                <Button
+                  className="justify-between"
+                  disabled={user?.userType === USER_TYPE.DELIVERY}>
                   <View className="flex-row items-center gap-2">
                     <FontAwesome size={24} name="motorcycle" color={colors.brown} />
                     <ButtonText>Acessar como Motoboy</ButtonText>

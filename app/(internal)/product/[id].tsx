@@ -14,21 +14,6 @@ import useCartStore from '@/stores/useCartStore';
 import colors from '@/styles/colors';
 import { format } from '@/utils/format';
 
-const HeaderButton = ({ id }: { id: string }) => {
-  return (
-    <Link
-      asChild
-      href={{
-        pathname: '/(team)/edit-product/[id]',
-        params: { id },
-      }}>
-      <Button size="icon">
-        <FontAwesome name="pencil" size={16} color={colors.brown} />
-      </Button>
-    </Link>
-  );
-};
-
 type Params = {
   id: string;
 };
@@ -62,8 +47,6 @@ export default function Product() {
       <Stack.Screen
         options={{
           title: product.name,
-          headerRight:
-            user?.userType === USER_TYPE.MANAGER ? () => <HeaderButton id={id} /> : undefined,
         }}
       />
       <ScrollViewContainer>
@@ -107,6 +90,20 @@ export default function Product() {
               <FontAwesome name={isInCart ? 'trash' : 'cart-plus'} size={16} color={colors.brown} />
               <ButtonText>{isInCart ? 'Remover do Carrinho' : 'Adicionar ao Carrinho'}</ButtonText>
             </Button>
+
+            {user?.userType === USER_TYPE.MANAGER && (
+              <Link
+                asChild
+                href={{
+                  pathname: '/(team)/edit-product/[id]',
+                  params: { id },
+                }}>
+                <Button className="mt-4" appearance="secondary">
+                  <FontAwesome name="pencil" size={16} color={colors.beige} />
+                  <ButtonText appearance="secondary">Editar Produto</ButtonText>
+                </Button>
+              </Link>
+            )}
           </View>
         </Container>
       </ScrollViewContainer>

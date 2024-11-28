@@ -6,7 +6,7 @@ import { Text, TouchableOpacity, TouchableOpacityProps, TextProps } from 'react-
 import { Spinner } from './ui/spinner';
 
 const buttonStyle = tva({
-  base: 'flex-row items-center justify-center gap-4 shadow-md disabled:opacity-50',
+  base: 'flex-row items-center justify-center gap-4 shadow-md disabled:opacity-50 aria-[disabled=true]:opacity-50',
   variants: {
     appearance: {
       primary: 'bg-beige',
