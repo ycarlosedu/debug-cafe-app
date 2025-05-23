@@ -89,7 +89,7 @@ export default function InternalAccess() {
     <>
       <Stack.Screen options={{ title: 'Acesso Interno' }} />
       <ScrollViewContainer>
-        <Container className="gap-12 px-12">
+        <Container className="max-w-lg gap-12 px-12">
           <Text className="text-2xl text-white">Acesse como {userLabel}</Text>
           <View className="gap-2">
             <Text className="text-lg text-white">

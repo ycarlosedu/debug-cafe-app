@@ -1,7 +1,7 @@
 export const IS_DEV_MODE = () => process.env.NODE_ENV === 'development';
 
 export const API_URL = IS_DEV_MODE()
-  ? 'http://192.168.100.9:3000'
+  ? 'http://localhost:3000'
   : 'https://debug-cafe-server.onrender.com';
 
 export const INVALID = {

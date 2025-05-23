@@ -38,7 +38,7 @@ export default function Register() {
     <>
       <Stack.Screen options={{ title: 'Cadastre-se' }} />
       <ScrollViewContainer>
-        <Container className="gap-8 px-12">
+        <Container className="max-w-lg gap-8 px-12">
           <RegisterUserForm
             onSubmit={onSubmitUserForm}
             title="Cadastre-se conosco"

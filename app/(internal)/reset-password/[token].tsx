@@ -71,7 +71,7 @@ export default function ResetPassword() {
     <>
       <Stack.Screen options={{ title: 'Redefinição de Senha' }} />
       <ScrollViewContainer>
-        <Container className="gap-12 px-12">
+        <Container className="max-w-lg gap-12 px-12">
           <Text className="text-2xl text-white">Digite sua nova senha</Text>
           <FormControl isInvalid={Boolean(errors.password?.message)}>
             <FormControlLabel>

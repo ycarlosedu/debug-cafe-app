@@ -70,7 +70,7 @@ export default function CreditCards() {
     <>
       <Stack.Screen options={{ title: 'Meus Cartões' }} />
       <ScrollViewContainer>
-        <Container className="gap-8 px-4">
+        <Container className="max-w-lg gap-8 px-4">
           <ConfirmDeleteDialog
             title="Tem certeza que deseja remover o cartão?"
             message="Essa ação não poderá ser desfeita."

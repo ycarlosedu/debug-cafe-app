@@ -50,7 +50,7 @@ export default function Product() {
         }}
       />
       <ScrollViewContainer>
-        <Container>
+        <Container className="max-w-lg">
           <Image
             source={{
               uri: product.image,

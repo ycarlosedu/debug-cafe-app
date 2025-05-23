@@ -120,7 +120,7 @@ export default function PendingOrder() {
     <>
       <Stack.Screen options={{ title: 'Detalhes do Pedido' }} />
       <ScrollViewContainer>
-        <Container className="gap-6 px-12">
+        <Container className="max-w-lg gap-6 px-12">
           <Text className="text-center text-base text-white">
             Pedido realizado em {toBrazilianDate(order.createdAt)}
           </Text>

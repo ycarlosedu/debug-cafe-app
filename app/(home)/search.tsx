@@ -78,7 +78,7 @@ export default function Search() {
     <>
       <Stack.Screen options={{ title: 'Buscar Produtos' }} />
       <ScrollViewContainer>
-        <Container className="gap-4">
+        <Container className="max-w-lg gap-4">
           <View className="gap-4 px-4">
             <FormControl>
               <Input>

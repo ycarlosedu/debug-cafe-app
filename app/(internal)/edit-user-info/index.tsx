@@ -43,7 +43,7 @@ export default function UserInfo() {
     <>
       <Stack.Screen options={{ title: 'Alterar Informações' }} />
       <ScrollViewContainer>
-        <Container className="gap-8 px-12">
+        <Container className="max-w-lg gap-8 px-12">
           <ChangeUserInfoForm
             onSubmit={onSubmitUserForm}
             isLoading={updateUserMutation.isPending}

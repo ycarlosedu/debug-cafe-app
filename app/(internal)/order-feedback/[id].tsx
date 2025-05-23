@@ -94,7 +94,7 @@ export default function OrderFeedback() {
     <>
       <Stack.Screen options={{ title: 'Avaliar Pedido' }} />
       <ScrollViewContainer>
-        <Container className="gap-6 px-12">
+        <Container className="max-w-lg gap-6 px-12">
           <View className="gap-2">
             <Text className="text-center text-2xl font-bold text-beige">Sobre os Produtos</Text>
             <FormControl isInvalid={Boolean(errors.stars?.message)}>

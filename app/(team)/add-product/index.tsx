@@ -90,7 +90,7 @@ export default function AddProduct() {
     <>
       <Stack.Screen options={{ title: 'Adicionar Produto' }} />
       <ScrollViewContainer>
-        <Container className="items-center justify-center gap-4 px-12">
+        <Container className="max-w-lg items-center justify-center gap-4 px-12">
           <Text className="text-2xl text-white">Informe os dados do Produto</Text>
           <FormControl isInvalid={Boolean(errors.name?.message)}>
             <FormControlLabel>

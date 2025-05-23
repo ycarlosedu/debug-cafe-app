@@ -104,7 +104,7 @@ export default function Cart() {
     <>
       <Stack.Screen options={{ title: 'Meu Carrinho' }} />
       <ScrollViewContainer>
-        <Container className="gap-6 px-4">
+        <Container className="max-w-lg gap-6 px-4">
           <ConfirmDeleteDialog
             title="Tem certeza que deseja remover todos os itens do carrinho?"
             handleSubmit={resetCart}

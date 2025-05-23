@@ -46,7 +46,7 @@ export default function Payment() {
     <>
       <Stack.Screen options={{ title: 'Adicionar Cartão' }} />
       <ScrollViewContainer>
-        <Container className="gap-8 px-12">
+        <Container className="max-w-lg gap-8 px-12">
           <CreditCardForm
             onSubmit={onSubmitPaymentForm}
             isLoading={addCreditCardMutation.isPending}

@@ -55,7 +55,7 @@ export default function MyOrders() {
     <>
       <Stack.Screen options={{ title: 'Pedidos em Andamento' }} />
       <ScrollViewContainer>
-        <Container className="px-4">
+        <Container className="max-w-lg px-4">
           {isError && (
             <Text className="text-center text-2xl text-white">Erro ao carregar pedidos</Text>
           )}

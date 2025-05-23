@@ -98,7 +98,7 @@ export default function EditProduct() {
     <>
       <Stack.Screen options={{ title: 'Editar Produto' }} />
       <ScrollViewContainer>
-        <Container className="items-center justify-center gap-4 px-12">
+        <Container className="max-w-lg items-center justify-center gap-4 px-12">
           <Text className="text-2xl text-white">Revise os dados do Produto</Text>
           <FormControl isInvalid={Boolean(errors.name?.message)}>
             <FormControlLabel>

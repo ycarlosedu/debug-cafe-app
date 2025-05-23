@@ -4,8 +4,9 @@ import { useMutation } from '@tanstack/react-query';
 import { Link, router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { GestureResponderEvent, Text } from 'react-native';
+import { GestureResponderEvent, Image, Text } from 'react-native';
 
+import LogoImage from '@/assets/icon.png';
 import { Button, ButtonText } from '@/components/button';
 import { Container } from '@/components/container';
 import { ScrollViewContainer } from '@/components/scrollViewContainer';
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/form-control';
 import { Input, InputField, InputSlot } from '@/components/ui/input';
 import { TOAST_ACTION, TOAST_TITLE } from '@/components/ui/toast';
-import { ERROR } from '@/constants';
 import { useMyToast } from '@/hooks/useMyToast';
 import { signInSchema, SignInValues } from '@/schemas';
 import { auth } from '@/services/auth';
@@ -84,7 +84,8 @@ export default function Login() {
     <>
       <Stack.Screen options={{ title: 'Entrar' }} />
       <ScrollViewContainer>
-        <Container className="gap-8 px-12">
+        <Container className="max-w-lg gap-8 px-12">
+          <Image source={LogoImage} className="self-center" style={{ width: 100, height: 100 }} />
           <Text className="text-2xl text-white">Entre com sua conta</Text>
           <FormControl isInvalid={Boolean(errors.email?.message)}>
             <FormControlLabel>

@@ -15,7 +15,8 @@
     "web": "expo start --web",
     "preinstall": "rm -rf patches",
     "eas-build-pre-install": "rm -rf patches",
-    "eas-build-post-install": "rm -rf patches"
+    "eas-build-post-install": "rm -rf patches",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@expo/html-elements": "^0.4.2",

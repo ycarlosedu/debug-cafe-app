@@ -53,7 +53,7 @@ export default function MyOrders() {
     <>
       <Stack.Screen options={{ title: 'Meus Pedidos' }} />
       <ScrollViewContainer>
-        <Container className="px-4">
+        <Container className="max-w-lg px-4">
           {user?.userType === USER_TYPE.GUEST && (
             <View className="gap-4">
               <Text className="text-center text-xl text-white">

@@ -76,7 +76,7 @@ export default function Address() {
     <>
       <Stack.Screen options={{ title: 'Alterar Endereço' }} />
       <ScrollViewContainer>
-        <Container className="gap-8 px-12">
+        <Container className="max-w-lg gap-8 px-12">
           {isLoading && (
             <Text className="text-center text-white">
               Verificando se você possui endereço cadastrado...

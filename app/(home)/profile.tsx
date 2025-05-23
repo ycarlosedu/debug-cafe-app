@@ -49,7 +49,7 @@ export default function Profile() {
         options={{ title: `Meu Perfil (${USER_TYPE_LABEL[user?.userType || USER_TYPE.CLIENT]})` }}
       />
       <ScrollViewContainer>
-        <Container className="gap-6 px-4">
+        <Container className="max-w-lg gap-6 px-4">
           <View className="flex-row items-center gap-6">
             <Image
               source={UserImage}
